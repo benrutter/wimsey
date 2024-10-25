@@ -1,5 +1,5 @@
-import narwhals as nw
-from narwhals.typing import FrameT
+import narwhals.stable.v1 as nw
+from narwhals.stable.v1.typing import FrameT
 
 
 @nw.narwhalify
