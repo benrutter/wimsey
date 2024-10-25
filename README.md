@@ -1,6 +1,8 @@
 # Wimsey 🔍
 
 [![PyPI version](https://badge.fury.io/py/wimsey.svg)](https://badge.fury.io/py/wimsey)
+[![Supported Python versions](https://img.shields.io/pypi/pyversions/wimsey)](https://pypi.org/project/wimsey/)
+[![License](https://img.shields.io/github/license/benrutter/wimsey)](https://github.com/benrutter/wimsey/blob/main/LICENSE)
 
 A lightweight and flexible data contract library.
 
@@ -14,7 +16,7 @@ A data contract is an expression of what *should* be true of some data, such as 
 
 ## Quick Demo
 
-Let's start by taking a look at an example data contract, Wimsey supports reading json or yaml files, or just plain old python dictionaries. Here's an example of a yaml contract (note you'll need `pyyaml` installed to support reading this):
+Let's start by taking a look at an example data contract, Wimsey supports reading json or yaml files, or just plain old python dictionaries. Here's an example of a yaml contract:
 
 ```yaml
 - column: awesome_column
@@ -24,7 +26,16 @@ Let's start by taking a look at an example data contract, Wimsey supports readin
 - column: another_great_column
   test: null_count_should
   be_exactly: 0
+- test: row_count_should
+  be_less_than_or_equal_to: 50000
+- column: neato_column
+  test: type_should
+  be_one_of:
+    - int64
+    - float64
 ```
+
+> Note you'll need `pyyaml` installed to support reading this, the same data can be stored as json without needing extension if you're trying to keep things lightweight
 
 Here we have two tests, firstly, we're checking that "awesome_column" is between -10 and 100, and then we're checking that "another_great_column" has no null entries.
 

@@ -40,7 +40,10 @@ def describe(df: FrameT) -> dict[str, float]:
         nw.col(*df.columns).null_count().name.prefix("null_count_"),
     ]
     post_exprs += [
-        (nw.col(f"null_count_{c}") / nw.col(f"count_{c}") + nw.col(f"null_count_{c}"))
+        (
+            nw.col(f"null_count_{c}")
+            / (nw.col(f"count_{c}") + nw.col(f"null_count_{c}"))
+        ).alias(f"null_percentage_{c}")
         for c in df.columns
     ]
     post_exprs += [

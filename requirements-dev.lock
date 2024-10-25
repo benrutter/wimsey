@@ -24,6 +24,7 @@ decorator==5.1.1
     # via ipython
 exceptiongroup==1.2.0
     # via ipython
+    # via pytest
 executing==2.0.1
     # via stack-data
 fsspec==2024.10.0
@@ -31,6 +32,8 @@ fsspec==2024.10.0
     # via wimsey
 importlib-metadata==8.5.0
     # via dask
+iniconfig==2.0.0
+    # via pytest
 ipdb==0.13.13
 ipython==8.21.0
     # via ipdb
@@ -50,6 +53,7 @@ numpy==2.1.2
     # via pyarrow
 packaging==24.1
     # via dask
+    # via pytest
 pandas==2.2.3
     # via dask-expr
 parso==0.8.3
@@ -58,6 +62,8 @@ partd==1.4.2
     # via dask
 pexpect==4.9.0
     # via ipython
+pluggy==1.5.0
+    # via pytest
 polars==1.10.0
 prompt-toolkit==3.0.43
     # via ipython
@@ -69,6 +75,7 @@ pyarrow==17.0.0
     # via dask-expr
 pygments==2.17.2
     # via ipython
+pytest==8.3.3
 python-dateutil==2.9.0.post0
     # via pandas
 pytz==2024.2
@@ -83,6 +90,7 @@ stack-data==0.6.3
 tomli==2.0.1
     # via ipdb
     # via mypy
+    # via pytest
 toolz==1.0.0
     # via dask
     # via partd

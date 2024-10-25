@@ -1,6 +1,5 @@
 import json
 from typing import Callable
-from functools import partial
 
 import fsspec
 
