@@ -12,6 +12,13 @@
 -e file:.
 asttokens==2.4.1
     # via stack-data
+click==8.1.7
+    # via dask
+cloudpickle==3.1.0
+    # via dask
+dask==2024.10.0
+    # via dask-expr
+dask-expr==1.1.16
 decorator==5.1.1
     # via ipdb
     # via ipython
@@ -20,12 +27,17 @@ exceptiongroup==1.2.0
 executing==2.0.1
     # via stack-data
 fsspec==2024.10.0
+    # via dask
     # via wimsey
+importlib-metadata==8.5.0
+    # via dask
 ipdb==0.13.13
 ipython==8.21.0
     # via ipdb
 jedi==0.19.1
     # via ipython
+locket==1.0.0
+    # via partd
 matplotlib-inline==0.1.6
     # via ipython
 mypy==1.13.0
@@ -35,9 +47,15 @@ narwhals==1.10.0
     # via wimsey
 numpy==2.1.2
     # via pandas
+    # via pyarrow
+packaging==24.1
+    # via dask
 pandas==2.2.3
+    # via dask-expr
 parso==0.8.3
     # via jedi
+partd==1.4.2
+    # via dask
 pexpect==4.9.0
     # via ipython
 polars==1.10.0
@@ -47,6 +65,8 @@ ptyprocess==0.7.0
     # via pexpect
 pure-eval==0.2.2
     # via stack-data
+pyarrow==17.0.0
+    # via dask-expr
 pygments==2.17.2
     # via ipython
 python-dateutil==2.9.0.post0
@@ -54,6 +74,7 @@ python-dateutil==2.9.0.post0
 pytz==2024.2
     # via pandas
 pyyaml==6.0.2
+    # via dask
 six==1.16.0
     # via asttokens
     # via python-dateutil
@@ -62,6 +83,9 @@ stack-data==0.6.3
 tomli==2.0.1
     # via ipdb
     # via mypy
+toolz==1.0.0
+    # via dask
+    # via partd
 traitlets==5.14.1
     # via ipython
     # via matplotlib-inline
@@ -72,3 +96,5 @@ tzdata==2024.2
     # via pandas
 wcwidth==0.2.13
     # via prompt-toolkit
+zipp==3.20.2
+    # via importlib-metadata

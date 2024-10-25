@@ -70,16 +70,60 @@ def _range_check(metric: str) -> Callable:
     return should_be_partial
 
 
+def row_count_should(
+    be_less_than: float | int | None = None,
+    be_less_than_or_equal_to: float | int | None = None,
+    be_greater_than: float | int | None = None,
+    be_greater_than_or_equal_to: float | int | None = None,
+    **kwargs,
+):
+    def row_count_should_be(
+        description: dict,
+        be_less_than: float | int | None = None,
+        be_less_than_or_equal_to: float | int | None = None,
+        be_greater_than: float | int | None = None,
+        be_greater_than_or_equal_to: float | int | None = None,
+        be_exactly: float | int | None = None,
+    ) -> result:
+        checks: list[bool] = []
+        value: float | int = description["length"]
+        if be_exactly is not None:
+            checks.append(value == be_exactly)
+        if be_less_than is not None:
+            checks.append(value < be_less_than)
+        if be_greater_than is not None:
+            checks.append(value > be_greater_than)
+        if be_less_than_or_equal_to is not None:
+            checks.append(value <= be_less_than_or_equal_to)
+        if be_greater_than_or_equal_to is not None:
+            checks.append(value >= be_greater_than_or_equal_to)
+        return result(
+            name="row-count",
+            success=all(checks),
+            unexpected=value if not all(checks) else None,
+        )
+
+    return partial(
+        row_count_should_be,
+        be_less_than=be_less_than,
+        be_less_than_or_equal_to=be_less_than_or_equal_to,
+        be_greater_than=be_greater_than,
+        be_greater_than_or_equal_to=be_greater_than_or_equal_to,
+    )
+
+
 def columns_should(
     have: list[str] | str | None = None,
     not_have: list[str] | str | None = None,
     be: list[str] | str | None = None,
+    **kwargs,
 ) -> Callable:
     def should_have(
         description: dict,
         have: list[str] | str | None = None,
         not_have: list[str] | str | None = None,
         be: list[str] | str | None = None,
+        **kwargs,
     ) -> result:
         have = list(have) if isinstance(have, str) else have
         not_have = list(not_have) if isinstance(not_have, str) else not_have
@@ -117,6 +161,7 @@ def type_should(
         be: str | None,
         not_be: str | None,
         be_one_of: str | None,
+        **kwargs,
     ) -> result:
         checks: list[bool] = []
         col_type = description[f"type_{column}"]
@@ -152,4 +197,5 @@ possible_tests: dict[str, Callable] = {
     ),
     "columns_should": columns_should,
     "type_should": type_should,
+    "row_count_should": row_count_should,
 }

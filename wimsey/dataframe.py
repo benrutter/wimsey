@@ -43,6 +43,11 @@ def describe(df: FrameT) -> dict[str, float]:
         (nw.col(f"null_count_{c}") / nw.col(f"count_{c}") + nw.col(f"null_count_{c}"))
         for c in df.columns
     ]
+    post_exprs += [
+        (
+            nw.col(f"count_{df.columns[0]}") + nw.col(f"null_count_{df.columns[0]}")
+        ).alias("length")
+    ]
     df_metrics = df.select(
         *required_exprs,
     ).with_columns(*post_exprs)
