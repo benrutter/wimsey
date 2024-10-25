@@ -104,6 +104,43 @@ def columns_should(
     return partial(should_have, have=have, not_have=not_have, be=be)
 
 
+def type_should(
+    column: str,
+    be: str | None = None,
+    not_be: str | None = None,
+    be_one_of: str | None = None,
+    **kwargs,
+) -> Callable:
+    def should_be(
+        description: dict,
+        column: str,
+        be: str | None,
+        not_be: str | None,
+        be_one_of: str | None,
+    ) -> result:
+        checks: list[bool] = []
+        col_type = description[f"type_{column}"]
+        if be is not None:
+            checks.append(be.lower() == col_type.lower())
+        if not_be is not None:
+            checks.append(be.lower() != col_type.lower())
+        if be_one_of is not None:
+            checks.append(be.lower() in [i.lower() for i in be_one_of])
+        return result(
+            name=f"type-of-{column}",
+            success=all(checks),
+            unexpected=col_type if not all(checks) else None,
+        )
+
+    return partial(
+        should_be,
+        column=column,
+        be=be,
+        not_be=not_be,
+        be_one_of=be_one_of,
+    )
+
+
 possible_tests: dict[str, Callable] = {
     "mean_should": (mean_should := _range_check("mean")),
     "min_should": (min_should := _range_check("min")),
@@ -114,4 +151,5 @@ possible_tests: dict[str, Callable] = {
         null_percentage_should := _range_check("null_percentage")
     ),
     "columns_should": columns_should,
+    "type_should": type_should,
 }
