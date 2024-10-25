@@ -38,10 +38,9 @@ def describe(df: FrameT) -> dict[str, float]:
         nw.lit("_^&^_".join(df.columns)).alias("columns"),
         nw.col(*df.columns).count().name.prefix("count_"),
         nw.col(*df.columns).null_count().name.prefix("null_count_"),
-        nw.lit(len(df)).alias("length"),
     ]
     post_exprs += [
-        (nw.col(f"null_count_{c}") / nw.col("length")).alias(f"null_percentage_{c}")
+        (nw.col(f"null_count_{c}") / nw.col(f"count_{c}") + nw.col(f"null_count_{c}"))
         for c in df.columns
     ]
     df_metrics = df.select(
