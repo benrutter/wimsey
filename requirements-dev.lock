@@ -12,10 +12,19 @@
 -e file:.
 asttokens==2.4.1
     # via stack-data
+babel==2.16.0
+    # via mkdocs-material
+certifi==2024.8.30
+    # via requests
+charset-normalizer==3.4.0
+    # via requests
 click==8.1.7
     # via dask
+    # via mkdocs
 cloudpickle==3.1.0
     # via dask
+colorama==0.4.6
+    # via mkdocs-material
 dask==2024.10.0
     # via dask-expr
 dask-expr==1.1.16
@@ -30,6 +39,10 @@ executing==2.0.1
 fsspec==2024.10.0
     # via dask
     # via wimsey
+ghp-import==2.1.0
+    # via mkdocs
+idna==3.10
+    # via requests
 importlib-metadata==8.5.0
     # via dask
 iniconfig==2.0.0
@@ -39,10 +52,30 @@ ipython==8.21.0
     # via ipdb
 jedi==0.19.1
     # via ipython
+jinja2==3.1.4
+    # via mkdocs
+    # via mkdocs-material
 locket==1.0.0
     # via partd
+markdown==3.7
+    # via mkdocs
+    # via mkdocs-material
+    # via pymdown-extensions
+markupsafe==3.0.2
+    # via jinja2
+    # via mkdocs
 matplotlib-inline==0.1.6
     # via ipython
+mergedeep==1.3.4
+    # via mkdocs
+    # via mkdocs-get-deps
+mkdocs==1.6.1
+    # via mkdocs-material
+mkdocs-get-deps==0.2.0
+    # via mkdocs
+mkdocs-material==9.5.42
+mkdocs-material-extensions==1.3.1
+    # via mkdocs-material
 mypy==1.13.0
 mypy-extensions==1.0.0
     # via mypy
@@ -53,15 +86,22 @@ numpy==2.1.2
     # via pyarrow
 packaging==24.1
     # via dask
+    # via mkdocs
     # via pytest
+paginate==0.5.7
+    # via mkdocs-material
 pandas==2.2.3
     # via dask-expr
 parso==0.8.3
     # via jedi
 partd==1.4.2
     # via dask
+pathspec==0.12.1
+    # via mkdocs
 pexpect==4.9.0
     # via ipython
+platformdirs==4.3.6
+    # via mkdocs-get-deps
 pluggy==1.5.0
     # via pytest
 polars==1.10.0
@@ -75,13 +115,27 @@ pyarrow==17.0.0
     # via dask-expr
 pygments==2.17.2
     # via ipython
+    # via mkdocs-material
+pymdown-extensions==10.11.2
+    # via mkdocs-material
 pytest==8.3.3
 python-dateutil==2.9.0.post0
+    # via ghp-import
     # via pandas
 pytz==2024.2
     # via pandas
 pyyaml==6.0.2
     # via dask
+    # via mkdocs
+    # via mkdocs-get-deps
+    # via pymdown-extensions
+    # via pyyaml-env-tag
+pyyaml-env-tag==0.1
+    # via mkdocs
+regex==2024.9.11
+    # via mkdocs-material
+requests==2.32.3
+    # via mkdocs-material
 six==1.16.0
     # via asttokens
     # via python-dateutil
@@ -102,6 +156,10 @@ typing-extensions==4.12.2
     # via mypy
 tzdata==2024.2
     # via pandas
+urllib3==2.2.3
+    # via requests
+watchdog==5.0.3
+    # via mkdocs
 wcwidth==0.2.13
     # via prompt-toolkit
 zipp==3.20.2

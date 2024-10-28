@@ -1,0 +1,34 @@
+site_name: Wimsey
+
+nav:
+  - Quick Start: index.md
+  - Possible Tests: possible_tests.md
+
+theme:
+  name: material
+  palette:
+    - scheme: default
+      primary: brown
+      media: "(prefers-color-scheme: dark)"
+      toggle:
+        icon: material/weather-sunny
+        name: Switch to dark mode
+    - scheme: slate
+      primary: brown
+      media: "(prefers-color-scheme: light)"
+      toggle:
+        icon: material/weather-night
+        name: Switch to light mode
+repo_name: benrutter/wimsey
+repo_url: https://github.com/benrutter/wimsey
+
+markdown_extensions:
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.superfences  
+  - pymdownx.tabbed:
+      alternate_style: true

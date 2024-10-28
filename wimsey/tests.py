@@ -75,6 +75,7 @@ def row_count_should(
     be_less_than_or_equal_to: float | int | None = None,
     be_greater_than: float | int | None = None,
     be_greater_than_or_equal_to: float | int | None = None,
+    be_exactly: float | int | None = None,
     **kwargs,
 ):
     def row_count_should_be(
@@ -97,6 +98,8 @@ def row_count_should(
             checks.append(value <= be_less_than_or_equal_to)
         if be_greater_than_or_equal_to is not None:
             checks.append(value >= be_greater_than_or_equal_to)
+        if be_exactly is not None:
+            checks.append(value == be_exactly)
         return result(
             name="row-count",
             success=all(checks),
