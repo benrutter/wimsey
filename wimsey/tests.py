@@ -27,9 +27,7 @@ def _range_check(metric: str) -> Callable:
         be_greater_than: float | int | None = None,
         be_greater_than_or_equal_to: float | int | None = None,
     ) -> result:
-        """
-        Test that column mean is within designated range
-        """
+        """Test that column metric is within designated range"""
         checks: list[bool] = []
         value: Any = describe[f"{metric}_{column}"]
         if be_exactly is not None:
@@ -50,23 +48,25 @@ def _range_check(metric: str) -> Callable:
 
     def should_be_partial(
         column: str,
-        exactly: float | int | None = None,
-        less_than: float | int | None = None,
-        less_than_or_equal_to: float | int | None = None,
-        greater_than: float | int | None = None,
-        greater_than_or_equal_to: float | int | None = None,
+        be_exactly: float | int | None = None,
+        be_less_than: float | int | None = None,
+        be_less_than_or_equal_to: float | int | None = None,
+        be_greater_than: float | int | None = None,
+        be_greater_than_or_equal_to: float | int | None = None,
         **kwargs,
     ) -> Callable:
+        """Test that column {metric} is within designated range"""
         return partial(
             should,
             column=column,
-            be_exactly=exactly,
-            be_less_than=less_than,
-            be_less_than_or_equal_to=less_than_or_equal_to,
-            be_greater_than=greater_than,
-            be_greater_than_or_equal_to=greater_than_or_equal_to,
+            be_exactly=be_exactly,
+            be_less_than=be_less_than,
+            be_less_than_or_equal_to=be_less_than_or_equal_to,
+            be_greater_than=be_greater_than,
+            be_greater_than_or_equal_to=be_greater_than_or_equal_to,
         )
 
+    should_be_partial.__doc__ = should_be_partial.__doc__.replace("{metric}", metric)
     return should_be_partial
 
 
@@ -77,7 +77,9 @@ def row_count_should(
     be_greater_than_or_equal_to: float | int | None = None,
     be_exactly: float | int | None = None,
     **kwargs,
-):
+) -> Callable:
+    """Test that dataframe row count is within designated range"""
+
     def row_count_should_be(
         description: dict,
         be_less_than: float | int | None = None,
@@ -86,6 +88,7 @@ def row_count_should(
         be_greater_than_or_equal_to: float | int | None = None,
         be_exactly: float | int | None = None,
     ) -> result:
+        """Test that dataframe row count is within designated range"""
         checks: list[bool] = []
         value: float | int = description["length"]
         if be_exactly is not None:
@@ -121,6 +124,8 @@ def columns_should(
     be: list[str] | str | None = None,
     **kwargs,
 ) -> Callable:
+    """Test column names match up with expected values"""
+
     def should_have(
         description: dict,
         have: list[str] | str | None = None,
@@ -128,6 +133,7 @@ def columns_should(
         be: list[str] | str | None = None,
         **kwargs,
     ) -> result:
+        """Test column names match up with expected values"""
         have = list(have) if isinstance(have, str) else have
         not_have = list(not_have) if isinstance(not_have, str) else not_have
         be = list(be) if isinstance(be, str) else be
@@ -158,6 +164,14 @@ def type_should(
     be_one_of: str | None = None,
     **kwargs,
 ) -> Callable:
+    """
+    Test column type matches up with expected value.
+
+    Note that this will expect *polars* style types, although does not require
+    that they be case sensitive. For example, if testing a pandas dataframe for
+    integer type, specify "int64" rather than, say, "int64[pyarrow]" or otherwise.
+    """
+
     def should_be(
         description: dict,
         column: str,
@@ -166,6 +180,13 @@ def type_should(
         be_one_of: str | None,
         **kwargs,
     ) -> result:
+        """
+        Test column type matches up with expected value.
+
+        Note that this will expect *polars* style types, although does not require
+        that they be case sensitive. For example, if testing a pandas dataframe for
+        integer type, specify "int64" rather than, say, "int64[pyarrow]" or otherwise.
+        """
         checks: list[bool] = []
         col_type = description[f"type_{column}"]
         if be is not None:
