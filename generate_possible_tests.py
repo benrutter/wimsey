@@ -61,7 +61,7 @@ result = test(df, contract=[{name}(**keywords)])
 
 if __name__ == "__main__":
     NL = "\n"
-    file_doc: str = "# Possible Tests 🧪\n"
+    file_doc: str = "# Test Catalogue 🧪\n"
     file_doc += (
         "This documentation is intended as an exaustive list of possible "
         "tests within Wimsey. Note that examples given intentionally use "
