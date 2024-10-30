@@ -87,7 +87,7 @@ We can test for a lot more than that, but that works for our example. Our first 
     ]
     ```
 
-See [Possible Tests](./possible_tests/) for a full catalogue of runnable tests and their configurations.
+See [Possible Tests](possible_tests.md) for a full catalogue of runnable tests and their configurations.
 
 ### Executing Tests
 

@@ -1,7 +1,6 @@
 # Wimsey 🔍
 
 [![PyPI version](https://badge.fury.io/py/wimsey.svg)](https://badge.fury.io/py/wimsey)
-[![Supported Python versions](https://img.shields.io/pypi/pyversions/wimsey)](https://pypi.org/project/wimsey/)
 [![License](https://img.shields.io/github/license/benrutter/wimsey)](https://github.com/benrutter/wimsey/blob/main/LICENSE)
 
 A lightweight and flexible data contract library.
