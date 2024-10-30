@@ -1,4 +1,4 @@
-# Possible Tests 🧪
+# Test Catalogue 🧪
 This documentation is intended as an exaustive list of possible tests within Wimsey. Note that examples given intentionally use all possible keywords for demonstrative purposes. This isn't required, and you can give as many or as few keywords as you like with the exception of where `column` is required.
 ## mean_should
 

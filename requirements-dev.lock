@@ -14,12 +14,15 @@ asttokens==2.4.1
     # via stack-data
 babel==2.16.0
     # via mkdocs-material
+blinker==1.8.2
+    # via flask
 certifi==2024.8.30
     # via requests
 charset-normalizer==3.4.0
     # via requests
 click==8.1.7
     # via dask
+    # via flask
     # via mkdocs
 cloudpickle==3.1.0
     # via dask
@@ -31,16 +34,21 @@ dask-expr==1.1.16
 decorator==5.1.1
     # via ipdb
     # via ipython
+docopt==0.6.2
+    # via grip
 exceptiongroup==1.2.0
     # via ipython
     # via pytest
 executing==2.0.1
     # via stack-data
+flask==3.0.3
+    # via grip
 fsspec==2024.10.0
     # via dask
     # via wimsey
 ghp-import==2.1.0
     # via mkdocs
+grip==4.6.2
 idna==3.10
     # via requests
 importlib-metadata==8.5.0
@@ -50,20 +58,25 @@ iniconfig==2.0.0
 ipdb==0.13.13
 ipython==8.21.0
     # via ipdb
+itsdangerous==2.2.0
+    # via flask
 jedi==0.19.1
     # via ipython
 jinja2==3.1.4
+    # via flask
     # via mkdocs
     # via mkdocs-material
 locket==1.0.0
     # via partd
 markdown==3.7
+    # via grip
     # via mkdocs
     # via mkdocs-material
     # via pymdown-extensions
 markupsafe==3.0.2
     # via jinja2
     # via mkdocs
+    # via werkzeug
 matplotlib-inline==0.1.6
     # via ipython
 mergedeep==1.3.4
@@ -96,6 +109,8 @@ parso==0.8.3
     # via jedi
 partd==1.4.2
     # via dask
+path-and-address==2.0.1
+    # via grip
 pathspec==0.12.1
     # via mkdocs
 pexpect==4.9.0
@@ -114,6 +129,7 @@ pure-eval==0.2.2
 pyarrow==17.0.0
     # via dask-expr
 pygments==2.17.2
+    # via grip
     # via ipython
     # via mkdocs-material
 pymdown-extensions==10.11.2
@@ -135,6 +151,7 @@ pyyaml-env-tag==0.1
 regex==2024.9.11
     # via mkdocs-material
 requests==2.32.3
+    # via grip
     # via mkdocs-material
 six==1.16.0
     # via asttokens
@@ -162,5 +179,8 @@ watchdog==5.0.3
     # via mkdocs
 wcwidth==0.2.13
     # via prompt-toolkit
+werkzeug==3.0.6
+    # via flask
+    # via grip
 zipp==3.20.2
     # via importlib-metadata

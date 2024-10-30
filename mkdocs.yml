@@ -2,7 +2,7 @@ site_name: Wimsey
 
 nav:
   - Quick Start: index.md
-  - Possible Tests: possible_tests.md
+  - Test Catalogue: possible_tests.md
 
 theme:
   name: material
