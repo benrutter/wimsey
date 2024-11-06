@@ -19,7 +19,21 @@ class DataValidationException(Exception):
 
 
 def run_all_tests(df: FrameT, tests: list[Callable[[Any], result]]) -> final_result:
-    description: dict[str, Any] = describe(df)
+    columns: set[str] | None = set()
+    metrics: set[str] | None = set()
+    for test in tests:
+        try:
+            metrics |= test.required_metrics
+            columns |= {test.keywords.get("column")} or set()
+        except AttributeError:
+            columns = None  # fall back to calculating everything
+            metrics = None
+            break
+    description: dict[str, Any] = describe(
+        df,
+        columns=list(columns),
+        metrics=list(metrics),
+    )
     results: list[result] = []
     for i_test in tests:
         results.append(i_test(description))

@@ -56,7 +56,7 @@ def _range_check(metric: str) -> Callable:
         **kwargs,
     ) -> Callable:
         """Test that column {metric} is within designated range"""
-        return partial(
+        return_partial = partial(
             should,
             column=column,
             be_exactly=be_exactly,
@@ -65,6 +65,8 @@ def _range_check(metric: str) -> Callable:
             be_greater_than=be_greater_than,
             be_greater_than_or_equal_to=be_greater_than_or_equal_to,
         )
+        return_partial.required_metrics = {metric}
+        return return_partial
 
     should_be_partial.__doc__ = should_be_partial.__doc__.replace("{metric}", metric)
     return should_be_partial
@@ -109,13 +111,15 @@ def row_count_should(
             unexpected=value if not all(checks) else None,
         )
 
-    return partial(
+    should_be_partial = partial(
         row_count_should_be,
         be_less_than=be_less_than,
         be_less_than_or_equal_to=be_less_than_or_equal_to,
         be_greater_than=be_greater_than,
         be_greater_than_or_equal_to=be_greater_than_or_equal_to,
     )
+    should_be_partial.required_metrics = {"length"}
+    return should_be_partial
 
 
 def columns_should(
@@ -154,14 +158,16 @@ def columns_should(
             unexpected=present_columns if not all(checks) else None,
         )
 
-    return partial(should_have, have=have, not_have=not_have, be=be)
+    should_have_partial = partial(should_have, have=have, not_have=not_have, be=be)
+    should_have_partial.required_metrics = {}
+    return should_have_partial
 
 
 def type_should(
     column: str,
     be: str | None = None,
     not_be: str | None = None,
-    be_one_of: str | None = None,
+    be_one_of: list[str] | None = None,
     **kwargs,
 ) -> Callable:
     """
@@ -194,26 +200,29 @@ def type_should(
         if not_be is not None:
             checks.append(be.lower() != col_type.lower())
         if be_one_of is not None:
-            checks.append(be.lower() in [i.lower() for i in be_one_of])
+            checks.append(col_type.lower() in [i.lower() for i in be_one_of])
         return result(
             name=f"type-of-{column}",
             success=all(checks),
             unexpected=col_type if not all(checks) else None,
         )
 
-    return partial(
+    should_be_partial = partial(
         should_be,
         column=column,
         be=be,
         not_be=not_be,
         be_one_of=be_one_of,
     )
+    should_be_partial.required_metrics = {"type"}
+    return should_be_partial
 
 
 possible_tests: dict[str, Callable] = {
     "mean_should": (mean_should := _range_check("mean")),
     "min_should": (min_should := _range_check("min")),
     "max_should": (max_should := _range_check("max")),
+    "std_should": (std_should := _range_check("std")),
     "null_count_should": (null_count_should := _range_check("null_count")),
     "count_should": (count_should := _range_check("count")),
     "null_percentage_should": (
