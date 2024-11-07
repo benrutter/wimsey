@@ -1,8 +1,10 @@
 site_name: Wimsey
 
 nav:
-  - Quick Start: index.md
-  - Test Catalogue: possible_tests.md
+  - Intro: index.md
+  - Motivation: motivation.md
+  - Quick Start: quick-start.md
+  - Test Catalogue: possible-tests.md
 
 theme:
   name: material

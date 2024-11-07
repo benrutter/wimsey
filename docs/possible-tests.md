@@ -138,6 +138,52 @@ Test that column max is within designated range
 
 <hr>
     
+## std_should
+
+Test that column std is within designated range
+
+=== "yaml"
+    ```yaml
+    be_exactly: 300
+    be_greater_than: 500
+    be_greater_than_or_equal_to: 500
+    be_less_than: 500
+    be_less_than_or_equal_to: 300
+    column: column_a
+
+    ```
+=== "json"
+    ```json
+    {
+      "column": "column_a",
+      "be_exactly": 300,
+      "be_less_than": 500,
+      "be_less_than_or_equal_to": 300,
+      "be_greater_than": 500,
+      "be_greater_than_or_equal_to": 500
+    }
+    ```
+=== "python"
+    ```python
+
+    from wimsey import test
+    from wimsey.tests import std_should
+
+    keywords = {
+      "column": "column_a",
+      "be_exactly": 300,
+      "be_less_than": 500,
+      "be_less_than_or_equal_to": 300,
+      "be_greater_than": 500,
+      "be_greater_than_or_equal_to": 500
+    }
+
+    result = test(df, contract=[std_should(**keywords)])
+    
+    ```
+
+<hr>
+    
 ## null_count_should
 
 Test that column null_count is within designated range
