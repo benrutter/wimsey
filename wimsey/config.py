@@ -1,5 +1,5 @@
 import json
-from typing import Callable
+from typing import Any, Callable
 
 import fsspec
 
@@ -17,7 +17,10 @@ def collect_tests(config: list[dict] | dict | list[Callable]) -> list[Callable]:
         return list_config
     tests: list[Callable] = []
     for item in list_config:
-        test: Callable | None = possible_tests.get(item.get("test"))(**item)  # type: ignore[arg-type]
+        test_name: str | None = item.get("test")
+        test: Callable | None = None
+        if test_name:
+            test = possible_tests.get(item.get("test"))(**item)  # type: ignore[arg-type]
         if test is None:
             msg = (
                 "Issue reading configuration, for at least one test, either no "
@@ -40,7 +43,7 @@ def read_config(path: str, storage_options: dict | None = None) -> list[Callable
         try:
             import yaml
 
-            config = yaml.safe_load(contents)
+            config = parse_contents(yaml.safe_load(contents))
             return collect_tests(config)  # type: ignore[arg-type]
         except ImportError as exception:
             msg = (
@@ -49,5 +52,21 @@ def read_config(path: str, storage_options: dict | None = None) -> list[Callable
                 "install of pyyaml (`pip install pyyaml`)"
             )
             raise ImportError(msg) from exception
-    config = json.loads(contents)
+    config = parse_contents(json.loads(contents))
     return collect_tests(config)  # type: ignore[arg-type]
+
+
+def parse_contents(contents: Any) -> list[dict] | dict:
+    if isinstance(contents, list):
+        return contents
+    if isinstance(contents, dict):
+        if isinstance(contents.get("tests"), list):
+            return contents.get("tests")
+        return contents
+    msg = (
+        "It looks like the json/yaml file parsed in is either invalid "
+        "or doesn't match what's required for Wimsey to interpret tests. \n"
+        "Hint: json/yaml file should either be a list of tests, a single test "
+        "or a key/value pair with a 'tests' key relating to a list of tests"
+    )
+    raise ValueError(msg)
