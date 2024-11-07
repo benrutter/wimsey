@@ -83,7 +83,9 @@ mergedeep==1.3.4
     # via mkdocs
     # via mkdocs-get-deps
 mkdocs==1.6.1
+    # via mkdocs-charts-plugin
     # via mkdocs-material
+mkdocs-charts-plugin==0.0.12
 mkdocs-get-deps==0.2.0
     # via mkdocs
 mkdocs-material==9.5.42
@@ -133,6 +135,7 @@ pygments==2.17.2
     # via ipython
     # via mkdocs-material
 pymdown-extensions==10.11.2
+    # via mkdocs-charts-plugin
     # via mkdocs-material
 pytest==8.3.3
 python-dateutil==2.9.0.post0

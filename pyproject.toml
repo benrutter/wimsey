@@ -1,6 +1,6 @@
 [project]
 name = "wimsey"
-version = "0.2.0"
+version = "0.2.1"
 description = "A lightweight data contracts framework"
 authors = [
     { name = "Ben", email = "benrutter@posteo.net" }
@@ -32,6 +32,7 @@ dev-dependencies = [
     "mkdocs>=1.6.1",
     "mkdocs-material>=9.5.42",
     "grip>=4.6.2",
+    "mkdocs-charts-plugin>=0.0.12",
 ]
 
 [tool.hatch.metadata]
