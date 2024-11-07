@@ -12,11 +12,13 @@ Test that column mean is within designated range
     be_less_than: 500
     be_less_than_or_equal_to: 300
     column: column_a
+    test: mean_should
 
     ```
 === "json"
     ```json
     {
+      "test": "mean_should",
       "column": "column_a",
       "be_exactly": 300,
       "be_less_than": 500,
@@ -58,11 +60,13 @@ Test that column min is within designated range
     be_less_than: 500
     be_less_than_or_equal_to: 300
     column: column_a
+    test: min_should
 
     ```
 === "json"
     ```json
     {
+      "test": "min_should",
       "column": "column_a",
       "be_exactly": 300,
       "be_less_than": 500,
@@ -104,11 +108,13 @@ Test that column max is within designated range
     be_less_than: 500
     be_less_than_or_equal_to: 300
     column: column_a
+    test: max_should
 
     ```
 === "json"
     ```json
     {
+      "test": "max_should",
       "column": "column_a",
       "be_exactly": 300,
       "be_less_than": 500,
@@ -150,11 +156,13 @@ Test that column std is within designated range
     be_less_than: 500
     be_less_than_or_equal_to: 300
     column: column_a
+    test: std_should
 
     ```
 === "json"
     ```json
     {
+      "test": "std_should",
       "column": "column_a",
       "be_exactly": 300,
       "be_less_than": 500,
@@ -196,11 +204,13 @@ Test that column null_count is within designated range
     be_less_than: 500
     be_less_than_or_equal_to: 300
     column: column_a
+    test: null_count_should
 
     ```
 === "json"
     ```json
     {
+      "test": "null_count_should",
       "column": "column_a",
       "be_exactly": 300,
       "be_less_than": 500,
@@ -242,11 +252,13 @@ Test that column count is within designated range
     be_less_than: 500
     be_less_than_or_equal_to: 300
     column: column_a
+    test: count_should
 
     ```
 === "json"
     ```json
     {
+      "test": "count_should",
       "column": "column_a",
       "be_exactly": 300,
       "be_less_than": 500,
@@ -288,11 +300,13 @@ Test that column null_percentage is within designated range
     be_less_than: 500
     be_less_than_or_equal_to: 300
     column: column_a
+    test: null_percentage_should
 
     ```
 === "json"
     ```json
     {
+      "test": "null_percentage_should",
       "column": "column_a",
       "be_exactly": 300,
       "be_less_than": 500,
@@ -335,11 +349,13 @@ Test column names match up with expected values
     - column_a
     not_have:
     - column_c
+    test: columns_should
 
     ```
 === "json"
     ```json
     {
+      "test": "columns_should",
       "have": [
         "column_a"
       ],
@@ -389,11 +405,13 @@ Test column type matches up with expected value. Note that this will expect *pol
     - float64
     column: column_a
     not_be: string
+    test: type_should
 
     ```
 === "json"
     ```json
     {
+      "test": "type_should",
       "column": "column_a",
       "be": "int64",
       "not_be": "string",
@@ -436,11 +454,13 @@ Test that dataframe row count is within designated range
     be_greater_than_or_equal_to: 500
     be_less_than: 500
     be_less_than_or_equal_to: 300
+    test: row_count_should
 
     ```
 === "json"
     ```json
     {
+      "test": "row_count_should",
       "be_less_than": 500,
       "be_less_than_or_equal_to": 300,
       "be_greater_than": 500,
