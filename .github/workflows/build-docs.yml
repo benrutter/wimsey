@@ -14,7 +14,9 @@ jobs:
         run: |
           pip install --upgrade pip
           pip install -r requirements-dev.lock
-          git config user.name 'github-actions[bot]' && git config user.email 'github-actions[bot]@users.noreply.github.com'
+          git config user.name 'github-actions[bot]'
+          git config user.email 'github-actions[bot]@users.noreply.github.com'
+          git config pull.rebase false
           git pull origin main
           git pull origin gh-pages
           python -m mkdocs gh-deploy
