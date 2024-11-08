@@ -17,6 +17,6 @@ jobs:
           git config user.name 'github-actions[bot]'
           git config user.email 'github-actions[bot]@users.noreply.github.com'
           git config pull.rebase false
-          git pull origin main
-          git pull origin gh-pages
+          git pull origin main --allow-unrelated-histories
+          git pull origin gh-pages --allow-unrelated-histories
           python -m mkdocs gh-deploy
