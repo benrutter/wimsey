@@ -6,7 +6,7 @@ on:
 jobs:
   test:
     name: Run unit tests of PR branch
-    runs-on: ubunit-latest
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v3
