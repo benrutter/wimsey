@@ -1,6 +1,6 @@
 [project]
 name = "wimsey"
-version = "0.2.1"
+dynamic = ["version"]
 description = "A lightweight data contracts framework"
 authors = [
     { name = "Ben", email = "benrutter@posteo.net" }
@@ -37,3 +37,6 @@ dev-dependencies = [
 
 [tool.hatch.metadata]
 allow-direct-references = true
+
+[tool.hatch.version]
+path = "wimsey/_version.py"
