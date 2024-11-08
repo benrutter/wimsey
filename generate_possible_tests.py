@@ -27,8 +27,8 @@ def generate_doc(name: str, doc_string: str, annotations: dict) -> str:
         examples["not_be"] = "string"
     annotations.pop("return")
     dict_eg = {k: examples[k] for k in annotations}
-    yaml_eg = yaml.dump(dict_eg)
-    json_eg = json.dumps(dict_eg, indent=2)
+    yaml_eg = yaml.dump({"test": name} | dict_eg)
+    json_eg = json.dumps({"test": name} | dict_eg, indent=2)
     python_eg = f"""
 from wimsey import test
 from wimsey.tests import {name}
@@ -76,5 +76,5 @@ if __name__ == "__main__":
             test_generator.__annotations__,
         )
         file_doc += doc
-    with open("docs/possible_tests.md", "wt") as file:
+    with open("docs/possible-tests.md", "wt") as file:
         file.write(file_doc)
