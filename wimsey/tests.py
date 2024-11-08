@@ -358,4 +358,5 @@ possible_tests: dict[str, Callable] = {
     "type_should": type_should,
     "row_count_should": row_count_should,
     "average_difference_from_other_column_should": average_difference_from_other_column_should,
+    "average_ratio_to_other_column_should": average_ratio_to_other_column_should,
 }
