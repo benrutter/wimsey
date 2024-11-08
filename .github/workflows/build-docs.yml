@@ -1,5 +1,8 @@
-name: Deploy
-on: workflow_dispatch
+name: Build Docs
+on:
+  push:
+    branches:
+      - main
 
 jobs:
   build:
@@ -12,7 +15,7 @@ jobs:
           fetch-depth: 0
       - name: Set up Python
         uses: actions/setup-python@v2
-      - name: Build and Deploy
+      - name: Build and Deploy Docs
         run: |
           pip install --upgrade pip
           pip install -r requirements-dev.lock
