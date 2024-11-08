@@ -14,8 +14,15 @@ class final_result:
     results: list[result]
 
 
-class DataValidationException(Exception):
-    ...
+class DataValidationException(Exception): ...
+
+
+def _as_set(val: Any) -> set:
+    """
+    Internal function, if val is none, return empty set,
+    otherwise return set of just val
+    """
+    return {val} if val is not None else set()
 
 
 def run_all_tests(df: FrameT, tests: list[Callable[[Any], result]]) -> final_result:
@@ -24,7 +31,8 @@ def run_all_tests(df: FrameT, tests: list[Callable[[Any], result]]) -> final_res
     for test in tests:
         try:
             metrics |= test.required_metrics
-            columns |= {test.keywords.get("column")} or set()
+            columns |= _as_set(test.keywords.get("column"))
+            columns |= _as_set(test.keywords.get("other_column"))
         except AttributeError:
             columns = None  # fall back to calculating everything
             metrics = None

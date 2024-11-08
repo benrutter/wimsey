@@ -218,6 +218,132 @@ def type_should(
     return should_be_partial
 
 
+def average_difference_from_other_column_should(
+    column: str,
+    other_column: str,
+    be_exactly: float | int | None = None,
+    be_less_than: float | int | None = None,
+    be_less_than_or_equal_to: float | int | None = None,
+    be_greater_than: float | int | None = None,
+    be_greater_than_or_equal_to: float | int | None = None,
+    **kwargs,
+) -> Callable:
+    """
+    Test that the average difference between column and other column are
+    within designated bounds.
+    """
+
+    def should(
+        description: dict,
+        column: str,
+        other_column: str,
+        be_exactly: float | int | None = None,
+        be_less_than: float | int | None = None,
+        be_less_than_or_equal_to: float | int | None = None,
+        be_greater_than: float | int | None = None,
+        be_greater_than_or_equal_to: float | int | None = None,
+        **kwargs,
+    ) -> result:
+        """
+        Test that the average difference between column and other column are
+        within designated bounds.
+        """
+        checks: list[bool] = []
+        difference = description[f"mean_{column}"] = description[f"mean_{other_column}"]
+        if be_exactly is not None:
+            checks.append(difference == be_exactly)
+        if be_less_than is not None:
+            checks.append(difference < be_less_than)
+        if be_less_than_or_equal_to is not None:
+            checks.append(difference <= be_less_than_or_equal_to)
+        if be_greater_than is not None:
+            checks.append(difference > be_greater_than)
+        if be_greater_than_or_equal_to is not None:
+            checks.append(difference >= be_greater_than_or_equal_to)
+        return result(
+            name=f"average-difference-from-{column}-to-{other_column}",
+            success=all(checks),
+            unexpected=difference if not all(checks) else None,
+        )
+
+    should_partial = partial(
+        should,
+        column=column,
+        other_column=other_column,
+        be_exactly=be_exactly,
+        be_less_than=be_less_than,
+        be_less_than_or_equal_to=be_less_than_or_equal_to,
+        be_greater_than=be_greater_than,
+        be_greater_than_or_equal_to=be_greater_than_or_equal_to,
+    )
+    should_partial.required_metrics = {"mean"}
+    return should_partial
+
+
+def average_ratio_to_other_column_should(
+    column: str,
+    other_column: str,
+    be_exactly: float | int | None = None,
+    be_less_than: float | int | None = None,
+    be_less_than_or_equal_to: float | int | None = None,
+    be_greater_than: float | int | None = None,
+    be_greater_than_or_equal_to: float | int | None = None,
+    **kwargs,
+) -> Callable:
+    """
+    Test that the average ratio between column and other column are
+    within designated bounds (for instance, a value of 1 has a ratio
+    of 0.1 to a value of 10)
+    """
+
+    def should(
+        description: dict,
+        column: str,
+        other_column: str,
+        be_exactly: float | int | None = None,
+        be_less_than: float | int | None = None,
+        be_less_than_or_equal_to: float | int | None = None,
+        be_greater_than: float | int | None = None,
+        be_greater_than_or_equal_to: float | int | None = None,
+        **kwargs,
+    ) -> result:
+        """
+        Test that the average ratio between column and other column are
+        within designated bounds (for instance, a value of 1 has a ratio
+        of 0.1 to a value of 10)
+        """
+        checks: list[bool] = []
+        ratio = description[f"mean_{column}"] / description[f"mean_{other_column}"]
+        if be_exactly is not None:
+            checks.append(ratio == be_exactly)
+        if be_less_than is not None:
+            checks.append(ratio < be_less_than)
+        if be_less_than_or_equal_to is not None:
+            checks.append(ratio <= be_less_than_or_equal_to)
+        if be_greater_than is not None:
+            checks.append(ratio > be_greater_than)
+        if be_greater_than_or_equal_to is not None:
+            checks.append(ratio >= be_greater_than_or_equal_to)
+        return result(
+            name=f"average-ratio-between-{column}-and-{other_column}",
+            success=all(checks),
+            unexpected=ratio if not all(checks) else None,
+        )
+
+    should_partial = partial(
+        should,
+        column=column,
+        other_column=other_column,
+        be_exactly=be_exactly,
+        be_less_than=be_less_than,
+        be_less_than_or_equal_to=be_less_than_or_equal_to,
+        be_greater_than=be_greater_than,
+        be_greater_than_or_equal_to=be_greater_than_or_equal_to,
+    )
+    should_partial.required_metrics = {"mean"}
+    return should_partial
+
+
 possible_tests: dict[str, Callable] = {
     "mean_should": (mean_should := _range_check("mean")),
     "min_should": (min_should := _range_check("min")),
@@ -231,4 +357,5 @@ possible_tests: dict[str, Callable] = {
     "columns_should": columns_should,
     "type_should": type_should,
     "row_count_should": row_count_should,
+    "average_difference_from_other_column_should": average_difference_from_other_column_should,
 }

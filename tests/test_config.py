@@ -47,8 +47,7 @@ def test_read_config_parses_yaml(monkeypatch, test_suite):
         def __enter__(self, *args, **kwargs):
             return self
 
-        def __exit__(self, *args, **kwargs):
-            ...
+        def __exit__(self, *args, **kwargs): ...
 
         def read(self, *args, **kwargs):
             return yaml.dump(test_suite)
@@ -66,8 +65,7 @@ def test_read_config_parses_json(monkeypatch, test_suite):
         def __enter__(self, *args, **kwargs):
             return self
 
-        def __exit__(self, *args, **kwargs):
-            ...
+        def __exit__(self, *args, **kwargs): ...
 
         def read(self, *args, **kwargs):
             return json.dumps(test_suite)
@@ -85,8 +83,7 @@ def test_friendly_message_is_raised_when_yaml_is_unimportable(test_suite, monkey
         def __enter__(self, *args, **kwargs):
             return self
 
-        def __exit__(self, *args, **kwargs):
-            ...
+        def __exit__(self, *args, **kwargs): ...
 
         def read(self, *args, **kwargs):
             return json.dumps(test_suite)
@@ -107,8 +104,7 @@ def test_friendly_message_is_raised_when_yaml_does_not_return_contents(
         def __enter__(self, *args, **kwargs):
             return self
 
-        def __exit__(self, *args, **kwargs):
-            ...
+        def __exit__(self, *args, **kwargs): ...
 
         def read(self, *args, **kwargs):
             return "dsafasdfasdf"
