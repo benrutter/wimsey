@@ -10,13 +10,14 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-      - name: Build
-        uses: Tiryoh/actions-mkdocs@v0
-        with:
-          mkdocs_version: 'latest'
-          configfile: 'mkdocs.yml'
-      - name: Deploy
-        uses: peaceiris/actions-gh-pages@v3
+      - name: Set up Python
+        uses: actions/setup-python@v2
+      - name: Build and Deploy
+        run: |
+          pip install --upgrade pip
+          pip install -r requirements-dev.lock
+          git config user.name 'github-actions[bot]' && config user.email 'github-actions[bot]@users.noreply.github.com'
+          python -m mkdocs gh-deploy
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./site
