@@ -50,7 +50,8 @@ jobs:
 
   github-release:
     name: Upload to GitHub release
-    #needs:
+    needs:
+      - build
     #  - publish-to-pypi
     runs-on: ubuntu-latest
 
