@@ -8,6 +8,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
       - name: Set up Python
         uses: actions/setup-python@v2
       - name: Build and Deploy
@@ -17,6 +19,4 @@ jobs:
           git config user.name 'github-actions[bot]'
           git config user.email 'github-actions[bot]@users.noreply.github.com'
           git config pull.rebase false
-          git pull origin main --allow-unrelated-histories
-          git pull origin gh-pages --allow-unrelated-histories
           python -m mkdocs gh-deploy
