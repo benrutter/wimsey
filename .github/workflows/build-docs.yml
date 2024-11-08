@@ -16,6 +16,3 @@ jobs:
           pip install -r requirements-dev.lock
           git config user.name 'github-actions[bot]' && config user.email 'github-actions[bot]@users.noreply.github.com'
           python -m mkdocs gh-deploy
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./site
