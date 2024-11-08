@@ -7,6 +7,7 @@ from wimsey.tests import possible_tests
 
 arg_examples = {
     "column": "column_a",
+    "other_column": "column_b",
     "be_less_than": 500,
     "be_less_than_or_equal_to": 300,
     "be_exactly": 300,
