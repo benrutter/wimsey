@@ -28,25 +28,25 @@ jobs:
           name: python-package-distributions
           path: dist/
 
-  #publish-to-pypi:
-  #  name: Publish
-  #  needs:
-  #    - build
-  #  runs-on: ubuntu-latest
-  #  environment:
-  #    name: pypi
-  #    url: https://pypi.org/p/wimsey
-  #  permissions:
-  #    id-token: write
+  publish-to-pypi:
+    name: Publish
+    needs:
+      - build
+    runs-on: ubuntu-latest
+    environment:
+      name: pypi
+      url: https://pypi.org/p/wimsey
+    permissions:
+      id-token: write
 
-  #  steps:
-  #    - name: Download packages
-  #      uses: actions/download-artifact@v4
-  #      with:
-  #        name: python-package-distributions
-  #        path: dist/
-  #    - name: Publish packages to pypi
-  #      uses: pypa/gh-action-pypi-publish@release/v1
+    steps:
+      - name: Download packages
+        uses: actions/download-artifact@v4
+        with:
+          name: python-package-distributions
+          path: dist/
+      - name: Publish packages to pypi
+        uses: pypa/gh-action-pypi-publish@release/v1
 
   github-release:
     name: Upload to GitHub release
