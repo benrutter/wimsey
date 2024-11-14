@@ -10,7 +10,7 @@
       
       
       
-        <link rel="next" href="motivation/">
+        <link rel="next" href="quick-start/">
       
       
       <link rel="icon" href="assets/images/favicon.png">
@@ -89,7 +89,7 @@
     <a href="." title="Wimsey" class="md-header__button md-logo" aria-label="Wimsey" data-md-component="logo">
       
   
-  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M416 208c0 45.9-14.9 88.3-40 122.7l126.6 126.7c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0s208 93.1 208 208m-312 8v64c0 13.3 10.7 24 24 24s24-10.7 24-24v-64c0-13.3-10.7-24-24-24s-24 10.7-24 24m80-96v160c0 13.3 10.7 24 24 24s24-10.7 24-24V120c0-13.3-10.7-24-24-24s-24 10.7-24 24m80 64v96c0 13.3 10.7 24 24 24s24-10.7 24-24v-96c0-13.3-10.7-24-24-24s-24 10.7-24 24"/></svg>
 
     </a>
     <label class="md-header__button md-icon" for="__drawer">
@@ -222,7 +222,7 @@
     <a href="." title="Wimsey" class="md-nav__button md-logo" aria-label="Wimsey" data-md-component="logo">
       
   
-  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M416 208c0 45.9-14.9 88.3-40 122.7l126.6 126.7c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0s208 93.1 208 208m-312 8v64c0 13.3 10.7 24 24 24s24-10.7 24-24v-64c0-13.3-10.7-24-24-24s-24 10.7-24 24m80-96v160c0 13.3 10.7 24 24 24s24-10.7 24-24V120c0-13.3-10.7-24-24-24s-24 10.7-24 24m80 64v96c0 13.3 10.7 24 24 24s24-10.7 24-24v-96c0-13.3-10.7-24-24-24s-24 10.7-24 24"/></svg>
 
     </a>
     Wimsey
@@ -279,11 +279,11 @@
   
   
     <li class="md-nav__item">
-      <a href="motivation/" class="md-nav__link">
+      <a href="quick-start/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
-    Motivation
+    Quick Start
   </span>
   
 
@@ -299,11 +299,31 @@
   
   
     <li class="md-nav__item">
-      <a href="quick-start/" class="md-nav__link">
+      <a href="building-tests/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
-    Quick Start
+    Building Tests
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="motivation/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Motivation
   </span>
   
 
@@ -378,6 +398,7 @@
 </ul>
 <p>Ideally, all data would be usable when you recieve it, but you probably already have figured that's not always the case. That's where data contracts come in.</p>
 <p>A data contract is an expression of what <em>should</em> be true of some data, such as that it should 'only have columns x and y' or 'the values of column a should never exceed 1'. Wimsey is a library built to run these contracts on a dataframe during python runtime.</p>
+<p>Additionally, Wimsey has tools to <a href="building-tests/">help you generate sensible tests from a data sample</a></p>
 <p>Wimsey is built on top of the awesome <a href="https://github.com/narwhals-dev/narwhals">Narwhals</a> and natively supports any dataframes that Narwhal's does. At the time of writing, that includes Polars, Pandas, Arrow, Dask, Rapids and Modin.</p>
 <p>If you're looking to get a quick feel for Wimsey, check out the <a href="quick-start/">quick start documentation</a></p>
 

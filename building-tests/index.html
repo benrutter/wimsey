@@ -9,10 +9,10 @@
       
       
       
-        <link rel="prev" href="../building-tests/">
+        <link rel="prev" href="../quick-start/">
       
       
-        <link rel="next" href="../possible-tests/">
+        <link rel="next" href="../motivation/">
       
       
       <link rel="icon" href="../assets/images/favicon.png">
@@ -20,7 +20,7 @@
     
     
       
-        <title>Motivation - Wimsey</title>
+        <title>Building Tests - Wimsey</title>
       
     
     
@@ -72,7 +72,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#how-small-is-wimsey" class="md-skip">
+        <a href="#what-is-margin" class="md-skip">
           Skip to content
         </a>
       
@@ -108,7 +108,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Motivation
+              Building Tests
             
           </span>
         </div>
@@ -288,26 +288,6 @@
       
   
   
-  
-  
-    <li class="md-nav__item">
-      <a href="../building-tests/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    Building Tests
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-    
-      
-      
-  
-  
     
   
   
@@ -322,7 +302,7 @@
           
   
   <span class="md-ellipsis">
-    Motivation
+    Building Tests
   </span>
   
 
@@ -333,7 +313,7 @@
         
   
   <span class="md-ellipsis">
-    Motivation
+    Building Tests
   </span>
   
 
@@ -353,18 +333,27 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#how-small-is-wimsey" class="md-nav__link">
+  <a href="#what-is-margin" class="md-nav__link">
     <span class="md-ellipsis">
-      How small is Wimsey?
+      What is margin?
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#how-fast-is-wimsey" class="md-nav__link">
+  <a href="#from-sampling" class="md-nav__link">
     <span class="md-ellipsis">
-      How fast is Wimsey?
+      From Sampling
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#from-samples" class="md-nav__link">
+    <span class="md-ellipsis">
+      From Samples
     </span>
   </a>
   
@@ -374,6 +363,26 @@
   
 </nav>
       
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../motivation/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Motivation
+  </span>
+  
+
+      </a>
     </li>
   
 
@@ -423,18 +432,27 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#how-small-is-wimsey" class="md-nav__link">
+  <a href="#what-is-margin" class="md-nav__link">
     <span class="md-ellipsis">
-      How small is Wimsey?
+      What is margin?
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#how-fast-is-wimsey" class="md-nav__link">
+  <a href="#from-sampling" class="md-nav__link">
     <span class="md-ellipsis">
-      How fast is Wimsey?
+      From Sampling
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#from-samples" class="md-nav__link">
+    <span class="md-ellipsis">
+      From Samples
     </span>
   </a>
   
@@ -458,37 +476,78 @@
   
 
 
-  <h1>Motivation</h1>
+  <h1>Building Tests</h1>
 
-<p>Wimsey is designed to be a data contracts library a lot like Soda or Great Expectations. Rather than aiming to provide new functionality, it's primary motivation is to be as lightweight as possible, and, by focusing on dataframes, allow data tests to be evaluated natively and efficiently.</p>
-<p>It's probably a good fit for you if:</p>
-<ul>
-<li>✅ You're working with dataframes in python (via Pandas, Polars, Dask, Modin, etc)</li>
-<li>✅ You want to carry out data testing with minimal overheads</li>
-<li>✅ You want to minimise your overall dependencies</li>
-<li>✅ Have an existing metadata format that you want to integrate tests into</li>
-</ul>
-<p>It might not work for you if:</p>
-<ul>
-<li>❌ You're wanting to test SQL data without ingesting into python</li>
-<li>❌ You want a data contracts solution that also provides a business user facing GUI</li>
-</ul>
-<h2 id="how-small-is-wimsey">How small is Wimsey?</h2>
-<p>The answer is <em>very</em>. To give you a picture of comparison to alternative tools by size, here's a comparions of virtual environment sizes based on libaries + their dependencies*.</p>
-<p><vegachart style='width: 100%'  class="vegalite">{
-  "description": "A simple bar chart with embedded data.",
-  "data": {"url" : "assets/raw-size.csv"},
-  "mark": {"type": "bar", "tooltip": true},
-  "encoding": {
-    "x": {"field": "Package", "type": "nominal", "axis": {"labelAngle": 0}},
-    "y": {"field": "Installation Size (MB)", "type": "quantitative"}
-  }
-}</vegachart></p>
-<p>It's worth bearing in mind that some of these dependencies might be ones you already need to have installed.</p>
-<p>* Note that soda is a little unusual here, since <code>soda-core</code> is very small (around 2x Wimsey's size), but also requires additional components to work with different data types.</p>
-<h2 id="how-fast-is-wimsey">How fast is Wimsey?</h2>
-<p>That's a very big <em>it depends</em>. Wimsey executes tests <em>in your own dataframe library</em> so performance will match your library of choice, if you're using Modin or Dask, Wimsey will be able to operate over large distributed datasets, if you're using Polars, Wimsey will be blazingly fast.</p>
-<p>Narwhals <a href="https://narwhals-dev.github.io/narwhals/overhead/">operates natively on dataframes with minimal overhead</a> so you should expect to see performant operations. Additionally, if you were previously needing to convert, or sample data into another format, you'll no longer need to carry this step out, saving you more runtime.</p>
+<p>Alongside <em>running</em> tests, Wimsey also has some functions to aid <em>building</em> tests. This can be useful if you want to automagically create some sensible initial tests for multiple datasets, without needing to type them out by hand, or create them manually in code.</p>
+<p>As with the rest of Wimsey, your own dataframe engine will be used to sample the relevant statistics. Wimsey can either generate starter tests from <em>a list of samples</em> or it can use <em>sampling with replacement</em> to generate samples for you from a single dataframe. If you use the latter, note that Wimsey will need to <em>evaluate each sample individually</em> so if you are using a lazy framework such as Polars' LazyFrames, Dask or Modin you will likely want to collect your results first, or implement a caching mechanism to avoid unnecessary repeated computation.</p>
+<h2 id="what-is-margin">What is margin?</h2>
+<p>You'll see the keyword <em>margin</em> throughout Wimsey test building, it's worth explaining here first.</p>
+<p>Margin is the amount of <em>extra allowance</em> tests give, based on the sample. For instance if Wimsey has three samples, with a "column_a" maximum of 1, 2 and 3, rather than creating a test for the maximum being 3 (the highest value seen in the samples), Wimsey will allow an amount of 'give' for the tests.</p>
+<p>This is based on the <em>standard deviation of the statistical metric</em>, and for the above example would be 1, meaning that Wimsey would build a test that expects the maximum to be less than or equal to 4.</p>
+<p>If this is all giberish to you, don't worry, the 'margin' keyword defaults to 1, which is often a sensible choice, if you find that Wimsey is creating to strict tests, bump it up slightly, if tests are too lax, you can reduce margin to a smaller positive number.</p>
+<p>Setting <code>margin</code> to a negative value means that your creating a test that your given sample would fail, and while supported, is unlikely to be what you're looking to do.</p>
+<h2 id="from-sampling">From Sampling</h2>
+<p>From a single dataframe, Wimsey will sample with replacement to build a starter test. The <code>samples</code> keyword specifies the number of times you want Wimsey to build a sample, while <code>n</code> or <code>fraction</code> tell Wimsey the size (in rows) or fraction (as a float) of the sample to take. Note that you <em>can't supply both n AND fraction keywords to Wimsey</em>.</p>
+<p>Wimsey has a <code>starter_tests_from_sampling</code> function, and a <code>save_starter_tests_from_sampling</code> function dependent on whether you're intending to return the tests as a dictionary, or save them to a file. <code>save_starter_tests_from_sampling</code> takes the exact same arguments, but with the addition of a <code>path</code> and an optional <code>storage_options</code> argument.</p>
+<div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1">starter_tests_from_sampling</label><label for="__tabbed_1_2">save_starter_tests_from_sampling</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<div class="language-python highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="kn">import</span> <span class="nn">polars</span> <span class="k">as</span> <span class="nn">pl</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="kn">from</span> <span class="nn">wimsey.profile</span> <span class="kn">import</span> <span class="n">starter_tests_from_sampling</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="n">df</span> <span class="o">=</span> <span class="n">pl</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s2">&quot;a&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="s2">&quot;b&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;cool&quot;</span><span class="p">,</span> <span class="s2">&quot;bat&quot;</span><span class="p">,</span> <span class="s2">&quot;hat&quot;</span><span class="p">]})</span>
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="n">tests</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="n">starter_tests_from_sampling</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">samples</span><span class="o">=</span><span class="mi">5_000</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">margin</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+</span></code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="language-python highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="kn">from</span> <span class="nn">wimsey.profile</span> <span class="kn">import</span> <span class="n">starter_tests_from_sampling</span>
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s2">&quot;a&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="s2">&quot;b&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;cool&quot;</span><span class="p">,</span> <span class="s2">&quot;bat&quot;</span><span class="p">,</span> <span class="s2">&quot;hat&quot;</span><span class="p">]})</span>
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="n">tests</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="n">save_starter_tests_from_sampling</span><span class="p">(</span>
+</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>    <span class="n">path</span><span class="o">=</span><span class="s2">&quot;my-first-test.json&quot;</span><span class="p">,</span>
+</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>    <span class="n">df</span><span class="o">=</span><span class="n">df</span><span class="p">,</span>
+</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>    <span class="n">samples</span><span class="o">=</span><span class="mi">5_000</span><span class="p">,</span>
+</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a>    <span class="n">fraction</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>
+</span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a>    <span class="n">margin</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+</span><span id="__span-1-11"><a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a><span class="p">)</span>
+</span></code></pre></div>
+</div>
+</div>
+</div>
+<h2 id="from-samples">From Samples</h2>
+<p>From a list (or other iterable such as a generate) of supported dataframes, Wimsey will produce a list of passing tests.</p>
+<p>Wimsey has a <code>starter_tests_from_samples</code> function, and a <code>save_starter_tests_from_samples</code> function dependent on whether you're intending to return the tests as a dictionary, or save them to a file. <code>save_starter_tests_from_samples</code> takes the exact same arguments, but with the addition of a <code>path</code> and an optional <code>storage_options</code> argument.</p>
+<div class="tabbed-set tabbed-alternate" data-tabs="2:2"><input checked="checked" id="__tabbed_2_1" name="__tabbed_2" type="radio" /><input id="__tabbed_2_2" name="__tabbed_2" type="radio" /><div class="tabbed-labels"><label for="__tabbed_2_1">starter_tests_from_samples</label><label for="__tabbed_2_2">save_starter_tests_from_samples</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<div class="language-python highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="kn">from</span> <span class="nn">glob</span> <span class="kn">import</span> <span class="n">glob</span>
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="kn">from</span> <span class="nn">wimsey.profile</span> <span class="kn">import</span> <span class="n">starter_tests_from_samples</span>
+</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>
+</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="n">dfs</span> <span class="o">=</span> <span class="p">[</span><span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">glob</span><span class="p">(</span><span class="s2">&quot;folder/of/samples/*.csv&quot;</span><span class="p">)]</span>
+</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="n">tests</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="n">starter_tests_from_samples</span><span class="p">(</span><span class="n">dfs</span><span class="p">,</span> <span class="n">margin</span><span class="o">=</span><span class="mf">1.5</span><span class="p">)</span>
+</span></code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="language-python highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="kn">from</span> <span class="nn">glob</span> <span class="kn">import</span> <span class="n">glob</span>
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="kn">import</span> <span class="nn">polars</span> <span class="k">as</span> <span class="nn">pl</span>
+</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="kn">from</span> <span class="nn">wimsey.profile</span> <span class="kn">import</span> <span class="n">save_starter_tests_from_samples</span>
+</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>
+</span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a><span class="kn">from</span> <span class="nn">config</span> <span class="kn">import</span> <span class="n">my_storage_options</span>
+</span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a>
+</span><span id="__span-3-8"><a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a><span class="n">save_starter_tests_from_samples</span><span class="p">(</span>
+</span><span id="__span-3-9"><a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a>    <span class="n">path</span><span class="o">=</span><span class="s2">&quot;s3://test-store/cooltest.yaml&quot;</span><span class="p">,</span>
+</span><span id="__span-3-10"><a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a>    <span class="n">samples</span><span class="o">=</span><span class="p">[</span><span class="n">pl</span><span class="o">.</span><span class="n">read_parquet</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">glob</span><span class="p">(</span><span class="s2">&quot;folder/of/samples/*.parquet&quot;</span><span class="p">)],</span>
+</span><span id="__span-3-11"><a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a>    <span class="n">margin</span><span class="o">=</span><span class="mf">0.8</span><span class="p">,</span>
+</span><span id="__span-3-12"><a id="__codelineno-3-12" name="__codelineno-3-12" href="#__codelineno-3-12"></a>    <span class="n">storage_options</span><span class="o">=</span><span class="n">my_storage_options</span><span class="p">,</span>
+</span><span id="__span-3-13"><a id="__codelineno-3-13" name="__codelineno-3-13" href="#__codelineno-3-13"></a><span class="p">)</span>
+</span></code></pre></div>
+</div>
+</div>
+</div>
 
 
 
@@ -549,9 +608,5 @@
         <script src="https://cdn.jsdelivr.net/npm/vega-embed@6"></script>
       
     
-  
-        <script>
-        var mkdocs_chart_plugin = {'data_path': '', 'use_data_path': 'True', 'vega_theme': 'deprecated', 'vega_theme_light': 'default', 'vega_theme_dark': 'dark', 'vega_renderer': 'svg', 'vega_width': 'container', 'fallback_width': '800', 'integrations': {'mkdocs_material': {'themes_light': ['default'], 'themes_dark': ['slate']}}, 'path_to_homepage': '../.'}
-        </script>
-        </body>
+  </body>
 </html>
