@@ -9,6 +9,8 @@ nav:
 
 theme:
   name: material
+  icon:
+    logo: fontawesome/solid/magnifying-glass-chart
   palette:
     - scheme: default
       primary: brown
