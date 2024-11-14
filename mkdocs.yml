@@ -2,8 +2,9 @@ site_name: Wimsey
 
 nav:
   - Intro: index.md
-  - Motivation: motivation.md
   - Quick Start: quick-start.md
+  - Building Tests: building-tests.md
+  - Motivation: motivation.md
   - Test Catalogue: possible-tests.md
 
 theme:

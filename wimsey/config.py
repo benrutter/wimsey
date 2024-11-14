@@ -39,7 +39,7 @@ def read_config(path: str, storage_options: dict | None = None) -> list[Callable
     config: dict
     with fsspec.open(path, "rt", **storage_options_dict) as file:
         contents = file.read()
-    if path.endswith(".yaml"):
+    if path.endswith(".yaml") or path.endswith(".yml"):
         try:
             import yaml
 

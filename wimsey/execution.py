@@ -14,7 +14,8 @@ class final_result:
     results: list[result]
 
 
-class DataValidationException(Exception): ...
+class DataValidationException(Exception):
+    ...
 
 
 def _as_set(val: Any) -> set:

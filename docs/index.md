@@ -12,6 +12,8 @@ Ideally, all data would be usable when you recieve it, but you probably already 
 
 A data contract is an expression of what *should* be true of some data, such as that it should 'only have columns x and y' or 'the values of column a should never exceed 1'. Wimsey is a library built to run these contracts on a dataframe during python runtime.
 
+Additionally, Wimsey has tools to [help you generate sensible tests from a data sample](building-tests.md)
+
 Wimsey is built on top of the awesome [Narwhals](https://github.com/narwhals-dev/narwhals) and natively supports any dataframes that Narwhal's does. At the time of writing, that includes Polars, Pandas, Arrow, Dask, Rapids and Modin.
 
 If you're looking to get a quick feel for Wimsey, check out the [quick start documentation](quick-start.md)

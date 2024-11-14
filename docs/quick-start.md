@@ -74,7 +74,7 @@ We can test for a lot more than that, but that works for our example. Our first 
     ]
     ```
 
-See [Possible Tests](possible_tests.md) for a full catalogue of runnable tests and their configurations.
+See [Possible Tests](possible-tests.md) for a full catalogue of runnable tests and their configurations.
 
 ### Executing Tests
 
@@ -210,4 +210,6 @@ Validate, will run tests in the exact same way as `test`, but simply raises an e
     print(f"{top_sleuth} is the best sleuth!")
     ```
 
-And that's it, to keep things simple `validate` and `test` are the only public-intended functions in Wimsey, aside from test creation, which is covered further in the *possible tests* section.
+And that's it for testing, to keep things simple `validate` and `test` are the only public-intended functions in Wimsey, aside from test creation, which is covered further in the *possible tests* section.
+
+Wimsey also support *generating tests*, see [the building tests section](building-tests.md) for how to get started.

@@ -159,7 +159,7 @@ def columns_should(
         )
 
     should_have_partial = partial(should_have, have=have, not_have=not_have, be=be)
-    should_have_partial.required_metrics = {}
+    should_have_partial.required_metrics = set()
     return should_have_partial
 
 

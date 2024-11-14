@@ -25,6 +25,7 @@ def describe(
         "type",
         "count",
         "null",
+        "null_percentage",
         "length",
     ]
 
@@ -59,9 +60,14 @@ def describe(
         required_exprs += [
             nw.lit(str(df.schema[c])).alias(f"type_{c}") for c in columns_to_check
         ]
-    if "count" in metrics or "null" in metrics or "leghth" in metrics:
+    if (
+        "count" in metrics
+        or "null" in metrics
+        or "length" in metrics
+        or "null_percentage" in metrics
+    ):
         required_exprs += [nw.col(*columns_to_check).count().name.prefix("count_")]
-    if "null" in metrics or "length" in metrics:
+    if "null" in metrics or "length" in metrics or "null_percentage" in metrics:
         required_exprs += [
             nw.col(*columns_to_check).null_count().name.prefix("null_count_")
         ]
@@ -88,3 +94,21 @@ def describe(
             k: v[0]
             for k, v in df_metrics.collect().to_dict(as_series=False).items()  # type: ignore[union-attr]
         }
+
+
+def profile_from_sampling(
+    df: FrameT,
+    samples: int = 100,
+    n: int | None = None,
+    fraction: int | None = None,
+) -> list[dict[str, float]]:
+    return [
+        describe(df.sample(n=n, fraction=fraction, with_replacement=True))
+        for _ in range(samples)
+    ]
+
+
+def profile_from_samples(
+    samples: list[FrameT],
+) -> list[dict[str, float]]:
+    return [describe(i) for i in samples]
