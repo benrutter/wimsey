@@ -33,6 +33,8 @@ dev-dependencies = [
     "mkdocs-material>=9.5.42",
     "grip>=4.6.2",
     "mkdocs-charts-plugin>=0.0.12",
+    "coverage>=7.6.10",
+    "pylint>=3.3.3",
 ]
 
 [tool.hatch.metadata]

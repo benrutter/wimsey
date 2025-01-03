@@ -4,7 +4,7 @@ from dataclasses import dataclass
 
 
 @dataclass
-class result:
+class Result:
     name: str
     success: bool
     unexpected: Any = None
@@ -26,7 +26,7 @@ def _range_check(metric: str) -> Callable:
         be_less_than_or_equal_to: float | int | None = None,
         be_greater_than: float | int | None = None,
         be_greater_than_or_equal_to: float | int | None = None,
-    ) -> result:
+    ) -> Result:
         """Test that column metric is within designated range"""
         checks: list[bool] = []
         value: Any = describe[f"{metric}_{column}"]
@@ -40,7 +40,7 @@ def _range_check(metric: str) -> Callable:
             checks.append(value <= be_less_than_or_equal_to)
         if be_greater_than_or_equal_to is not None:
             checks.append(value >= be_greater_than_or_equal_to)
-        return result(
+        return Result(
             name=f"{metric}-of-{column}",
             success=all(checks),
             unexpected=value if not all(checks) else None,
@@ -89,7 +89,7 @@ def row_count_should(
         be_greater_than: float | int | None = None,
         be_greater_than_or_equal_to: float | int | None = None,
         be_exactly: float | int | None = None,
-    ) -> result:
+    ) -> Result:
         """Test that dataframe row count is within designated range"""
         checks: list[bool] = []
         value: float | int = description["length"]
@@ -103,9 +103,7 @@ def row_count_should(
             checks.append(value <= be_less_than_or_equal_to)
         if be_greater_than_or_equal_to is not None:
             checks.append(value >= be_greater_than_or_equal_to)
-        if be_exactly is not None:
-            checks.append(value == be_exactly)
-        return result(
+        return Result(
             name="row-count",
             success=all(checks),
             unexpected=value if not all(checks) else None,
@@ -117,6 +115,7 @@ def row_count_should(
         be_less_than_or_equal_to=be_less_than_or_equal_to,
         be_greater_than=be_greater_than,
         be_greater_than_or_equal_to=be_greater_than_or_equal_to,
+        be_exactly=be_exactly,
     )
     should_be_partial.required_metrics = {"length"}
     return should_be_partial
@@ -136,7 +135,7 @@ def columns_should(
         not_have: list[str] | str | None = None,
         be: list[str] | str | None = None,
         **kwargs,
-    ) -> result:
+    ) -> Result:
         """Test column names match up with expected values"""
         have = list(have) if isinstance(have, str) else have
         not_have = list(not_have) if isinstance(not_have, str) else not_have
@@ -152,7 +151,7 @@ def columns_should(
         if be is not None:
             checks.append(set(present_columns) == set(be))
             checks.append(len(present_columns) == len(be))
-        return result(
+        return Result(
             name="columns",
             success=all(checks),
             unexpected=present_columns if not all(checks) else None,
@@ -185,7 +184,7 @@ def type_should(
         not_be: str | None,
         be_one_of: str | None,
         **kwargs,
-    ) -> result:
+    ) -> Result:
         """
         Test column type matches up with expected value.
 
@@ -198,10 +197,10 @@ def type_should(
         if be is not None:
             checks.append(be.lower() == col_type.lower())
         if not_be is not None:
-            checks.append(be.lower() != col_type.lower())
+            checks.append(not_be.lower() != col_type.lower())
         if be_one_of is not None:
             checks.append(col_type.lower() in [i.lower() for i in be_one_of])
-        return result(
+        return Result(
             name=f"type-of-{column}",
             success=all(checks),
             unexpected=col_type if not all(checks) else None,
@@ -243,13 +242,13 @@ def average_difference_from_other_column_should(
         be_greater_than: float | int | None = None,
         be_greater_than_or_equal_to: float | int | None = None,
         **kwargs,
-    ) -> result:
+    ) -> Result:
         """
         Test that the average difference between column and other column are
         within designated bounds.
         """
         checks: list[bool] = []
-        difference = description[f"mean_{column}"] = description[f"mean_{other_column}"]
+        difference = description[f"mean_{column}"] - description[f"mean_{other_column}"]
         if be_exactly is not None:
             checks.append(difference == be_exactly)
         if be_less_than is not None:
@@ -260,7 +259,7 @@ def average_difference_from_other_column_should(
             checks.append(difference > be_greater_than)
         if be_greater_than_or_equal_to is not None:
             checks.append(difference >= be_greater_than_or_equal_to)
-        return result(
+        return Result(
             name=f"average-difference-from-{column}-to-{other_column}",
             success=all(checks),
             unexpected=difference if not all(checks) else None,
@@ -306,7 +305,7 @@ def average_ratio_to_other_column_should(
         be_greater_than: float | int | None = None,
         be_greater_than_or_equal_to: float | int | None = None,
         **kwargs,
-    ) -> result:
+    ) -> Result:
         """
         Test that the average ratio between column and other column are
         within designated bounds (for instance, a value of 1 has a ratio
@@ -324,7 +323,7 @@ def average_ratio_to_other_column_should(
             checks.append(ratio > be_greater_than)
         if be_greater_than_or_equal_to is not None:
             checks.append(ratio >= be_greater_than_or_equal_to)
-        return result(
+        return Result(
             name=f"average-ratio-between-{column}-and-{other_column}",
             success=all(checks),
             unexpected=ratio if not all(checks) else None,

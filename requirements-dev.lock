@@ -10,6 +10,8 @@
 #   universal: false
 
 -e file:.
+astroid==3.3.8
+    # via pylint
 asttokens==2.4.1
     # via stack-data
 babel==2.16.0
@@ -28,12 +30,15 @@ cloudpickle==3.1.0
     # via dask
 colorama==0.4.6
     # via mkdocs-material
+coverage==7.6.10
 dask==2024.10.0
     # via dask-expr
 dask-expr==1.1.16
 decorator==5.1.1
     # via ipdb
     # via ipython
+dill==0.3.9
+    # via pylint
 docopt==0.6.2
     # via grip
 exceptiongroup==1.2.0
@@ -58,6 +63,8 @@ iniconfig==2.0.0
 ipdb==0.13.13
 ipython==8.21.0
     # via ipdb
+isort==5.13.2
+    # via pylint
 itsdangerous==2.2.0
     # via flask
 jedi==0.19.1
@@ -79,6 +86,8 @@ markupsafe==3.0.2
     # via werkzeug
 matplotlib-inline==0.1.6
     # via ipython
+mccabe==0.7.0
+    # via pylint
 mergedeep==1.3.4
     # via mkdocs
     # via mkdocs-get-deps
@@ -119,6 +128,7 @@ pexpect==4.9.0
     # via ipython
 platformdirs==4.3.6
     # via mkdocs-get-deps
+    # via pylint
 pluggy==1.5.0
     # via pytest
 polars==1.10.0
@@ -134,6 +144,7 @@ pygments==2.17.2
     # via grip
     # via ipython
     # via mkdocs-material
+pylint==3.3.3
 pymdown-extensions==10.11.2
     # via mkdocs-charts-plugin
     # via mkdocs-material
@@ -164,7 +175,10 @@ stack-data==0.6.3
 tomli==2.0.1
     # via ipdb
     # via mypy
+    # via pylint
     # via pytest
+tomlkit==0.13.2
+    # via pylint
 toolz==1.0.0
     # via dask
     # via partd
@@ -173,6 +187,7 @@ traitlets==5.14.1
     # via matplotlib-inline
 types-pyyaml==6.0.12.20240917
 typing-extensions==4.12.2
+    # via astroid
     # via mypy
 tzdata==2024.2
     # via pandas

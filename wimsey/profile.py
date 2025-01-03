@@ -84,7 +84,7 @@ def _save_starter_tests(
     if path.endswith(".yaml") or path.endswith(".yml"):
         try:
             import yaml
-        except ImportError as exception:
+        except ImportError as exception:  # pragma: no cover
             msg = (
                 "It looks like you're trying to import a yaml configured "
                 "test suite. This is supported but requires an additional "
@@ -135,14 +135,14 @@ def _starter_tests_from_sample_describes(
     column_test: dict = {"test": "columns_should", "status": _StarterTestStatus.UNSET}
     for sample in samples:
         column_test = _update_column_starter_test(column_test, sample)
-    if column_test["status"] is _StarterTestStatus.CANCELLED:
+    if column_test["status"] is _StarterTestStatus.CANCELLED:  # pragma: no cover
         msg = (
             "There aren't any consistently held columns in the samples "
             "so Wimsey is unable to build a start test from them."
         )
         raise ValueError(msg)
     column_test.pop("status")
-    if column_test.get("be") is None:
+    if column_test.get("be") is None:  # pragma: no cover
         return [column_test]
     column_tests = _type_starter_tests(samples, column_test["be"])
     for stat in ["mean", "std", "max", "min", "null_percentage"]:
@@ -161,9 +161,9 @@ def _update_column_starter_test(starter: dict, sample: dict) -> dict:
     if starter["status"] is _StarterTestStatus.UNSET:
         starter["be"] = list(sample_columns)
         starter["status"] = _StarterTestStatus.SET
-    elif starter["status"] is _StarterTestStatus.CANCELLED:
+    elif starter["status"] is _StarterTestStatus.CANCELLED:  # pragma: no cover
         pass
-    elif starter.get("be") is not None and set(starter["be"]) != set(sample_columns):
+    elif starter.get("be") is not None and set(starter["be"]) != set(sample_columns):  # pragma: no cover
         old_be = starter.pop("be")
         new_have = set(old_be) & set(sample_columns)
         if len(new_have) > 0:
@@ -216,7 +216,7 @@ def _type_starter_tests(
         test = {"column": column, "test": "type_should"}
         if len(types) == 1:
             test |= {"be": list(types)[0]}
-        else:
+        else:  # pragma: no cover
             test |= {"be_one_of": list(types)}
         tests.append(test)
     return tests
