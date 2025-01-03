@@ -4,14 +4,14 @@ from dataclasses import dataclass
 from narwhals.typing import FrameT
 
 from wimsey.dataframe import describe
-from wimsey.tests import result
+from wimsey.tests import Result
 from wimsey.config import read_config, collect_tests
 
 
 @dataclass
-class final_result:
+class FinalResult:
     success: bool
-    results: list[result]
+    results: list[Result]
 
 
 class DataValidationException(Exception):
@@ -26,7 +26,10 @@ def _as_set(val: Any) -> set:
     return {val} if val is not None else set()
 
 
-def run_all_tests(df: FrameT, tests: list[Callable[[Any], result]]) -> final_result:
+def run_all_tests(df: FrameT, tests: list[Callable[[Any], Result]]) -> FinalResult:
+    """
+    Run all given tests on a dataframe. Will return a `FinalResult` object
+    """
     columns: set[str] | None = set()
     metrics: set[str] | None = set()
     for test in tests:
@@ -34,7 +37,7 @@ def run_all_tests(df: FrameT, tests: list[Callable[[Any], result]]) -> final_res
             metrics |= test.required_metrics
             columns |= _as_set(test.keywords.get("column"))
             columns |= _as_set(test.keywords.get("other_column"))
-        except AttributeError:
+        except AttributeError:  # pragma: no cover
             columns = None  # fall back to calculating everything
             metrics = None
             break
@@ -43,10 +46,10 @@ def run_all_tests(df: FrameT, tests: list[Callable[[Any], result]]) -> final_res
         columns=list(columns),
         metrics=list(metrics),
     )
-    results: list[result] = []
+    results: list[Result] = []
     for i_test in tests:
         results.append(i_test(description))
-    return final_result(
+    return FinalResult(
         success=all(i.success for i in results),
         results=results,
     )
@@ -54,7 +57,7 @@ def run_all_tests(df: FrameT, tests: list[Callable[[Any], result]]) -> final_res
 
 def test(
     df: FrameT, contract: str | list[dict] | dict, storage_options: dict | None = None
-) -> final_result:
+) -> FinalResult:
     """
     Carry out tests on dataframe and return results. This will *not* raise
     an exception on test failure, and will instead return a 'final_result'

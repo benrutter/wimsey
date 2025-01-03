@@ -3,7 +3,9 @@
 [![PyPI version](https://badge.fury.io/py/wimsey.svg)](https://pypi.org/project/wimsey/)
 [![License](https://img.shields.io/github/license/benrutter/wimsey)](https://github.com/benrutter/wimsey/blob/main/LICENSE)
 [![Static Badge](https://img.shields.io/badge/Docs-mkdocs-blue)](https://benrutter.github.io/wimsey)
+![coverage](https://img.shields.io/badge/coverage-100-green)
 
+<img src="./docs/assets/wimsey-on-a-computer.jpg" alt="A line drawing of Lord Peter Wimsey looking at a computer through a microscope" width="300" />
 
 A lightweight, flexible and fully open-source data contract library.
 
