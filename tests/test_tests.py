@@ -17,7 +17,7 @@ def test_all_possible_tests_exposed_as_variables_of_the_same_name_in_module() ->
 
 def test_average_ratio_to_other_column_should_matches_expected() -> None:
     test = tests.average_ratio_to_other_column_should(
-        "a", "b", be_greater_than=0.09, be_less_than=0.11
+        "a", "b", be_greater_than=0.09, be_less_than=0.11,
     )
     passing_result = test({"mean_a": 13, "mean_b": 130})
     failing_result = test({"mean_a": 13, "mean_b": 160})
