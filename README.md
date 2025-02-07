@@ -9,7 +9,7 @@
 
 A lightweight, flexible and fully open-source data contract library.
 
-- 🐋 **Bring your own dataframe library**: Built on top of [Narwhals](https://github.com/narwhals-dev/narwhals) so your tests are carried out natively in your own dataframe library (including Pandas, Polars, Dask, CuDF, Rapids, Arrow and Modin)
+- 🐋 **Bring your own dataframe library**: Built on top of [Narwhals](https://github.com/narwhals-dev/narwhals) so your tests are carried out natively in your own dataframe library (including Pandas, Polars, Pyspark, Dask, DuckDB, CuDF, Rapids, Arrow and Modin)
 - 🎍 **Bring your own contract format**: Write contracts in yaml, json or python - whichever you prefer!
 - 🪶 **Ultra Lightweight**: Built for fast imports and minimal overwhead with only two dependencies ([Narwhals](https://github.com/narwhals-dev/narwhals) and [FSSpec](https://github.com/fsspec/filesystem_spec))
 - 🥔 **Simple, easy API**: Low mental overheads with two simple functions for testing dataframes, and a simple dataclass for results.

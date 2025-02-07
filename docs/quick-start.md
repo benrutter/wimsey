@@ -171,6 +171,30 @@ Validate, will run tests in the exact same way as `test`, but simply raises an e
     print(f"{top_sleuth} is the best sleuth!")
     ```
 
+=== "pyspark"
+    ```python
+    from pyspark.sql import SparkSession
+    from pyspark.sql import functions as F
+    from wimsey import validate
+
+    spark = SparkSession.builder.appName("SleuthApp").getOrCreate()
+    df = spark.read.csv("sshfs://sleuthwatch/top-5-sleuths.csv", header=True)
+
+    validate(df, "sleuth-checks.json")
+
+    top_sleuth = (
+        df.withColumn(
+          "name",
+          F.concat_ws(" ", F.col("first_name"), F.col("last_name"))
+        )
+        .orderBy(F.col("rating").desc())
+        .select("name")
+        .first()[0]
+    )
+
+    print(f"{top_sleuth} is the best sleuth!")
+    ```
+
 === "dask"
     ```python
     import dask.dataframe as dd
