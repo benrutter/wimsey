@@ -539,3 +539,54 @@ Test that the average difference between column and other column are within desi
 
 <hr>
     
+## average_ratio_to_other_column_should
+
+Test that the average ratio between column and other column are within designated bounds (for instance, a value of 1 has a ratio of 0.1 to a value of 10)
+
+=== "yaml"
+    ```yaml
+    be_exactly: 300
+    be_greater_than: 500
+    be_greater_than_or_equal_to: 500
+    be_less_than: 500
+    be_less_than_or_equal_to: 300
+    column: column_a
+    other_column: column_b
+    test: average_ratio_to_other_column_should
+
+    ```
+=== "json"
+    ```json
+    {
+      "test": "average_ratio_to_other_column_should",
+      "column": "column_a",
+      "other_column": "column_b",
+      "be_exactly": 300,
+      "be_less_than": 500,
+      "be_less_than_or_equal_to": 300,
+      "be_greater_than": 500,
+      "be_greater_than_or_equal_to": 500
+    }
+    ```
+=== "python"
+    ```python
+
+    from wimsey import test
+    from wimsey.tests import average_ratio_to_other_column_should
+
+    keywords = {
+      "column": "column_a",
+      "other_column": "column_b",
+      "be_exactly": 300,
+      "be_less_than": 500,
+      "be_less_than_or_equal_to": 300,
+      "be_greater_than": 500,
+      "be_greater_than_or_equal_to": 500
+    }
+
+    result = test(df, contract=[average_ratio_to_other_column_should(**keywords)])
+    
+    ```
+
+<hr>
+    
