@@ -12,6 +12,7 @@ def test_that_describe_returns_expected_dictionary_for_df() -> None:
     assert actual["length"] == 3
     assert actual["columns"] == "a_^&^_b"
 
+
 def test_that_describe_returns_expected_dictionary_for_lazy_frame() -> None:
     df = pl.LazyFrame({"a": [1.2, 1.3, 1.4], "b": ["one", "two", None]})
     actual = dataframe.describe(df)
@@ -65,6 +66,7 @@ def test_that_profile_from_samples_returns_list_of_dicts_of_expected_length() ->
     assert len(actual) == 20
     assert actual[10]["mean_a"] == 1.3
     assert actual[4]["columns"] == "a_^&^_b"
+
 
 def test_that_describe_returns_empty_dict_for_empty_dataframe() -> None:
     actual = dataframe.describe(pl.DataFrame())

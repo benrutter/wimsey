@@ -351,10 +351,12 @@ def max_string_length_should(
     be_less_than: int | float | None = None,
     be_greater_than: int | float | None = None,
     be_exactly: int | float | None = None,
+    **kwargs,
 ) -> Callable:
     def should(
         description: dict,
         column: str,
+        **kwargs,
     ) -> Result:
         success = description[f"max_string_length_of_{column}"]
         return Result(
@@ -387,9 +389,11 @@ def all_values_should(
     be_one_of: list[str] | None = None,
     not_be_one_of: list[str] | None = None,
     match_regex: str | None = None,
+    **kwargs,
 ) -> None:
     def should(
         description: dict,
+        **kwargs,
     ) -> Result:
         success = description[f"all_values_of_{column}"]
         return Result(

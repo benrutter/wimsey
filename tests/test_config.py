@@ -47,8 +47,7 @@ def test_read_config_parses_yaml(monkeypatch, test_suite):
         def __enter__(self, *args, **kwargs):
             return self
 
-        def __exit__(self, *args, **kwargs):
-            ...
+        def __exit__(self, *args, **kwargs): ...
 
         def read(self, *args, **kwargs):
             return yaml.dump(test_suite)
@@ -60,13 +59,13 @@ def test_read_config_parses_yaml(monkeypatch, test_suite):
     actual = config.read_config("file.yaml")
     assert all(isinstance(i, Callable) for i in actual)
 
+
 def test_read_config_parses_yaml_with_test_section(monkeypatch, test_suite):
     class DummyOpenFile:
         def __enter__(self, *args, **kwargs):
             return self
 
-        def __exit__(self, *args, **kwargs):
-            ...
+        def __exit__(self, *args, **kwargs): ...
 
         def read(self, *args, **kwargs):
             return yaml.dump({"cool": ["some", "cool", "stuff"], "tests": test_suite})
@@ -78,13 +77,13 @@ def test_read_config_parses_yaml_with_test_section(monkeypatch, test_suite):
     actual = config.read_config("file.yaml")
     assert all(isinstance(i, Callable) for i in actual)
 
+
 def test_read_config_parses_yaml_with_only_one_test(monkeypatch, test_suite):
     class DummyOpenFile:
         def __enter__(self, *args, **kwargs):
             return self
 
-        def __exit__(self, *args, **kwargs):
-            ...
+        def __exit__(self, *args, **kwargs): ...
 
         def read(self, *args, **kwargs):
             return yaml.dump(test_suite[0])
@@ -102,8 +101,7 @@ def test_read_config_parses_json(monkeypatch, test_suite):
         def __enter__(self, *args, **kwargs):
             return self
 
-        def __exit__(self, *args, **kwargs):
-            ...
+        def __exit__(self, *args, **kwargs): ...
 
         def read(self, *args, **kwargs):
             return json.dumps(test_suite)
@@ -121,8 +119,7 @@ def test_friendly_message_is_raised_when_yaml_is_unimportable(test_suite, monkey
         def __enter__(self, *args, **kwargs):
             return self
 
-        def __exit__(self, *args, **kwargs):
-            ...
+        def __exit__(self, *args, **kwargs): ...
 
         def read(self, *args, **kwargs):
             return json.dumps(test_suite)
@@ -143,8 +140,7 @@ def test_friendly_message_is_raised_when_yaml_does_not_return_contents(
         def __enter__(self, *args, **kwargs):
             return self
 
-        def __exit__(self, *args, **kwargs):
-            ...
+        def __exit__(self, *args, **kwargs): ...
 
         def read(self, *args, **kwargs):
             return "dsafasdfasdf"
