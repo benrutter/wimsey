@@ -163,7 +163,9 @@ def _update_column_starter_test(starter: dict, sample: dict) -> dict:
         starter["status"] = _StarterTestStatus.SET
     elif starter["status"] is _StarterTestStatus.CANCELLED:  # pragma: no cover
         pass
-    elif starter.get("be") is not None and set(starter["be"]) != set(sample_columns):  # pragma: no cover
+    elif starter.get("be") is not None and set(starter["be"]) != set(
+        sample_columns
+    ):  # pragma: no cover
         old_be = starter.pop("be")
         new_have = set(old_be) & set(sample_columns)
         if len(new_have) > 0:

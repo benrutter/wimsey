@@ -36,6 +36,10 @@ def describe(
         nw.lit("_^&^_".join(df.columns)).alias("columns"),
     ]
     post_exprs: list = []
+    for metric_expr in metrics:
+        if not isinstance(metric_expr, nw.Expr):
+            continue
+        required_exprs += [metric_expr]
     if "mean" in metrics:
         required_exprs += [
             (nw.col(c).mean() if c in stat_cols else nw.lit(None)).alias(f"mean_{c}")
