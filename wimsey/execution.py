@@ -14,8 +14,7 @@ class FinalResult:
     results: list[Result]
 
 
-class DataValidationException(Exception):
-    ...
+class DataValidationException(Exception): ...
 
 
 def _as_set(val: Any) -> set:
@@ -31,20 +30,15 @@ def run_all_tests(df: FrameT, tests: list[Callable[[Any], Result]]) -> FinalResu
     Run all given tests on a dataframe. Will return a `FinalResult` object
     """
     columns: set[str] | None = set()
-    metrics: set[str] | None = set()
+    metrics: set[str] | None = []
     for test in tests:
-        try:
-            metrics |= test.required_metrics
-            columns |= _as_set(test.keywords.get("column"))
-            columns |= _as_set(test.keywords.get("other_column"))
-        except AttributeError:  # pragma: no cover
-            columns = None  # fall back to calculating everything
-            metrics = None
-            break
+        metrics += test.required_metrics
+        columns |= _as_set(test.keywords.get("column"))
+        columns |= _as_set(test.keywords.get("other_column"))
     description: dict[str, Any] = describe(
         df,
         columns=list(columns),
-        metrics=list(metrics),
+        metrics=metrics,
     )
     results: list[Result] = []
     for i_test in tests:

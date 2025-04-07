@@ -3,6 +3,9 @@ from typing import Any, Callable
 from dataclasses import dataclass
 
 
+import narwhals.stable.v1 as nw
+
+
 @dataclass
 class Result:
     name: str
@@ -65,7 +68,7 @@ def _range_check(metric: str) -> Callable:
             be_greater_than=be_greater_than,
             be_greater_than_or_equal_to=be_greater_than_or_equal_to,
         )
-        return_partial.required_metrics = {metric}
+        return_partial.required_metrics = [metric]
         return return_partial
 
     should_be_partial.__doc__ = should_be_partial.__doc__.replace("{metric}", metric)
@@ -117,7 +120,7 @@ def row_count_should(
         be_greater_than_or_equal_to=be_greater_than_or_equal_to,
         be_exactly=be_exactly,
     )
-    should_be_partial.required_metrics = {"length"}
+    should_be_partial.required_metrics = ["length"]
     return should_be_partial
 
 
@@ -158,7 +161,7 @@ def columns_should(
         )
 
     should_have_partial = partial(should_have, have=have, not_have=not_have, be=be)
-    should_have_partial.required_metrics = set()
+    should_have_partial.required_metrics = []
     return should_have_partial
 
 
@@ -213,7 +216,7 @@ def type_should(
         not_be=not_be,
         be_one_of=be_one_of,
     )
-    should_be_partial.required_metrics = {"type"}
+    should_be_partial.required_metrics = ["type"]
     return should_be_partial
 
 
@@ -275,7 +278,7 @@ def average_difference_from_other_column_should(
         be_greater_than=be_greater_than,
         be_greater_than_or_equal_to=be_greater_than_or_equal_to,
     )
-    should_partial.required_metrics = {"mean"}
+    should_partial.required_metrics = ["mean"]
     return should_partial
 
 
@@ -339,8 +342,78 @@ def average_ratio_to_other_column_should(
         be_greater_than=be_greater_than,
         be_greater_than_or_equal_to=be_greater_than_or_equal_to,
     )
-    should_partial.required_metrics = {"mean"}
+    should_partial.required_metrics = ["mean"]
     return should_partial
+
+
+def max_string_length_should(
+    column: str,
+    be_less_than: int | float | None = None,
+    be_greater_than: int | float | None = None,
+    be_exactly: int | float | None = None,
+    **kwargs,
+) -> Callable:
+    def should(
+        description: dict,
+        column: str,
+        **kwargs,
+    ) -> Result:
+        success = description[f"max_string_length_of_{column}"]
+        return Result(
+            name=f"max-string-length-of-{column}",
+            success=success,
+            unexpected=None
+            if success
+            else "Length of column values did not meet bounds",
+        )
+
+    expressions: list[nw.Expr] = []
+    if be_less_than:
+        expr: nw.Expr = nw.col(column).str.len_chars().max() < nw.lit(be_less_than)
+        expressions.append(expr)
+    if be_greater_than:
+        expr: nw.Expr = nw.col(column).str.len_chars().max() > nw.lit(be_greater_than)
+        expressions.append(expr)
+    if be_exactly:
+        expr: nw.Expr = nw.col(column).str.len_chars().max() == nw.lit(be_exactly)
+        expressions.append(expr)
+    partial_should = partial(should, column=column)
+    partial_should.required_metrics = [
+        nw.all_horizontal(*expressions).alias(f"max_string_length_of_{column}")
+    ]
+    return partial_should
+
+
+def all_values_should(
+    column: str,
+    be_one_of: list[str] | None = None,
+    not_be_one_of: list[str] | None = None,
+    match_regex: str | None = None,
+    **kwargs,
+) -> None:
+    def should(
+        description: dict,
+        **kwargs,
+    ) -> Result:
+        success = description[f"all_values_of_{column}"]
+        return Result(
+            name=f"all-values-of-{column}",
+            success=success,
+            unexpected=None if success else "Values did not meet given conditions",
+        )
+
+    expressions: list[nw.Expr] = []
+    if be_one_of:
+        expressions.append(nw.col(column).is_in(be_one_of).min())
+    if not_be_one_of:
+        expressions.append(~(nw.col(column).is_in(not_be_one_of)).max())
+    if match_regex:
+        expressions.append(nw.col(column).str.contains(match_regex))
+    partial_should = partial(should)
+    partial_should.required_metrics = [
+        nw.all_horizontal(*expressions).alias(f"all_values_of_{column}")
+    ]
+    return partial_should
 
 
 possible_tests: dict[str, Callable] = {
@@ -358,4 +431,6 @@ possible_tests: dict[str, Callable] = {
     "row_count_should": row_count_should,
     "average_difference_from_other_column_should": average_difference_from_other_column_should,
     "average_ratio_to_other_column_should": average_ratio_to_other_column_should,
+    "max_string_length_should": max_string_length_should,
+    "all_values_should": all_values_should,
 }
