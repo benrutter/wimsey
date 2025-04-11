@@ -7,6 +7,7 @@ import fsspec
 from narwhals.stable.v1.typing import FrameT
 
 from wimsey.dataframe import profile_from_sampling, profile_from_samples
+from wimsey.execution import validate
 
 
 class _StarterTestStatus(Enum):
@@ -222,3 +223,33 @@ def _type_starter_tests(
             test |= {"be_one_of": list(types)}
         tests.append(test)
     return tests
+
+
+def validate_or_build(
+    df: FrameT,
+    contract: str,
+    samples: int = 100,
+    n: int | None = None,
+    fraction: int | None = None,
+    margin: float = 1,
+    storage_options: dict | None = None,
+) -> FrameT:
+    """
+    Will attempt to validate based on a given contract, but if that contract does not exist yet
+    will generate one from sampling the dataset.
+
+    Will fall back to starter_tests_from_sampling (a list samples is not possible with
+    only one dataframe), see *starter_tests_from_sampling* and *save_starter_tests_from_sampling*
+    for more details on use of keyword arguments aside from df, contract and storage_options.
+    """
+    try:
+        validate(df, contract=contract, storage_options=storage_options)
+    except FileNotFoundError:
+        save_starter_tests_from_sampling(
+            path=contract,
+            df=df,
+            samples=samples,
+            n=n,
+            fraction=fraction,
+            margin=margin,
+        )

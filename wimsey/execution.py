@@ -70,7 +70,9 @@ def test(
 
 
 def validate(
-    df: FrameT, contract: str | list[dict] | dict, storage_options: dict | None = None
+    df: FrameT,
+    contract: str | list[dict] | dict,
+    storage_options: dict | None = None,
 ) -> FrameT:
     """
     Carry out tests on dataframe, returning original dataframe if tests are
