@@ -1,7 +1,19 @@
+from typing import Callable, Type
+
 import polars as pl
+import pytest
 
 from wimsey import profile
 from wimsey import execution
+
+
+def raise_exception_patch(exception_type: Type[Exception]) -> Callable:
+    """Creates a patch that will throw an error"""
+
+    def raise_exception(*args, **kwargs) -> None:
+        raise exception_type
+
+    return raise_exception
 
 
 def test_starter_tests_from_sampling_returns_passing_test() -> None:
@@ -77,3 +89,16 @@ def test_save_tests_from_samples_creates_expected_and_runnable_file(tmp_path) ->
     )
     result = execution.test(df, str(tmp_path / "cool.json"))
     assert result.success
+
+
+def test_validate_or_build_falls_back_to_save_starter_tests_from_sampling_if_validate_crashes(
+    monkeypatch,
+) -> None:
+    monkeypatch.setattr(profile, "validate", raise_exception_patch(FileNotFoundError))
+    monkeypatch.setattr(
+        profile,
+        "save_starter_tests_from_sampling",
+        raise_exception_patch(ZeroDivisionError),
+    )
+    with pytest.raises(ZeroDivisionError):
+        profile.validate_or_build(None, None)
