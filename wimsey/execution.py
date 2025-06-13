@@ -17,32 +17,22 @@ class FinalResult:
 class DataValidationException(Exception): ...
 
 
-def _as_set(val: Any) -> set:
-    """
-    Internal function, if val is none, return empty set,
-    otherwise return set of just val
-    """
-    return {val} if val is not None else set()
-
-
 def run_all_tests(df: FrameT, tests: list[Callable[[Any], Result]]) -> FinalResult:
     """
     Run all given tests on a dataframe. Will return a `FinalResult` object
     """
-    columns: set[str] | None = set()
     metrics: set[str] | None = []
-    for test in tests:
-        metrics += test.required_metrics
-        columns |= _as_set(test.keywords.get("column"))
-        columns |= _as_set(test.keywords.get("other_column"))
+    for i, nw_expr_tuple in enumerate(tests):
+        nw_expr, _ = nw_expr_tuple
+        metrics.append(nw_expr.alias(str(i)))
     description: dict[str, Any] = describe(
         df,
-        columns=list(columns),
         metrics=metrics,
     )
     results: list[Result] = []
-    for i_test in tests:
-        results.append(i_test(description))
+    for i, nw_expr_tuple in enumerate(tests):
+        _, check = nw_expr_tuple
+        results.append(check(description[str(i)]))
     return FinalResult(
         success=all(i.success for i in results),
         results=results,
@@ -50,7 +40,9 @@ def run_all_tests(df: FrameT, tests: list[Callable[[Any], Result]]) -> FinalResu
 
 
 def test(
-    df: FrameT, contract: str | list[dict] | dict, storage_options: dict | None = None
+    df: FrameT,
+    contract: str | list[dict] | dict,
+    storage_options: dict | None = None,
 ) -> FinalResult:
     """
     Carry out tests on dataframe and return results. This will *not* raise

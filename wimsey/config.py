@@ -2,6 +2,7 @@ import json
 from typing import Any, Callable
 
 import fsspec
+import narwhals.stable.v1 as nw
 
 from wimsey.tests import possible_tests
 
@@ -13,21 +14,21 @@ def collect_tests(config: list[dict] | dict | list[Callable]) -> list[Callable]:
     list_config: list[dict] | list[Callable] = (
         config if isinstance(config, list) else [config]
     )
-    if isinstance(list_config[0], Callable):
+    if isinstance(list_config[0], tuple) and isinstance(list_config[0][0], nw.Expr):
         return list_config
     tests: list[Callable] = []
     for item in list_config:
         test_name: str | None = item.get("test")
         test: Callable | None = None
         if test_name:
-            test = possible_tests.get(item.get("test"))(**item)  # type: ignore[arg-type]
+            test = possible_tests.get(item.get("test"))  # type: ignore[arg-type]
         if test is None:
             msg = (
                 "Issue reading configuration, for at least one test, either no "
                 "test is named, or a mispelt/unimplemented test is given"
             )
             raise ValueError(msg)
-        tests.append(test)
+        tests.append(test(**item))
     return tests
 
 

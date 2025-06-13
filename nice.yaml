@@ -1,0 +1,4 @@
+- test: mean_should
+  column: a
+  be_exactly: 34
+
