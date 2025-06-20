@@ -1,4 +1,3 @@
-from functools import partial
 from typing import Any, Callable, TypeAlias
 from dataclasses import dataclass
 
@@ -170,7 +169,7 @@ def average_ratio_to_other_column_should(
             unexpected=ratio if not all(checks) else None,
         )
 
-    return nw.col(column) / nw.col(other_column).mean(), _check
+    return (nw.col(column) / nw.col(other_column)).mean(), _check
 
 
 def max_string_length_should(
@@ -254,27 +253,26 @@ def type_should(
 
 
 def columns_should(
-    column: str,
     have: list[str] | str | None = None,
     not_have: list[str] | str | None = None,
     be: list[str] | str | None = None,
     **kwargs,
 ) -> GeneratedTest:
     def _check(schema_dict: dict) -> Result:
-        have = list(have) if isinstance(have, str) else have
-        not_have = list(not_have) if isinstance(not_have, str) else not_have
-        be = list(be) if isinstance(be, str) else be
+        _have = list(have) if isinstance(have, str) else have
+        _not_have = list(not_have) if isinstance(not_have, str) else not_have
+        _be = list(be) if isinstance(be, str) else be
         checks: list[bool] = []
         present_columns = list(schema_dict)
         if have is not None:
-            for col in have:
+            for col in _have:
                 checks.append(col in present_columns)
         if not_have is not None:
-            for col in not_have:
+            for col in _not_have:
                 checks.append(col not in present_columns)
-        if be is not None:
-            checks.append(set(present_columns) == set(be))
-            checks.append(len(present_columns) == len(be))
+        if _be is not None:
+            checks.append(set(present_columns) == set(_be))
+            checks.append(len(present_columns) == len(_be))
         return Result(
             name="columns",
             success=all(checks),
@@ -284,12 +282,74 @@ def columns_should(
     return schema, _check
 
 
+def null_count_should(
+    column: str,
+    be_exactly: float | int | None = None,
+    be_less_than: float | int | None = None,
+    be_less_than_or_equal_to: float | int | None = None,
+    be_greater_than: float | int | None = None,
+    be_greater_than_or_equal_to: float | int | None = None,
+    **kwargs,
+) -> GeneratedTest:
+    def _check(null_count: int | float) -> Result:
+        checks = []
+        if be_exactly is not None:
+            checks.append(null_count == be_exactly)
+        if be_less_than is not None:
+            checks.append(null_count < be_less_than)
+        if be_greater_than is not None:
+            checks.append(null_count > be_greater_than)
+        if be_less_than_or_equal_to is not None:
+            checks.append(null_count <= be_less_than_or_equal_to)
+        if be_greater_than_or_equal_to is not None:
+            checks.append(null_count >= be_greater_than_or_equal_to)
+        return Result(
+            name=f"null-count-of-{column}",
+            success=all(checks),
+            unexpected=null_count if not all(checks) else None,
+        )
+
+    return nw.col(column).null_count(), _check
+
+
+def null_percentage_should(
+    column: str,
+    be_exactly: float | int | None = None,
+    be_less_than: float | int | None = None,
+    be_less_than_or_equal_to: float | int | None = None,
+    be_greater_than: float | int | None = None,
+    be_greater_than_or_equal_to: float | int | None = None,
+    **kwargs,
+) -> GeneratedTest:
+    def _check(null_percentage: int | float) -> Result:
+        checks = []
+        if be_exactly is not None:
+            checks.append(null_percentage == be_exactly)
+        if be_less_than is not None:
+            checks.append(null_percentage < be_less_than)
+        if be_greater_than is not None:
+            checks.append(null_percentage > be_greater_than)
+        if be_less_than_or_equal_to is not None:
+            checks.append(null_percentage <= be_less_than_or_equal_to)
+        if be_greater_than_or_equal_to is not None:
+            checks.append(null_percentage >= be_greater_than_or_equal_to)
+        return Result(
+            name=f"null-percentage-of-{column}",
+            success=all(checks),
+            unexpected=null_percentage if not all(checks) else None,
+        )
+
+    return (nw.col(column).null_count() / nw.col(column).count()), _check
+
+
 possible_tests: dict[str, Callable] = {
     "mean_should": (mean_should := _range_check(nw.mean, "mean")),
     "min_should": (min_should := _range_check(nw.min, "min")),
     "max_should": (max_should := _range_check(nw.max, "max")),
-    "std_should": (std_should := _range_check(lambda col: col.std(), "stdev")),
-    "count_should": (count_should := _range_check(lambda col: col.count(), "count")),
+    "std_should": (std_should := _range_check(lambda col: nw.col(col).std(), "stdev")),
+    "count_should": (
+        count_should := _range_check(lambda col: nw.col(col).count(), "count")
+    ),
     "row_count_should": row_count_should,
     "average_difference_from_other_column_should": average_difference_from_other_column_should,
     "average_ratio_to_other_column_should": average_ratio_to_other_column_should,
@@ -297,4 +357,6 @@ possible_tests: dict[str, Callable] = {
     "all_values_should": all_values_should,
     "type_should": type_should,
     "columns_should": columns_should,
+    "null_count_should": null_count_should,
+    "null_percentage_should": null_percentage_should,
 }

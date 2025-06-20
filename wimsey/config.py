@@ -25,7 +25,8 @@ def collect_tests(config: list[dict] | dict | list[Callable]) -> list[Callable]:
         if test is None:
             msg = (
                 "Issue reading configuration, for at least one test, either no "
-                "test is named, or a mispelt/unimplemented test is given"
+                "test is named, or a mispelt/unimplemented test is given.\n"
+                f"Specifically, could not find: {str(test_name)}"
             )
             raise ValueError(msg)
         tests.append(test(**item))

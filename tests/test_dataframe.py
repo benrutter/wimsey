@@ -1,11 +1,12 @@
 import polars as pl
+import pytest
 
 from wimsey import dataframe
 
 
 def test_that_describe_returns_expected_dictionary_for_df() -> None:
     df = pl.DataFrame({"a": [1.2, 1.3, 1.4], "b": ["one", "two", None]})
-    actual = dataframe.evaluate(df)
+    actual = dataframe.describe(df)
     assert 1.29 < actual["mean_a"] < 1.31
     assert actual["null_count_b"] == 1
     assert 0.332 < actual["null_percentage_b"] < 0.334
@@ -15,38 +16,12 @@ def test_that_describe_returns_expected_dictionary_for_df() -> None:
 
 def test_that_describe_returns_expected_dictionary_for_lazy_frame() -> None:
     df = pl.LazyFrame({"a": [1.2, 1.3, 1.4], "b": ["one", "two", None]})
-    actual = dataframe.evaluate(df)
+    actual = dataframe.describe(df)
     assert 1.29 < actual["mean_a"] < 1.31
     assert actual["null_count_b"] == 1
     assert 0.332 < actual["null_percentage_b"] < 0.334
     assert actual["length"] == 3
     assert actual["columns"] == "a_^&^_b"
-
-
-def test_that_describe_excludes_non_specified_columns() -> None:
-    df = pl.DataFrame({"a": [1.2, 1.3, 1.4], "b": ["one", "two", None]})
-    actual = dataframe.evaluate(df, columns=["a"])
-    assert "mean_a" in actual
-    assert "mean_b" not in actual
-
-
-def test_that_describe_excludes_non_specified_metrics() -> None:
-    df = pl.DataFrame({"a": [1.2, 1.3, 1.4], "b": ["one", "two", None]})
-    actual = dataframe.evaluate(df, metrics=["mean", "max"])
-    assert "mean_a" in actual
-    assert "mean_b" in actual
-    assert "max_a" in actual
-    assert "max_b" in actual
-    assert "std_a" not in actual
-    assert "std_b" not in actual
-
-
-def test_that_describe_excludes_non_specified_column_and_metric_combos() -> None:
-    df = pl.DataFrame({"a": [1.2, 1.3, 1.4], "b": ["one", "two", None]})
-    actual = dataframe.evaluate(df, columns=["a"], metrics=["count"])
-    assert "count_a" in actual
-    assert "count_b" not in actual
-    assert "min_a" not in actual
 
 
 def test_that_profile_by_sampling_returns_list_of_dicts_of_expected_length() -> None:
@@ -68,7 +43,6 @@ def test_that_profile_from_samples_returns_list_of_dicts_of_expected_length() ->
     assert actual[4]["columns"] == "a_^&^_b"
 
 
-def test_that_describe_returns_empty_dict_for_empty_dataframe() -> None:
-    actual = dataframe.evaluate(pl.DataFrame())
-    assert isinstance(actual, dict)
-    assert len(actual) == 0
+def test_that_describe_raises_error_for_empty_dataframe_with_no_columns() -> None:
+    with pytest.raises(TypeError):
+        dataframe.describe(pl.DataFrame())
