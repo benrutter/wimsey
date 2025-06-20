@@ -3,8 +3,10 @@ from collections.abc import Callable
 
 import pytest
 import yaml
+import narwhals.stable.v1 as nw
 
 from wimsey import config
+from wimsey.types import MagicExpr
 
 
 @pytest.fixture
@@ -19,9 +21,13 @@ def throw_import_error(*args, **kwargs):
     raise ImportError
 
 
-def test_collect_tests_returns_list_of_callable_functions(test_suite):
+def test_collect_tests_returns_list_of_tuples_with_expressions_and_callables(
+    test_suite,
+):
     actual = config.collect_tests(test_suite)
-    assert all(isinstance(i, Callable) for i in actual)
+    for expr, callable in actual:
+        assert isinstance(expr, nw.Expr) or isinstance(expr, MagicExpr)
+        assert isinstance(callable, Callable)
 
 
 def test_collect_tests_returns_friendly_error_when_required_value_not_give(test_suite):
@@ -57,7 +63,9 @@ def test_read_config_parses_yaml(monkeypatch, test_suite):
 
     monkeypatch.setattr(config.fsspec, "open", open_file_patch)
     actual = config.read_config("file.yaml")
-    assert all(isinstance(i, Callable) for i in actual)
+    for expr, callable in actual:
+        assert isinstance(expr, nw.Expr) or isinstance(expr, MagicExpr)
+        assert isinstance(callable, Callable)
 
 
 def test_read_config_parses_yaml_with_test_section(monkeypatch, test_suite):
@@ -75,7 +83,9 @@ def test_read_config_parses_yaml_with_test_section(monkeypatch, test_suite):
 
     monkeypatch.setattr(config.fsspec, "open", open_file_patch)
     actual = config.read_config("file.yaml")
-    assert all(isinstance(i, Callable) for i in actual)
+    for expr, callable in actual:
+        assert isinstance(expr, nw.Expr) or isinstance(expr, MagicExpr)
+        assert isinstance(callable, Callable)
 
 
 def test_read_config_parses_yaml_with_only_one_test(monkeypatch, test_suite):
@@ -93,7 +103,9 @@ def test_read_config_parses_yaml_with_only_one_test(monkeypatch, test_suite):
 
     monkeypatch.setattr(config.fsspec, "open", open_file_patch)
     actual = config.read_config("file.yaml")
-    assert all(isinstance(i, Callable) for i in actual)
+    for expr, callable in actual:
+        assert isinstance(expr, nw.Expr) or isinstance(expr, MagicExpr)
+        assert isinstance(callable, Callable)
 
 
 def test_read_config_parses_json(monkeypatch, test_suite):
@@ -111,7 +123,9 @@ def test_read_config_parses_json(monkeypatch, test_suite):
 
     monkeypatch.setattr(config.fsspec, "open", open_file_patch)
     actual = config.read_config("file.json")
-    assert all(isinstance(i, Callable) for i in actual)
+    for expr, callable in actual:
+        assert isinstance(expr, nw.Expr) or isinstance(expr, MagicExpr)
+        assert isinstance(callable, Callable)
 
 
 def test_friendly_message_is_raised_when_yaml_is_unimportable(test_suite, monkeypatch):

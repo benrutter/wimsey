@@ -1,4 +1,7 @@
 - test: mean_should
   column: a
-  be_exactly: 34
+  be_less_than: 34
+- test: type_should
+  column: a
+  be: Int64
 

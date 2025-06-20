@@ -1,9 +1,10 @@
 from typing import Callable, Any
 from dataclasses import dataclass
 
-from narwhals.typing import FrameT
+import narwhals.stable.v1 as nw
+from narwhals.stable.v1.typing import FrameT
 
-from wimsey.dataframe import describe
+from wimsey.dataframe import evaluate
 from wimsey.tests import Result
 from wimsey.config import read_config, collect_tests
 
@@ -22,17 +23,24 @@ def run_all_tests(df: FrameT, tests: list[Callable[[Any], Result]]) -> FinalResu
     Run all given tests on a dataframe. Will return a `FinalResult` object
     """
     metrics: set[str] | None = []
-    for i, nw_expr_tuple in enumerate(tests):
-        nw_expr, _ = nw_expr_tuple
-        metrics.append(nw_expr.alias(str(i)))
-    description: dict[str, Any] = describe(
+    for i, expr_tuple in enumerate(tests):
+        expr, _ = expr_tuple
+        if isinstance(expr, nw.Expr):
+            metrics.append(expr.alias(str(i)))
+    evaluation: dict[str, Any] = evaluate(
         df,
         metrics=metrics,
     )
     results: list[Result] = []
-    for i, nw_expr_tuple in enumerate(tests):
-        _, check = nw_expr_tuple
-        results.append(check(description[str(i)]))
+    for i, expr_tuple in enumerate(tests):
+        expr, check = expr_tuple
+        results.append(
+            check(
+                evaluation[str(i)]
+                if isinstance(expr, nw.Expr)
+                else evaluation[expr.expr_name]
+            )
+        )
     return FinalResult(
         success=all(i.success for i in results),
         results=results,

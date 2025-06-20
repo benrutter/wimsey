@@ -2,10 +2,9 @@ from functools import partial
 from typing import Any, Callable, TypeAlias
 from dataclasses import dataclass
 
-
 import narwhals.stable.v1 as nw
 
-# TODO: just missing some slightly complex tests that use dtypes or column names
+from wimsey.types import schema
 
 
 @dataclass
@@ -101,7 +100,7 @@ def average_difference_from_other_column_should(
     be_greater_than: float | int | None = None,
     be_greater_than_or_equal_to: float | int | None = None,
     **kwargs,
-) -> Callable:
+) -> GeneratedTest:
     """
     Test that the average difference between column and other column are
     within designated bounds.
@@ -141,7 +140,7 @@ def average_ratio_to_other_column_should(
     be_greater_than: float | int | None = None,
     be_greater_than_or_equal_to: float | int | None = None,
     **kwargs,
-) -> Callable:
+) -> GeneratedTest:
     """
     Test that the average ratio between column and other column are
     within designated bounds (for instance, a value of 1 has a ratio
@@ -180,7 +179,7 @@ def max_string_length_should(
     be_greater_than: int | float | None = None,
     be_exactly: int | float | None = None,
     **kwargs,
-) -> Callable:
+) -> GeneratedTest:
     def _check(success: bool) -> Result:
         return Result(
             name=f"max-string-length-of-{column}",
@@ -209,7 +208,7 @@ def all_values_should(
     not_be_one_of: list[str] | None = None,
     match_regex: str | None = None,
     **kwargs,
-) -> None:
+) -> GeneratedTest:
     def _check(
         success,
     ) -> Result:
@@ -229,6 +228,62 @@ def all_values_should(
     return nw.all_horizontal(*expressions), _check
 
 
+def type_should(
+    column: str,
+    be: str | None = None,
+    not_be: str | None = None,
+    be_one_of: list[str] | None = None,
+    **kwargs,
+) -> GeneratedTest:
+    def _check(schema_dict: dict) -> Result:
+        col_type = schema_dict[column]
+        checks: list[bool] = []
+        if be is not None:
+            checks.append(be.lower() == col_type.lower())
+        if not_be is not None:
+            checks.append(not_be.lower() != col_type.lower())
+        if be_one_of is not None:
+            checks.append(col_type.lower() in [i.lower() for i in be_one_of])
+        return Result(
+            name=f"type-of-{column}",
+            success=all(checks),
+            unexpected=col_type if not all(checks) else None,
+        )
+
+    return schema, _check
+
+
+def columns_should(
+    column: str,
+    have: list[str] | str | None = None,
+    not_have: list[str] | str | None = None,
+    be: list[str] | str | None = None,
+    **kwargs,
+) -> GeneratedTest:
+    def _check(schema_dict: dict) -> Result:
+        have = list(have) if isinstance(have, str) else have
+        not_have = list(not_have) if isinstance(not_have, str) else not_have
+        be = list(be) if isinstance(be, str) else be
+        checks: list[bool] = []
+        present_columns = list(schema_dict)
+        if have is not None:
+            for col in have:
+                checks.append(col in present_columns)
+        if not_have is not None:
+            for col in not_have:
+                checks.append(col not in present_columns)
+        if be is not None:
+            checks.append(set(present_columns) == set(be))
+            checks.append(len(present_columns) == len(be))
+        return Result(
+            name="columns",
+            success=all(checks),
+            unexpected=present_columns if not all(checks) else None,
+        )
+
+    return schema, _check
+
+
 possible_tests: dict[str, Callable] = {
     "mean_should": (mean_should := _range_check(nw.mean, "mean")),
     "min_should": (min_should := _range_check(nw.min, "min")),
@@ -240,4 +295,6 @@ possible_tests: dict[str, Callable] = {
     "average_ratio_to_other_column_should": average_ratio_to_other_column_should,
     "max_string_length_should": max_string_length_should,
     "all_values_should": all_values_should,
+    "type_should": type_should,
+    "columns_should": columns_should,
 }
