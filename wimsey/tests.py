@@ -339,7 +339,7 @@ def null_percentage_should(
             unexpected=null_percentage if not all(checks) else None,
         )
 
-    return (nw.col(column).null_count() / nw.col(column).count()), _check
+    return (nw.col(column).null_count() / nw.col(column).len()), _check
 
 
 possible_tests: dict[str, Callable] = {

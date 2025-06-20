@@ -31,7 +31,7 @@ def test_validate_carries_out_tests_then_returns_object_if_passing():
 
 def test_validate_raises_error_if_tests_fail():
     tests_to_carry_out = [
-        tests.max_should(column="a", be_less_than=0),
+        tests.max_should(column="a", be_exactly=0),
         tests.std_should(column="a", be_greater_than=10),
         tests.type_should(column="b", be_one_of=["string", "int64"]),
     ]
