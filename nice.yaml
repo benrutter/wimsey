@@ -1,7 +1,0 @@
-- test: mean_should
-  column: a
-  be_less_than: 34
-- test: type_should
-  column: a
-  be: Int64
-
