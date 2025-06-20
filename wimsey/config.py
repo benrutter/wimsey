@@ -1,5 +1,5 @@
 import json
-from typing import Any, Callable
+from typing import Any, Callable, cast
 
 import fsspec
 import narwhals.stable.v1 as nw
@@ -7,17 +7,18 @@ import narwhals.stable.v1 as nw
 from wimsey.tests import possible_tests
 
 
-def collect_tests(config: list[dict] | dict | list[Callable]) -> list[Callable]:
+def collect_tests(config: list[dict] | dict | list[tuple]) -> list[tuple]:
     """
     Take a configuration, and build out tests
     """
-    list_config: list[dict] | list[Callable] = (
+    list_config: list[dict] | list[tuple] = (
         config if isinstance(config, list) else [config]
     )
     if isinstance(list_config[0], tuple) and isinstance(list_config[0][0], nw.Expr):
-        return list_config
-    tests: list[Callable] = []
-    for item in list_config:
+        return cast(list[tuple], list_config)
+    dict_list: list[dict] = list_config  # type: ignore[assignment]
+    tests: list[tuple] = []
+    for item in dict_list:
         test_name: str | None = item.get("test")
         test: Callable | None = None
         if test_name:
@@ -33,12 +34,12 @@ def collect_tests(config: list[dict] | dict | list[Callable]) -> list[Callable]:
     return tests
 
 
-def read_config(path: str, storage_options: dict | None = None) -> list[Callable]:
+def read_config(path: str, storage_options: dict | None = None) -> list[tuple]:
     """
     Read a json or yaml configuration, and return list of test callables
     """
     storage_options_dict: dict = storage_options or {}
-    config: dict
+    config: dict | list[dict]
     with fsspec.open(path, "rt", **storage_options_dict) as file:
         contents = file.read()
     if path.endswith(".yaml") or path.endswith(".yml"):
@@ -55,7 +56,7 @@ def read_config(path: str, storage_options: dict | None = None) -> list[Callable
             )
             raise ImportError(msg) from exception
     config = parse_contents(json.loads(contents))
-    return collect_tests(config)  # type: ignore[arg-type]
+    return collect_tests(config)
 
 
 def parse_contents(contents: Any) -> list[dict] | dict:
@@ -63,7 +64,7 @@ def parse_contents(contents: Any) -> list[dict] | dict:
         return contents
     if isinstance(contents, dict):
         if isinstance(contents.get("tests"), list):
-            return contents.get("tests")
+            return cast(dict | list[dict], contents.get("tests"))
         return contents
     msg = (
         "It looks like the json/yaml file parsed in is either invalid "

@@ -45,9 +45,9 @@ def evaluate(
     Note this code is adapted from polars own descrip function.
     """
     metrics += [nw.lit(str(df.schema[c])).alias(f"type_{c}") for c in df.columns]
-    evaluation_dict: dict = (
-        df.pipe(_validate_df_has_columns).select(*metrics).pipe(_narwhals_to_dict)
-    )
+
+    evaluation_df = df.pipe(_validate_df_has_columns).select(*metrics)
+    evaluation_dict = _narwhals_to_dict(evaluation_df)
     type_evals: list = [i for i in evaluation_dict if i.startswith("type")]
     schema_dict: dict = {
         i.replace("type_", ""): evaluation_dict.pop(i) for i in type_evals
@@ -123,9 +123,9 @@ def profile_from_sampling(
     fraction: int | None = None,
 ) -> list[dict[str, float]]:
     return [
-        describe(df.sample(n=n, fraction=fraction, with_replacement=True))
+        describe(df.sample(n=n, fraction=fraction, with_replacement=True))  # type: ignore[union-attr]
         for _ in range(samples)
-    ]
+    ]  # type: ignore[union-attr]
 
 
 def profile_from_samples(

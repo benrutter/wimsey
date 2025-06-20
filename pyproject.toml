@@ -42,3 +42,10 @@ allow-direct-references = true
 
 [tool.hatch.version]
 path = "wimsey/_version.py"
+
+[[tool.mypy.overrides]]
+module = [
+    "fsspec.*",
+]
+ignore_missing_imports = true
+

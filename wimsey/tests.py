@@ -3,7 +3,7 @@ from dataclasses import dataclass
 
 import narwhals.stable.v1 as nw
 
-from wimsey.types import schema
+from wimsey.types import schema, MagicExpr
 
 
 @dataclass
@@ -13,7 +13,7 @@ class Result:
     unexpected: Any = None
 
 
-GeneratedTest: TypeAlias = tuple[nw.Expr, Callable[[Any], Result]]
+GeneratedTest: TypeAlias = tuple[nw.Expr | MagicExpr, Callable[[Any], Result]]
 
 
 def _range_check(aggregation: Callable[[str], nw.Expr], metric_name: str) -> Callable:
@@ -174,31 +174,34 @@ def average_ratio_to_other_column_should(
 
 def max_string_length_should(
     column: str,
-    be_less_than: int | float | None = None,
-    be_greater_than: int | float | None = None,
-    be_exactly: int | float | None = None,
+    be_exactly: float | int | None = None,
+    be_less_than: float | int | None = None,
+    be_less_than_or_equal_to: float | int | None = None,
+    be_greater_than: float | int | None = None,
+    be_greater_than_or_equal_to: float | int | None = None,
     **kwargs,
 ) -> GeneratedTest:
-    def _check(success: bool) -> Result:
+    """Test that the maximum string length iswithin expected bounds"""
+
+    def _check(max_length: int | float) -> Result:
+        checks: list[bool] = []
+        if be_exactly is not None:
+            checks.append(max_length == be_exactly)
+        if be_less_than is not None:
+            checks.append(max_length < be_less_than)
+        if be_less_than_or_equal_to is not None:
+            checks.append(max_length <= be_less_than_or_equal_to)
+        if be_greater_than is not None:
+            checks.append(max_length > be_greater_than)
+        if be_greater_than_or_equal_to is not None:
+            checks.append(max_length >= be_greater_than_or_equal_to)
         return Result(
-            name=f"max-string-length-of-{column}",
-            success=success,
-            unexpected=None
-            if success
-            else "Length of column values did not meet bounds",
+            name=f"average-max-string-length-of-{column}",
+            success=all(checks),
+            unexpected=max_length if not all(checks) else None,
         )
 
-    expressions: list[nw.Expr] = []
-    if be_less_than:
-        expr: nw.Expr = nw.col(column).str.len_chars().max() < nw.lit(be_less_than)
-        expressions.append(expr)
-    if be_greater_than:
-        expr: nw.Expr = nw.col(column).str.len_chars().max() > nw.lit(be_greater_than)
-        expressions.append(expr)
-    if be_exactly:
-        expr: nw.Expr = nw.col(column).str.len_chars().max() == nw.lit(be_exactly)
-        expressions.append(expr)
-    return nw.all_horizontal(*expressions), _check
+    return nw.col(column).str.len_chars(), _check
 
 
 def all_values_should(
@@ -208,6 +211,10 @@ def all_values_should(
     match_regex: str | None = None,
     **kwargs,
 ) -> GeneratedTest:
+    """
+    Test all unique values within a column are within expected group
+    """
+
     def _check(
         success,
     ) -> Result:
@@ -234,6 +241,15 @@ def type_should(
     be_one_of: list[str] | None = None,
     **kwargs,
 ) -> GeneratedTest:
+    """
+    Check that type of column meets expected criteria. Note that because Wimsey is a
+    dataframe agnostic tool, this should be of *Narwhals* expected types, such as
+    Float64, Int64, String, etc.
+
+    See Narwhals' documentation for more details:
+    https://narwhals-dev.github.io/narwhals/api-reference/dtypes/
+    """
+
     def _check(schema_dict: dict) -> Result:
         col_type = schema_dict[column]
         checks: list[bool] = []
@@ -258,16 +274,20 @@ def columns_should(
     be: list[str] | str | None = None,
     **kwargs,
 ) -> GeneratedTest:
+    """
+    Check that expected columns are present / non-present within dataframe
+    """
+
     def _check(schema_dict: dict) -> Result:
         _have = list(have) if isinstance(have, str) else have
         _not_have = list(not_have) if isinstance(not_have, str) else not_have
         _be = list(be) if isinstance(be, str) else be
         checks: list[bool] = []
         present_columns = list(schema_dict)
-        if have is not None:
+        if _have is not None:
             for col in _have:
                 checks.append(col in present_columns)
-        if not_have is not None:
+        if _not_have is not None:
             for col in _not_have:
                 checks.append(col not in present_columns)
         if _be is not None:
@@ -291,6 +311,10 @@ def null_count_should(
     be_greater_than_or_equal_to: float | int | None = None,
     **kwargs,
 ) -> GeneratedTest:
+    """
+    Check that null count of column meets expected criteria.
+    """
+
     def _check(null_count: int | float) -> Result:
         checks = []
         if be_exactly is not None:
@@ -321,6 +345,10 @@ def null_percentage_should(
     be_greater_than_or_equal_to: float | int | None = None,
     **kwargs,
 ) -> GeneratedTest:
+    """
+    Check that null percentage of column meets expected criteria.
+    """
+
     def _check(null_percentage: int | float) -> Result:
         checks = []
         if be_exactly is not None:

@@ -18,6 +18,8 @@ arg_examples = {
     "be": ["column_a", "column_b"],
     "not_be": ["column_a", "column_b", "column_c"],
     "be_one_of": ["int64", "float64"],
+    "not_be_one_of": ["a", "b"],
+    "match_regex": "at$",
 }
 
 
@@ -27,7 +29,16 @@ def generate_doc(name: str, doc_string: str, annotations: dict) -> str:
         examples["be"] = "int64"
         examples["not_be"] = "string"
     annotations.pop("return")
-    dict_eg = {k: examples[k] for k in annotations}
+    try:
+        dict_eg = {k: examples[k] for k in annotations}
+    except KeyError:
+        msg = (
+            f"Argument for function {name} can't be generated because it is "
+            "not in examples within generate_possible_tests arg_examples, consider"
+            " adding.\n For reference here is the list of attempted examples: "
+            f"{annotations}"
+        )
+        raise KeyError(msg) from KeyError
     yaml_eg = yaml.dump({"test": name} | dict_eg)
     json_eg = json.dumps({"test": name} | dict_eg, indent=2)
     python_eg = f"""
@@ -71,6 +82,10 @@ if __name__ == "__main__":
         "with the exception of where `column` is required."
     )
     for test_name, test_generator in possible_tests.items():
+        test_doc_string = test_generator.__doc__
+        assert isinstance(test_doc_string, str), (
+            f"{test_generator.__name__} has no docstring, this is required for doc generation"
+        )
         doc = generate_doc(
             test_name,
             " ".join(test_generator.__doc__.replace("\n", "").split()),
