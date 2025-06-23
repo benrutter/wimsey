@@ -1,7 +1,7 @@
 [project]
 name = "wimsey"
 dynamic = ["version"]
-description = "A lightweight data contracts framework"
+description = "A lightweight data contracts library"
 authors = [
     { name = "Ben", email = "benrutter@posteo.net" }
 ]
@@ -16,15 +16,19 @@ requires-python = ">= 3.10"
 requires = ["hatchling"]
 build-backend = "hatchling.build"
 
-[tool.rye]
-managed = true
-dev-dependencies = [
+[tool.hatch.metadata]
+allow-direct-references = true
+
+[tool.hatch.version]
+path = "wimsey/_version.py"
+
+[dependency-groups]
+dev = [
     "ipdb>=0.13.13",
     "ipython>=8.21.0",
     "pandas>=2.2.3",
     "pyyaml>=6.0.2",
     "polars>=1.10.0",
-    "mypy>=1.13.0",
     "types-pyyaml>=6.0.12.20240917",
     "dask>=2024.10.0",
     "dask-expr>=1.1.16",
@@ -34,18 +38,42 @@ dev-dependencies = [
     "grip>=4.6.2",
     "mkdocs-charts-plugin>=0.0.12",
     "coverage>=7.6.10",
-    "pylint>=3.3.3",
+    "ty>=0.0.1a11",
 ]
 
-[tool.hatch.metadata]
-allow-direct-references = true
 
-[tool.hatch.version]
-path = "wimsey/_version.py"
+[tool.ruff]
+line-length = 80
+fix = true
+target-version = "py39"
 
-[[tool.mypy.overrides]]
-module = [
-    "fsspec.*",
+[tool.ruff.lint]
+preview = true
+explicit-preview-rules = true
+typing-modules = ["narwhals._typing_compat"]
+
+extend-safe-fixes = [
+  "C419",    # unnecessary-comprehension-in-call
+  "C420",    # unnecessary-dict-comprehension-for-iterable
+  "PLR6201", # literal-membership
+  "TC",      # flake8-type-checking
+  "UP",      # pyupgrade
 ]
-ignore_missing_imports = true
-
+extend-select = [
+  "PLR0914", # too-many-locals
+  "PLR0916", # too-many-boolean-expressions
+  "PLR1702", # too-many-nested-blocks
+  "PLR6201", # literal-membership
+]
+select = ["ALL"]
+ignore = [
+  "ANN401",  # any-type
+  "ISC001",  # single-line-implicit-string-concatenation
+  "PD901",   # pandas-df-variable-name
+  "PLR0913", # too-many-arguments
+  "PLR2004", # magic-value-comparison
+  "RET505",  # superfluous-else-return
+  "SLF001",  # private-member-access
+  "TD003",   # missing-todo-link
+  "TD004",   # missing-todo-colon
+]

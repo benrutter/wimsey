@@ -125,7 +125,10 @@ def test_average_column_ratio_tests_pass_when_expected():
 def test_max_string_length_tests_fail_when_expected():
     tests_to_carry_out = [
         tests.max_string_length_should(
-            column="a", be_less_than=4, be_greater_than=2, be_exactly=3.0
+            column="a",
+            be_less_than=4,
+            be_greater_than=2,
+            be_exactly=3.0,
         ),
     ]
     df = pl.DataFrame({"a": ["cat", "bat", "ssssssssssssssnake"]})

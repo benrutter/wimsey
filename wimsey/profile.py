@@ -1,6 +1,6 @@
 import json
 from enum import Enum, auto
-from typing import Iterable
+from typing import Iterable, Any
 from statistics import stdev
 
 import fsspec
@@ -34,7 +34,7 @@ def starter_tests_from_samples(
     the above example, Wimsey will test for a maximum for 4. This can be tuned with
     the 'margin' keyword.
     """
-    df_samples = profile_from_samples(samples)
+    df_samples: list[dict[str, Any]] = profile_from_samples(samples)
     return _starter_tests_from_sample_describes(df_samples, margin)
 
 
@@ -128,7 +128,7 @@ def starter_tests_from_sampling(
 def _starter_tests_from_sample_describes(
     samples: list[dict],
     margin: float = 1,
-) -> dict:
+) -> list[dict]:
     """
     Internal function doing the main body of work for building out tests once sample
     describes have been taken.
@@ -215,8 +215,8 @@ def _type_starter_tests(
     """Internal function to build 'column x should be type y' tests from sample describes"""
     tests: list[dict] = []
     for column in columns:
-        types = set(i[f"type_{column}"] for i in samples)
-        test = {"column": column, "test": "type_should"}
+        types: set[str] = set(i[f"type_{column}"] for i in samples)
+        test: dict[str, Any] = {"column": column, "test": "type_should"}
         if len(types) == 1:
             test |= {"be": list(types)[0]}
         else:  # pragma: no cover
@@ -243,7 +243,7 @@ def validate_or_build(
     for more details on use of keyword arguments aside from df, contract and storage_options.
     """
     try:
-        validate(df, contract=contract, storage_options=storage_options)
+        return validate(df, contract=contract, storage_options=storage_options)
     except FileNotFoundError:
         save_starter_tests_from_sampling(
             path=contract,
@@ -253,3 +253,4 @@ def validate_or_build(
             fraction=fraction,
             margin=margin,
         )
+        return df

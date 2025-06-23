@@ -6,6 +6,7 @@ from narwhals.stable.v1.typing import FrameT
 
 from wimsey.dataframe import evaluate
 from wimsey.tests import Result
+from wimsey.types import MagicExpr, GeneratedTest
 from wimsey.config import read_config, collect_tests
 
 
@@ -18,11 +19,11 @@ class FinalResult:
 class DataValidationException(Exception): ...
 
 
-def run_all_tests(df: FrameT, tests: list[Callable[[Any], Result]]) -> FinalResult:
+def run_all_tests(df: FrameT, tests: list[GeneratedTest]) -> FinalResult:
     """
     Run all given tests on a dataframe. Will return a `FinalResult` object
     """
-    metrics: set[str] | None = []
+    metrics: list[nw.Expr | MagicExpr] = []
     for i, expr_tuple in enumerate(tests):
         expr, _ = expr_tuple
         if isinstance(expr, nw.Expr):

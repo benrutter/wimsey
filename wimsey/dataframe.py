@@ -1,4 +1,4 @@
-from typing import Any
+from typing import Any, Iterable
 
 import narwhals.stable.v1 as nw
 from narwhals.stable.v1.typing import FrameT
@@ -58,7 +58,7 @@ def evaluate(
 @nw.narwhalify
 def describe(
     df: FrameT,
-) -> dict[str, float]:
+) -> dict[str, Any]:
     """
     Outputs a dictionary for use in testing, mimicking polars 'describe' method.
 
@@ -129,6 +129,6 @@ def profile_from_sampling(
 
 
 def profile_from_samples(
-    samples: list[FrameT],
-) -> list[dict[str, float]]:
+    samples: Iterable[FrameT],
+) -> list[dict[str, Any]]:
     return [describe(i) for i in samples]

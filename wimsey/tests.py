@@ -1,22 +1,13 @@
 from typing import Any, Callable, TypeAlias
-from dataclasses import dataclass
 
 import narwhals.stable.v1 as nw
 
-from wimsey.types import schema, MagicExpr
+from wimsey.types import schema, Result, GeneratedTest
 
 
-@dataclass
-class Result:
-    name: str
-    success: bool
-    unexpected: Any = None
-
-
-GeneratedTest: TypeAlias = tuple[nw.Expr | MagicExpr, Callable[[Any], Result]]
-
-
-def _range_check(aggregation: Callable[[str], nw.Expr], metric_name: str) -> Callable:
+def _range_check(
+    aggregation: Callable[[str], nw.Expr], metric_name: str
+) -> Callable:
     """
     Factory function for generated tests of the form "x should be within range"
 
@@ -181,7 +172,7 @@ def max_string_length_should(
     be_greater_than_or_equal_to: float | int | None = None,
     **kwargs,
 ) -> GeneratedTest:
-    """Test that the maximum string length iswithin expected bounds"""
+    """Test that the maximum string length is within expected bounds"""
 
     def _check(max_length: int | float) -> Result:
         checks: list[bool] = []
@@ -201,7 +192,7 @@ def max_string_length_should(
             unexpected=max_length if not all(checks) else None,
         )
 
-    return nw.col(column).str.len_chars(), _check
+    return nw.col(column).str.len_chars().max(), _check
 
 
 def all_values_should(
@@ -221,7 +212,9 @@ def all_values_should(
         return Result(
             name=f"all-values-of-{column}",
             success=success,
-            unexpected=None if success else "Values did not meet given conditions",
+            unexpected=None
+            if success
+            else "Values did not meet given conditions",
         )
 
     expressions: list[nw.Expr] = []
@@ -374,7 +367,9 @@ possible_tests: dict[str, Callable] = {
     "mean_should": (mean_should := _range_check(nw.mean, "mean")),
     "min_should": (min_should := _range_check(nw.min, "min")),
     "max_should": (max_should := _range_check(nw.max, "max")),
-    "std_should": (std_should := _range_check(lambda col: nw.col(col).std(), "stdev")),
+    "std_should": (
+        std_should := _range_check(lambda col: nw.col(col).std(), "stdev")
+    ),
     "count_should": (
         count_should := _range_check(lambda col: nw.col(col).count(), "count")
     ),
