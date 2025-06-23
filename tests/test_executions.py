@@ -126,7 +126,9 @@ def test_max_string_length_tests_fail_when_expected() -> None:
         tests.max_string_length_should(
             column="a",
             be_less_than=4,
+            be_less_than_or_equal_to=4,
             be_greater_than=2,
+            be_greater_than_or_equal_to=2,
             be_exactly=3.0,
         ),
     ]

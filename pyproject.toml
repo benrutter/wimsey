@@ -103,3 +103,10 @@ ignore = [
     "D203",  # blank-line-before-class-docstring
     "D213",  # multi-line-summary-second-line
 ]
+
+[tool.coverage.report]
+exclude_also = [
+    'if TYPE_CHECKING:',
+    '^\s*\.\.\.\s*$',  # <- line of "..." (no code)
+    '^\s*pass\s*$',  # <- line of "pass"
+]

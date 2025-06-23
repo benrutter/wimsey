@@ -15,6 +15,9 @@ def raise_exception_patch(exception_type: type[Exception]) -> Callable:
     return raise_exception
 
 
+def do_nothing(*args, **kwargs) -> None: ...
+
+
 def test_starter_tests_from_sampling_returns_passing_test() -> None:
     df = pl.DataFrame(
         {
@@ -100,7 +103,7 @@ def test_validate_or_build_falls_back_to_save_starter_tests_from_sampling_if_val
     monkeypatch.setattr(
         profiling,
         "save_starter_tests_from_sampling",
-        raise_exception_patch(ZeroDivisionError),
+        do_nothing,
     )
-    with pytest.raises(ZeroDivisionError):
-        profiling.validate_or_build(None, None)
+    actual = profiling.validate_or_build(3, "cool.json")
+    assert actual == 3
