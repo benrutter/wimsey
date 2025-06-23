@@ -23,4 +23,4 @@ jobs:
       - name: Check coverage
         run: python -m coverage report --fail-under=100
       - name: Check types
-        run: python -m ty check wimsey/**/*.py
+        run: python -m ty check wimsey
