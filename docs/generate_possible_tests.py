@@ -92,5 +92,5 @@ if __name__ == "__main__":
             test_generator.__annotations__,
         )
         file_doc += doc
-    with open("docs/possible-tests.md", "wt") as file:
+    with open("docs/possible-tests.md", "w") as file:
         file.write(file_doc)

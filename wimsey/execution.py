@@ -1,28 +1,24 @@
-from typing import Callable, Any
-from dataclasses import dataclass
+"""Functions relating to execution of defined tests."""
+
+from __future__ import annotations
+
+from typing import TYPE_CHECKING, Any
 
 import narwhals.stable.v1 as nw
-from narwhals.stable.v1.typing import FrameT
 
+from wimsey.config import collect_tests, read_config
 from wimsey.dataframe import evaluate
-from wimsey.tests import Result
-from wimsey.types import MagicExpr, GeneratedTest
-from wimsey.config import read_config, collect_tests
+from wimsey.types import DataValidationError, FinalResult
 
+if TYPE_CHECKING:
+    from narwhals.stable.v1.typing import FrameT
 
-@dataclass
-class FinalResult:
-    success: bool
-    results: list[Result]
-
-
-class DataValidationException(Exception): ...
+    from wimsey.tests import Result
+    from wimsey.types import GeneratedTest, MagicExpr
 
 
 def run_all_tests(df: FrameT, tests: list[GeneratedTest]) -> FinalResult:
-    """
-    Run all given tests on a dataframe. Will return a `FinalResult` object
-    """
+    """Run all given tests on a dataframe. Will return a `FinalResult` object."""
     metrics: list[nw.Expr | MagicExpr] = []
     for i, expr_tuple in enumerate(tests):
         expr, _ = expr_tuple
@@ -37,10 +33,8 @@ def run_all_tests(df: FrameT, tests: list[GeneratedTest]) -> FinalResult:
         expr, check = expr_tuple
         results.append(
             check(
-                evaluation[str(i)]
-                if isinstance(expr, nw.Expr)
-                else evaluation[expr.expr_name]
-            )
+                evaluation[str(i)] if isinstance(expr, nw.Expr) else evaluation[expr.expr_name],
+            ),
         )
     return FinalResult(
         success=all(i.success for i in results),
@@ -53,7 +47,8 @@ def test(
     contract: str | list[dict] | dict,
     storage_options: dict | None = None,
 ) -> FinalResult:
-    """
+    """Test a dataframe against a data contract.
+
     Carry out tests on dataframe and return results. This will *not* raise
     an exception on test failure, and will instead return a 'final_result'
     object, with a boolean 'success' field, and a detailed list of individual
@@ -75,7 +70,8 @@ def validate(
     contract: str | list[dict] | dict,
     storage_options: dict | None = None,
 ) -> FrameT:
-    """
+    """Validate a dataframe against a data contract.
+
     Carry out tests on dataframe, returning original dataframe if tests are
     successful, and raising a DataValidationException in case of failure.
     """
@@ -86,11 +82,9 @@ def validate(
     )
     if not results.success:
         failures: list[str] = [
-            f"{i.name} (unexpected: {i.unexpected})"
-            for i in results.results
-            if not i.success
+            f"{i.name} (unexpected: {i.unexpected})" for i in results.results if not i.success
         ]
         newline = "\n - "
         msg = f"At least one test failed:\n - {newline.join(failures)}"
-        raise DataValidationException(msg)
+        raise DataValidationError(msg)
     return df

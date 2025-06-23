@@ -39,12 +39,14 @@ dev = [
     "mkdocs-charts-plugin>=0.0.12",
     "coverage>=7.6.10",
     "ty>=0.0.1a11",
+    "ruff>=0.12.0",
 ]
 
 
 [tool.ruff]
-line-length = 80
+line-length = 100
 fix = true
+include = ["wimsey/**.py"]
 target-version = "py39"
 
 [tool.ruff.lint]
@@ -65,15 +67,39 @@ extend-select = [
   "PLR1702", # too-many-nested-blocks
   "PLR6201", # literal-membership
 ]
-select = ["ALL"]
+
+select = [
+    "W",
+    "E",
+    "A",
+    "F",
+    "D",
+    "C4",
+    "COM",
+    "ERA",
+    "ICN",
+    "PIE",
+    "RET",
+    "SIM",
+    "ARG",
+    "I",
+    "NPY",
+    "N",
+    "UP",
+    "FURB",
+    "FIX001",
+    "FIX002",
+    "TC001",
+    "TC002",
+    "TC003",
+    "TC004",
+    "ANN001",
+    "ANN205",
+    "ANN204",
+]
+
 ignore = [
-  "ANN401",  # any-type
-  "ISC001",  # single-line-implicit-string-concatenation
-  "PD901",   # pandas-df-variable-name
-  "PLR0913", # too-many-arguments
-  "PLR2004", # magic-value-comparison
-  "RET505",  # superfluous-else-return
-  "SLF001",  # private-member-access
-  "TD003",   # missing-todo-link
-  "TD004",   # missing-todo-colon
+    "E501",  # max-line-length-80
+    "D203",  # blank-line-before-class-docstring
+    "D213",  # multi-line-summary-second-line
 ]

@@ -1,15 +1,22 @@
-from typing import Any, Callable, TypeAlias
+"""Wimsey test definitions.
+
+Definitions for test functions that can be ran against a dataframe.
+"""
+
+from __future__ import annotations
+
+from typing import Any, Callable
 
 import narwhals.stable.v1 as nw
 
-from wimsey.types import schema, Result, GeneratedTest
+from wimsey.types import GeneratedTest, Result, schema
 
 
 def _range_check(
-    aggregation: Callable[[str], nw.Expr], metric_name: str
+    aggregation: Callable[[str], nw.Expr],
+    metric_name: str,
 ) -> Callable:
-    """
-    Factory function for generated tests of the form "x should be within range"
+    """Generate tests of the form "x should be within range".
 
     Tests are also factories in themselves, they'll generate functions to take
     only a "describe" object.
@@ -17,16 +24,17 @@ def _range_check(
 
     def check_aggregation_is_in_range(
         column: str,
-        be_exactly: float | int | None = None,
-        be_less_than: float | int | None = None,
-        be_less_than_or_equal_to: float | int | None = None,
-        be_greater_than: float | int | None = None,
-        be_greater_than_or_equal_to: float | int | None = None,
-        **kwargs,
+        be_exactly: float | None = None,
+        be_less_than: float | None = None,
+        be_less_than_or_equal_to: float | None = None,
+        be_greater_than: float | None = None,
+        be_greater_than_or_equal_to: float | None = None,
+        **kwargs: Any,
     ) -> GeneratedTest:
-        """Test that column metric is within designated range"""
+        """Test that column metric is within designated range."""
+        del kwargs
 
-        def _check(value: int | float) -> Result:
+        def _check(value: float) -> Result:
             checks = []
             if be_exactly is not None:
                 checks.append(value == be_exactly)
@@ -50,17 +58,18 @@ def _range_check(
 
 
 def row_count_should(
-    be_less_than: float | int | None = None,
-    be_less_than_or_equal_to: float | int | None = None,
-    be_greater_than: float | int | None = None,
-    be_greater_than_or_equal_to: float | int | None = None,
-    be_exactly: float | int | None = None,
-    **kwargs,
+    be_less_than: float | None = None,
+    be_less_than_or_equal_to: float | None = None,
+    be_greater_than: float | None = None,
+    be_greater_than_or_equal_to: float | None = None,
+    be_exactly: float | None = None,
+    **kwargs: Any,
 ) -> GeneratedTest:
-    """Test that dataframe row count is within designated range"""
+    """Test that dataframe row count is within designated range."""
+    del kwargs
 
-    def _check(value: int | float) -> Result:
-        """Test that dataframe row count is within designated range"""
+    def _check(value: float) -> Result:
+        """Test that dataframe row count is within designated range."""
         checks: list[bool] = []
         if be_exactly is not None:
             checks.append(value == be_exactly)
@@ -84,23 +93,21 @@ def row_count_should(
 def average_difference_from_other_column_should(
     column: str,
     other_column: str,
-    be_exactly: float | int | None = None,
-    be_less_than: float | int | None = None,
-    be_less_than_or_equal_to: float | int | None = None,
-    be_greater_than: float | int | None = None,
-    be_greater_than_or_equal_to: float | int | None = None,
-    **kwargs,
+    be_exactly: float | None = None,
+    be_less_than: float | None = None,
+    be_less_than_or_equal_to: float | None = None,
+    be_greater_than: float | None = None,
+    be_greater_than_or_equal_to: float | None = None,
+    **kwargs: Any,
 ) -> GeneratedTest:
-    """
+    """Compare difference between two columns.
+
     Test that the average difference between column and other column are
     within designated bounds.
     """
+    del kwargs
 
-    def _check(difference: float | int) -> Result:
-        """
-        Test that the average difference between column and other column are
-        within designated bounds.
-        """
+    def _check(difference: float) -> Result:
         checks: list[bool] = []
         if be_exactly is not None:
             checks.append(difference == be_exactly)
@@ -124,25 +131,22 @@ def average_difference_from_other_column_should(
 def average_ratio_to_other_column_should(
     column: str,
     other_column: str,
-    be_exactly: float | int | None = None,
-    be_less_than: float | int | None = None,
-    be_less_than_or_equal_to: float | int | None = None,
-    be_greater_than: float | int | None = None,
-    be_greater_than_or_equal_to: float | int | None = None,
-    **kwargs,
+    be_exactly: float | None = None,
+    be_less_than: float | None = None,
+    be_less_than_or_equal_to: float | None = None,
+    be_greater_than: float | None = None,
+    be_greater_than_or_equal_to: float | None = None,
+    **kwargs: Any,
 ) -> GeneratedTest:
-    """
+    """Compare ratio between two columns.
+
     Test that the average ratio between column and other column are
     within designated bounds (for instance, a value of 1 has a ratio
-    of 0.1 to a value of 10)
+    of 0.1 to a value of 10).
     """
+    del kwargs
 
-    def _check(ratio: float | int) -> Result:
-        """
-        Test that the average ratio between column and other column are
-        within designated bounds (for instance, a value of 1 has a ratio
-        of 0.1 to a value of 10)
-        """
+    def _check(ratio: float) -> Result:
         checks: list[bool] = []
         if be_exactly is not None:
             checks.append(ratio == be_exactly)
@@ -165,16 +169,17 @@ def average_ratio_to_other_column_should(
 
 def max_string_length_should(
     column: str,
-    be_exactly: float | int | None = None,
-    be_less_than: float | int | None = None,
-    be_less_than_or_equal_to: float | int | None = None,
-    be_greater_than: float | int | None = None,
-    be_greater_than_or_equal_to: float | int | None = None,
-    **kwargs,
+    be_exactly: float | None = None,
+    be_less_than: float | None = None,
+    be_less_than_or_equal_to: float | None = None,
+    be_greater_than: float | None = None,
+    be_greater_than_or_equal_to: float | None = None,
+    **kwargs: Any,
 ) -> GeneratedTest:
-    """Test that the maximum string length is within expected bounds"""
+    """Test that the maximum string length is within expected bounds."""
+    del kwargs
 
-    def _check(max_length: int | float) -> Result:
+    def _check(max_length: float) -> Result:
         checks: list[bool] = []
         if be_exactly is not None:
             checks.append(max_length == be_exactly)
@@ -200,21 +205,18 @@ def all_values_should(
     be_one_of: list[str] | None = None,
     not_be_one_of: list[str] | None = None,
     match_regex: str | None = None,
-    **kwargs,
+    **kwargs: Any,
 ) -> GeneratedTest:
-    """
-    Test all unique values within a column are within expected group
-    """
+    """Test all unique values within a column are within expected group."""
+    del kwargs
 
     def _check(
-        success,
+        success: bool,
     ) -> Result:
         return Result(
             name=f"all-values-of-{column}",
             success=success,
-            unexpected=None
-            if success
-            else "Values did not meet given conditions",
+            unexpected=None if success else "Values did not meet given conditions",
         )
 
     expressions: list[nw.Expr] = []
@@ -232,16 +234,18 @@ def type_should(
     be: str | None = None,
     not_be: str | None = None,
     be_one_of: list[str] | None = None,
-    **kwargs,
+    **kwargs: Any,
 ) -> GeneratedTest:
-    """
-    Check that type of column meets expected criteria. Note that because Wimsey is a
-    dataframe agnostic tool, this should be of *Narwhals* expected types, such as
-    Float64, Int64, String, etc.
+    """Check for type of column.
+
+    Check that type of column meets expected criteria. Note that because Wimsey
+    is a dataframe agnostic tool, this should be of *Narwhals* expected types,
+    such as Float64, Int64, String, etc.
 
     See Narwhals' documentation for more details:
     https://narwhals-dev.github.io/narwhals/api-reference/dtypes/
     """
+    del kwargs
 
     def _check(schema_dict: dict) -> Result:
         col_type = schema_dict[column]
@@ -265,11 +269,10 @@ def columns_should(
     have: list[str] | str | None = None,
     not_have: list[str] | str | None = None,
     be: list[str] | str | None = None,
-    **kwargs,
+    **kwargs: Any,
 ) -> GeneratedTest:
-    """
-    Check that expected columns are present / non-present within dataframe
-    """
+    """Check that expected columns are present / non-present within dataframe."""
+    del kwargs
 
     def _check(schema_dict: dict) -> Result:
         _have = list(have) if isinstance(have, str) else have
@@ -278,11 +281,9 @@ def columns_should(
         checks: list[bool] = []
         present_columns = list(schema_dict)
         if _have is not None:
-            for col in _have:
-                checks.append(col in present_columns)
+            checks.extend(col in present_columns for col in _have)
         if _not_have is not None:
-            for col in _not_have:
-                checks.append(col not in present_columns)
+            checks.extend(col not in present_columns for col in _not_have)
         if _be is not None:
             checks.append(set(present_columns) == set(_be))
             checks.append(len(present_columns) == len(_be))
@@ -297,18 +298,17 @@ def columns_should(
 
 def null_count_should(
     column: str,
-    be_exactly: float | int | None = None,
-    be_less_than: float | int | None = None,
-    be_less_than_or_equal_to: float | int | None = None,
-    be_greater_than: float | int | None = None,
-    be_greater_than_or_equal_to: float | int | None = None,
-    **kwargs,
+    be_exactly: float | None = None,
+    be_less_than: float | None = None,
+    be_less_than_or_equal_to: float | None = None,
+    be_greater_than: float | None = None,
+    be_greater_than_or_equal_to: float | None = None,
+    **kwargs: Any,
 ) -> GeneratedTest:
-    """
-    Check that null count of column meets expected criteria.
-    """
+    """Check that null count of column meets expected criteria."""
+    del kwargs
 
-    def _check(null_count: int | float) -> Result:
+    def _check(null_count: float) -> Result:
         checks = []
         if be_exactly is not None:
             checks.append(null_count == be_exactly)
@@ -331,18 +331,17 @@ def null_count_should(
 
 def null_percentage_should(
     column: str,
-    be_exactly: float | int | None = None,
-    be_less_than: float | int | None = None,
-    be_less_than_or_equal_to: float | int | None = None,
-    be_greater_than: float | int | None = None,
-    be_greater_than_or_equal_to: float | int | None = None,
-    **kwargs,
+    be_exactly: float | None = None,
+    be_less_than: float | None = None,
+    be_less_than_or_equal_to: float | None = None,
+    be_greater_than: float | None = None,
+    be_greater_than_or_equal_to: float | None = None,
+    **kwargs: Any,
 ) -> GeneratedTest:
-    """
-    Check that null percentage of column meets expected criteria.
-    """
+    """Check that null percentage of column meets expected criteria."""
+    del kwargs
 
-    def _check(null_percentage: int | float) -> Result:
+    def _check(null_percentage: float) -> Result:
         checks = []
         if be_exactly is not None:
             checks.append(null_percentage == be_exactly)
@@ -367,12 +366,8 @@ possible_tests: dict[str, Callable] = {
     "mean_should": (mean_should := _range_check(nw.mean, "mean")),
     "min_should": (min_should := _range_check(nw.min, "min")),
     "max_should": (max_should := _range_check(nw.max, "max")),
-    "std_should": (
-        std_should := _range_check(lambda col: nw.col(col).std(), "stdev")
-    ),
-    "count_should": (
-        count_should := _range_check(lambda col: nw.col(col).count(), "count")
-    ),
+    "std_should": (std_should := _range_check(lambda col: nw.col(col).std(), "stdev")),
+    "count_should": (count_should := _range_check(lambda col: nw.col(col).count(), "count")),
     "row_count_should": row_count_should,
     "average_difference_from_other_column_should": average_difference_from_other_column_should,
     "average_ratio_to_other_column_should": average_ratio_to_other_column_should,

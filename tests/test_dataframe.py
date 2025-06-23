@@ -28,7 +28,7 @@ def test_that_profile_by_sampling_returns_list_of_dicts_of_expected_length() -> 
     df = pl.DataFrame({"a": [1.2, 1.3, 1.4], "b": ["one", "two", None]})
     actual = dataframe.profile_from_sampling(df, samples=10, n=1)
     assert len(actual) == 10
-    assert actual[0]["mean_a"] in [1.2, 1.3, 1.4]
+    assert actual[0]["mean_a"] in {1.2, 1.3, 1.4}
     assert actual[4]["columns"] == "a_^&^_b"
 
 
