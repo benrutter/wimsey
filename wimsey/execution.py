@@ -1,48 +1,41 @@
-from typing import Callable, Any
-from dataclasses import dataclass
+"""Functions relating to execution of defined tests."""
 
-from narwhals.typing import FrameT
+from __future__ import annotations
 
-from wimsey.dataframe import describe
-from wimsey.tests import Result
-from wimsey.config import read_config, collect_tests
+from typing import TYPE_CHECKING, Any
 
+import narwhals.stable.v1 as nw
 
-@dataclass
-class FinalResult:
-    success: bool
-    results: list[Result]
+from wimsey.config import collect_tests, read_config
+from wimsey.dataframe import evaluate
+from wimsey.types import DataValidationError, FinalResult
 
+if TYPE_CHECKING:
+    from narwhals.stable.v1.typing import FrameT
 
-class DataValidationException(Exception): ...
-
-
-def _as_set(val: Any) -> set:
-    """
-    Internal function, if val is none, return empty set,
-    otherwise return set of just val
-    """
-    return {val} if val is not None else set()
+    from wimsey.tests import Result
+    from wimsey.types import GeneratedTest, MagicExpr
 
 
-def run_all_tests(df: FrameT, tests: list[Callable[[Any], Result]]) -> FinalResult:
-    """
-    Run all given tests on a dataframe. Will return a `FinalResult` object
-    """
-    columns: set[str] | None = set()
-    metrics: set[str] | None = []
-    for test in tests:
-        metrics += test.required_metrics
-        columns |= _as_set(test.keywords.get("column"))
-        columns |= _as_set(test.keywords.get("other_column"))
-    description: dict[str, Any] = describe(
+def run_all_tests(df: FrameT, tests: list[GeneratedTest]) -> FinalResult:
+    """Run all given tests on a dataframe. Will return a `FinalResult` object."""
+    metrics: list[nw.Expr | MagicExpr] = []
+    for i, expr_tuple in enumerate(tests):
+        expr, _ = expr_tuple
+        if isinstance(expr, nw.Expr):
+            metrics.append(expr.alias(str(i)))
+    evaluation: dict[str, Any] = evaluate(
         df,
-        columns=list(columns),
         metrics=metrics,
     )
     results: list[Result] = []
-    for i_test in tests:
-        results.append(i_test(description))
+    for i, expr_tuple in enumerate(tests):
+        expr, check = expr_tuple
+        results.append(
+            check(
+                evaluation[str(i)] if isinstance(expr, nw.Expr) else evaluation[expr.expr_name],
+            ),
+        )
     return FinalResult(
         success=all(i.success for i in results),
         results=results,
@@ -50,9 +43,12 @@ def run_all_tests(df: FrameT, tests: list[Callable[[Any], Result]]) -> FinalResu
 
 
 def test(
-    df: FrameT, contract: str | list[dict] | dict, storage_options: dict | None = None
+    df: FrameT,
+    contract: str | list[dict] | dict,
+    storage_options: dict | None = None,
 ) -> FinalResult:
-    """
+    """Test a dataframe against a data contract.
+
     Carry out tests on dataframe and return results. This will *not* raise
     an exception on test failure, and will instead return a 'final_result'
     object, with a boolean 'success' field, and a detailed list of individual
@@ -74,7 +70,8 @@ def validate(
     contract: str | list[dict] | dict,
     storage_options: dict | None = None,
 ) -> FrameT:
-    """
+    """Validate a dataframe against a data contract.
+
     Carry out tests on dataframe, returning original dataframe if tests are
     successful, and raising a DataValidationException in case of failure.
     """
@@ -85,11 +82,9 @@ def validate(
     )
     if not results.success:
         failures: list[str] = [
-            f"{i.name} (unexpected: {i.unexpected})"
-            for i in results.results
-            if not i.success
+            f"{i.name} (unexpected: {i.unexpected})" for i in results.results if not i.success
         ]
         newline = "\n - "
         msg = f"At least one test failed:\n - {newline.join(failures)}"
-        raise DataValidationException(msg)
+        raise DataValidationError(msg)
     return df

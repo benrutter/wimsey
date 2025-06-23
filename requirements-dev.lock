@@ -183,6 +183,7 @@ toolz==1.0.0
 traitlets==5.14.3
     # via ipython
     # via matplotlib-inline
+ty==0.0.1a11
 types-pyyaml==6.0.12.20241230
 typing-extensions==4.12.2
     # via astroid

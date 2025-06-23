@@ -1,45 +1,46 @@
+"""Configuration loading/saving functions."""
+
+from __future__ import annotations
+
 import json
-from typing import Any, Callable
+from typing import Any, Callable, cast
 
 import fsspec
+import narwhals.stable.v1 as nw
 
 from wimsey.tests import possible_tests
 
 
-def collect_tests(config: list[dict] | dict | list[Callable]) -> list[Callable]:
-    """
-    Take a configuration, and build out tests
-    """
-    list_config: list[dict] | list[Callable] = (
-        config if isinstance(config, list) else [config]
-    )
-    if isinstance(list_config[0], Callable):
-        return list_config
-    tests: list[Callable] = []
-    for item in list_config:
+def collect_tests(config: list[dict] | dict | list[tuple]) -> list[tuple]:
+    """Take a configuration, and build out tests."""
+    list_config: list[dict] | list[tuple] = config if isinstance(config, list) else [config]
+    if isinstance(list_config[0], tuple) and isinstance(list_config[0][0], nw.Expr):
+        return cast("list[tuple]", list_config)
+    dict_list: list[dict] = list_config  # type: ignore[assignment]
+    tests: list[tuple] = []
+    for item in dict_list:
         test_name: str | None = item.get("test")
         test: Callable | None = None
         if test_name:
-            test = possible_tests.get(item.get("test"))(**item)  # type: ignore[arg-type]
+            test = possible_tests.get(item.get("test"))  # type: ignore[arg-type]
         if test is None:
             msg = (
                 "Issue reading configuration, for at least one test, either no "
-                "test is named, or a mispelt/unimplemented test is given"
+                "test is named, or a mispelt/unimplemented test is given.\n"
+                f"Specifically, could not find: {test_name!s}"
             )
             raise ValueError(msg)
-        tests.append(test)
+        tests.append(test(**item))
     return tests
 
 
-def read_config(path: str, storage_options: dict | None = None) -> list[Callable]:
-    """
-    Read a json or yaml configuration, and return list of test callables
-    """
+def read_config(path: str, storage_options: dict | None = None) -> list[tuple]:
+    """Read a json or yaml configuration, and return list of test callables."""
     storage_options_dict: dict = storage_options or {}
-    config: dict
+    config: dict | list[dict]
     with fsspec.open(path, "rt", **storage_options_dict) as file:
         contents = file.read()
-    if path.endswith(".yaml") or path.endswith(".yml"):
+    if path.endswith((".yaml", ".yml")):
         try:
             import yaml
 
@@ -53,15 +54,16 @@ def read_config(path: str, storage_options: dict | None = None) -> list[Callable
             )
             raise ImportError(msg) from exception
     config = parse_contents(json.loads(contents))
-    return collect_tests(config)  # type: ignore[arg-type]
+    return collect_tests(config)
 
 
 def parse_contents(contents: Any) -> list[dict] | dict:
+    """Parse contents of loaded json/yaml into list of tests."""
     if isinstance(contents, list):
         return contents
     if isinstance(contents, dict):
         if isinstance(contents.get("tests"), list):
-            return contents.get("tests")
+            return cast("dict | list[dict]", contents.get("tests"))
         return contents
     msg = (
         "It looks like the json/yaml file parsed in is either invalid "

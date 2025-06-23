@@ -1,17 +1,25 @@
+"""Functions for profiling and building tests."""
+
+from __future__ import annotations
+
 import json
 from enum import Enum, auto
-from typing import Iterable
 from statistics import stdev
+from typing import TYPE_CHECKING, Any
 
 import fsspec
-from narwhals.stable.v1.typing import FrameT
 
-from wimsey.dataframe import profile_from_sampling, profile_from_samples
+from wimsey.dataframe import profile_from_samples, profile_from_sampling
 from wimsey.execution import validate
+
+if TYPE_CHECKING:
+    from collections.abc import Iterable
+
+    from narwhals.stable.v1.typing import FrameT
 
 
 class _StarterTestStatus(Enum):
-    """Internal class to mark out column consistency for use"""
+    """Internal class to mark out column consistency for use."""
 
     UNSET = auto()
     SET = auto()
@@ -22,8 +30,7 @@ def starter_tests_from_samples(
     samples: Iterable[FrameT],
     margin: float = 1,
 ) -> list[dict]:
-    """
-    From a list of supported dataframes, produce a list of passing tests.
+    """From a list of supported dataframes, produce a list of passing tests.
 
     Margin is worth explaining here, as it's the amount of *extra margin* tests
     are given, based on standard deviation. If three dataframes are given, with
@@ -34,7 +41,7 @@ def starter_tests_from_samples(
     the above example, Wimsey will test for a maximum for 4. This can be tuned with
     the 'margin' keyword.
     """
-    df_samples = profile_from_samples(samples)
+    df_samples: list[dict[str, Any]] = profile_from_samples(samples)
     return _starter_tests_from_sample_describes(df_samples, margin)
 
 
@@ -44,7 +51,8 @@ def save_starter_tests_from_samples(
     margin: float = 1,
     storage_options: dict | None = None,
 ) -> None:
-    """
+    """Build and save starter tests from iterable of dataframe.
+
     See starter_tests_from_samples for more information, will additionally
     save tests as yaml or json dependend on path extension.
     """
@@ -62,7 +70,8 @@ def save_starter_tests_from_sampling(
     margin: float = 1,
     storage_options: dict | None = None,
 ) -> None:
-    """
+    """Create and save starter tests from dataframe.
+
     See starter_tests_from_sampling for more information, will additionally
     save tests as yaml or json dependend on path extension.
     """
@@ -82,7 +91,7 @@ def _save_starter_tests(
     tests: list[dict],
     storage_options: dict | None = None,
 ) -> None:
-    if path.endswith(".yaml") or path.endswith(".yml"):
+    if path.endswith((".yaml", ".yml")):
         try:
             import yaml
         except ImportError as exception:  # pragma: no cover
@@ -106,7 +115,8 @@ def starter_tests_from_sampling(
     fraction: int | None = None,
     margin: float = 1,
 ) -> list[dict]:
-    """
+    """Build out starter tests from a dataframe.
+
     From a supported dataframe, produce a list of passing tests by sampling the
     dataframe. Note n *or* fraction should be given, but not both. Keyword `samples`
     relates to the *number of samples* to take, whereas `n` relates to the *size of
@@ -128,11 +138,8 @@ def starter_tests_from_sampling(
 def _starter_tests_from_sample_describes(
     samples: list[dict],
     margin: float = 1,
-) -> dict:
-    """
-    Internal function doing the main body of work for building out tests once sample
-    describes have been taken.
-    """
+) -> list[dict]:
+    """Build out starter tests from `describe` dictionary returs."""
     column_test: dict = {"test": "columns_should", "status": _StarterTestStatus.UNSET}
     for sample in samples:
         column_test = _update_column_starter_test(column_test, sample)
@@ -153,11 +160,11 @@ def _starter_tests_from_sample_describes(
             column_test["be"],
             margin=margin,
         )
-    return column_tests + [column_test]
+    return [*column_tests, column_test]
 
 
 def _update_column_starter_test(starter: dict, sample: dict) -> dict:
-    """Internal function to update columns for a given iteration."""
+    """Update column checks for a single sample."""
     sample_columns = set(sample["columns"].split("_^&^_"))
     if starter["status"] is _StarterTestStatus.UNSET:
         starter["be"] = list(sample_columns)
@@ -165,7 +172,7 @@ def _update_column_starter_test(starter: dict, sample: dict) -> dict:
     elif starter["status"] is _StarterTestStatus.CANCELLED:  # pragma: no cover
         pass
     elif starter.get("be") is not None and set(starter["be"]) != set(
-        sample_columns
+        sample_columns,
     ):  # pragma: no cover
         old_be = starter.pop("be")
         new_have = set(old_be) & set(sample_columns)
@@ -182,12 +189,10 @@ def _stat_starter_tests(
     columns: list[str],
     margin: float,
 ) -> list[dict]:
-    """Internal function to build statistical starter tests from sample describes"""
+    """Build out statistical starter tests."""
     tests: list[dict] = []
     for column in columns:
-        values = [
-            i[f"{stat}_{column}"] for i in samples if i[f"{stat}_{column}"] is not None
-        ]
+        values = [i[f"{stat}_{column}"] for i in samples if i[f"{stat}_{column}"] is not None]
         if len(values) == 0:
             continue
         absolute_margin = stdev(values) * margin
@@ -212,13 +217,13 @@ def _type_starter_tests(
     samples: list[dict],
     columns: list[str],
 ) -> list[dict]:
-    """Internal function to build 'column x should be type y' tests from sample describes"""
+    """Build out type based starter tests."""
     tests: list[dict] = []
     for column in columns:
-        types = set(i[f"type_{column}"] for i in samples)
-        test = {"column": column, "test": "type_should"}
+        types: set[str] = {i[f"type_{column}"] for i in samples}
+        test: dict[str, Any] = {"column": column, "test": "type_should"}
         if len(types) == 1:
-            test |= {"be": list(types)[0]}
+            test |= {"be": next(iter(types))}
         else:  # pragma: no cover
             test |= {"be_one_of": list(types)}
         tests.append(test)
@@ -234,16 +239,16 @@ def validate_or_build(
     margin: float = 1,
     storage_options: dict | None = None,
 ) -> FrameT:
-    """
-    Will attempt to validate based on a given contract, but if that contract does not exist yet
-    will generate one from sampling the dataset.
+    """Validate dataframe if test file exists, otherwise make one.
+
+    Test file will be generated from multple samples of dataset.
 
     Will fall back to starter_tests_from_sampling (a list samples is not possible with
     only one dataframe), see *starter_tests_from_sampling* and *save_starter_tests_from_sampling*
     for more details on use of keyword arguments aside from df, contract and storage_options.
     """
     try:
-        validate(df, contract=contract, storage_options=storage_options)
+        return validate(df, contract=contract, storage_options=storage_options)
     except FileNotFoundError:
         save_starter_tests_from_sampling(
             path=contract,
@@ -253,3 +258,4 @@ def validate_or_build(
             fraction=fraction,
             margin=margin,
         )
+        return df

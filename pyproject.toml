@@ -1,7 +1,7 @@
 [project]
 name = "wimsey"
 dynamic = ["version"]
-description = "A lightweight data contracts framework"
+description = "A lightweight data contracts library"
 authors = [
     { name = "Ben", email = "benrutter@posteo.net" }
 ]
@@ -16,15 +16,19 @@ requires-python = ">= 3.10"
 requires = ["hatchling"]
 build-backend = "hatchling.build"
 
-[tool.rye]
-managed = true
-dev-dependencies = [
+[tool.hatch.metadata]
+allow-direct-references = true
+
+[tool.hatch.version]
+path = "wimsey/_version.py"
+
+[dependency-groups]
+dev = [
     "ipdb>=0.13.13",
     "ipython>=8.21.0",
     "pandas>=2.2.3",
     "pyyaml>=6.0.2",
     "polars>=1.10.0",
-    "mypy>=1.13.0",
     "types-pyyaml>=6.0.12.20240917",
     "dask>=2024.10.0",
     "dask-expr>=1.1.16",
@@ -34,11 +38,75 @@ dev-dependencies = [
     "grip>=4.6.2",
     "mkdocs-charts-plugin>=0.0.12",
     "coverage>=7.6.10",
-    "pylint>=3.3.3",
+    "ty>=0.0.1a11",
+    "ruff>=0.12.0",
 ]
 
-[tool.hatch.metadata]
-allow-direct-references = true
 
-[tool.hatch.version]
-path = "wimsey/_version.py"
+[tool.ruff]
+line-length = 100
+fix = true
+include = ["wimsey/**.py"]
+target-version = "py39"
+
+[tool.ruff.lint]
+preview = true
+explicit-preview-rules = true
+typing-modules = ["narwhals._typing_compat"]
+
+extend-safe-fixes = [
+  "C419",    # unnecessary-comprehension-in-call
+  "C420",    # unnecessary-dict-comprehension-for-iterable
+  "PLR6201", # literal-membership
+  "TC",      # flake8-type-checking
+  "UP",      # pyupgrade
+]
+extend-select = [
+  "PLR0914", # too-many-locals
+  "PLR0916", # too-many-boolean-expressions
+  "PLR1702", # too-many-nested-blocks
+  "PLR6201", # literal-membership
+]
+
+select = [
+    "W",
+    "E",
+    "A",
+    "F",
+    "D",
+    "C4",
+    "COM",
+    "ERA",
+    "ICN",
+    "PIE",
+    "RET",
+    "SIM",
+    "ARG",
+    "I",
+    "NPY",
+    "N",
+    "UP",
+    "FURB",
+    "FIX001",
+    "FIX002",
+    "TC001",
+    "TC002",
+    "TC003",
+    "TC004",
+    "ANN001",
+    "ANN205",
+    "ANN204",
+]
+
+ignore = [
+    "E501",  # max-line-length-80
+    "D203",  # blank-line-before-class-docstring
+    "D213",  # multi-line-summary-second-line
+]
+
+[tool.coverage.report]
+exclude_also = [
+    'if TYPE_CHECKING:',
+    '^\s*\.\.\.\s*$',  # <- line of "..." (no code)
+    '^\s*pass\s*$',  # <- line of "pass"
+]
