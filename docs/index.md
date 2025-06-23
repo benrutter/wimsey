@@ -1,6 +1,5 @@
-# Wimsey 🔍
-
-<img src="./assets/wimsey-on-a-computer.jpg" alt="A line drawing of Lord Peter Wimsey looking at a computer through a microscope" width="300" />
+<img src="./assets/wimsey-text.png" alt="Wimsey" width="300" />
+<img src="./assets/wimsey-icon.png" alt="Pixel art of a detective with a microscope" height="50" width="50" style="image-rendering: crisp-edges" />
 
 Wimsey is a lightweight, flexible and fully open-source data contract library. It's designed to let you:
 

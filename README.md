@@ -1,13 +1,15 @@
-# Wimsey 🔍
+<div style="display: flex;">
+  <img src="./docs/assets/wimsey-text.png" alt="Wimsey" width="300" />
+  <img src="./docs/assets/wimsey-icon.png" alt="Pixel art of a detective with a microscope" width="50" style="image-rendering: crisp-edges" />
+</div>
 
 [![PyPI version](https://badge.fury.io/py/wimsey.svg)](https://pypi.org/project/wimsey/)
-[![License](https://img.shields.io/github/license/benrutter/wimsey)](https://github.com/benrutter/wimsey/blob/main/LICENSE)
-[![Static Badge](https://img.shields.io/badge/Docs-mkdocs-blue)](https://benrutter.github.io/wimsey)
+[![Docs](https://img.shields.io/badge/Docs-mkdocs-blue)](https://benrutter.github.io/wimsey)
+![License](https://img.shields.io/badge/license-MIT-blue)
 ![coverage](https://img.shields.io/badge/coverage-100-green)
 
-<img src="./docs/assets/wimsey-on-a-computer.jpg" alt="A line drawing of Lord Peter Wimsey looking at a computer through a microscope" width="300" />
 
-A lightweight, flexible and fully open-source data contract library.
+Wimsey is lightweight, flexible and fully open-source data contract library.
 
 - 🐋 **Bring your own dataframe library**: Built on top of [Narwhals](https://github.com/narwhals-dev/narwhals) so your tests are carried out natively in your own dataframe library (including Pandas, Polars, Pyspark, Dask, DuckDB, CuDF, Rapids, Arrow and Modin)
 - 🎍 **Bring your own contract format**: Write contracts in yaml, json or python - whichever you prefer!
