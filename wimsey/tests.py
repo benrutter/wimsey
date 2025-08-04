@@ -9,7 +9,7 @@ from typing import Any, Callable
 
 import narwhals.stable.v1 as nw
 
-from wimsey.types import GeneratedTest, Result, schema
+from wimsey.types import GeneratedTest, Result, _schema
 
 
 def _range_check(
@@ -262,7 +262,7 @@ def type_should(
             unexpected=col_type if not all(checks) else None,
         )
 
-    return schema, _check
+    return _schema, _check
 
 
 def columns_should(
@@ -293,7 +293,7 @@ def columns_should(
             unexpected=present_columns if not all(checks) else None,
         )
 
-    return schema, _check
+    return _schema, _check
 
 
 def null_count_should(
@@ -362,7 +362,7 @@ def null_percentage_should(
     return (nw.col(column).null_count() / nw.col(column).len()), _check
 
 
-possible_tests: dict[str, Callable] = {
+_possible_tests: dict[str, Callable] = {
     "mean_should": (mean_should := _range_check(nw.mean, "mean")),
     "min_should": (min_should := _range_check(nw.min, "min")),
     "max_should": (max_should := _range_check(nw.max, "max")),

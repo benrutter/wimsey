@@ -9,8 +9,9 @@ from typing import TYPE_CHECKING, Any
 
 import fsspec
 
-from wimsey.dataframe import profile_from_samples, profile_from_sampling
-from wimsey.execution import validate
+from wimsey.dataframe import _profile_from_samples, _profile_from_sampling
+from wimsey.execution import test, validate
+from wimsey.types import FinalResult, Result
 
 if TYPE_CHECKING:
     from collections.abc import Iterable
@@ -41,7 +42,7 @@ def starter_tests_from_samples(
     the above example, Wimsey will test for a maximum for 4. This can be tuned with
     the 'margin' keyword.
     """
-    df_samples: list[dict[str, Any]] = profile_from_samples(samples)
+    df_samples: list[dict[str, Any]] = _profile_from_samples(samples)
     return _starter_tests_from_sample_describes(df_samples, margin)
 
 
@@ -131,7 +132,7 @@ def starter_tests_from_sampling(
     the above example, Wimsey will test for a maximum for 4. This can be tuned with
     the 'margin' keyword.
     """
-    df_samples = profile_from_sampling(df, samples, n, fraction)
+    df_samples = _profile_from_sampling(df, samples, n, fraction)
     return _starter_tests_from_sample_describes(df_samples, margin)
 
 
@@ -259,3 +260,34 @@ def validate_or_build(
             margin=margin,
         )
         return df
+
+
+def test_or_build(
+    df: FrameT,
+    contract: str,
+    samples: int = 100,
+    n: int | None = None,
+    fraction: int | None = None,
+    margin: float = 1,
+    storage_options: dict | None = None,
+) -> FinalResult:
+    """Validate dataframe if test file exists, otherwise make one.
+
+    Test file will be generated from multple samples of dataset.
+
+    Will fall back to starter_tests_from_sampling (a list samples is not possible with
+    only one dataframe), see *starter_tests_from_sampling* and *save_starter_tests_from_sampling*
+    for more details on use of keyword arguments aside from df, contract and storage_options.
+    """
+    try:
+        return test(df, contract=contract, storage_options=storage_options)
+    except FileNotFoundError:
+        save_starter_tests_from_sampling(
+            path=contract,
+            df=df,
+            samples=samples,
+            n=n,
+            fraction=fraction,
+            margin=margin,
+        )
+        return FinalResult(True, [Result("tests-generated", True)])

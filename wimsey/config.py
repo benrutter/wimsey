@@ -8,10 +8,10 @@ from typing import Any, Callable, cast
 import fsspec
 import narwhals.stable.v1 as nw
 
-from wimsey.tests import possible_tests
+from wimsey.tests import _possible_tests
 
 
-def collect_tests(config: list[dict] | dict | list[tuple]) -> list[tuple]:
+def _collect_tests(config: list[dict] | dict | list[tuple]) -> list[tuple]:
     """Take a configuration, and build out tests."""
     list_config: list[dict] | list[tuple] = config if isinstance(config, list) else [config]
     if isinstance(list_config[0], tuple) and isinstance(list_config[0][0], nw.Expr):
@@ -22,7 +22,7 @@ def collect_tests(config: list[dict] | dict | list[tuple]) -> list[tuple]:
         test_name: str | None = item.get("test")
         test: Callable | None = None
         if test_name:
-            test = possible_tests.get(item.get("test"))  # type: ignore[arg-type]
+            test = _possible_tests.get(item.get("test"))  # type: ignore[arg-type]
         if test is None:
             msg = (
                 "Issue reading configuration, for at least one test, either no "
@@ -34,7 +34,7 @@ def collect_tests(config: list[dict] | dict | list[tuple]) -> list[tuple]:
     return tests
 
 
-def read_config(path: str, storage_options: dict | None = None) -> list[tuple]:
+def _read_config(path: str, storage_options: dict | None = None) -> list[tuple]:
     """Read a json or yaml configuration, and return list of test callables."""
     storage_options_dict: dict = storage_options or {}
     config: dict | list[dict]
@@ -44,8 +44,8 @@ def read_config(path: str, storage_options: dict | None = None) -> list[tuple]:
         try:
             import yaml
 
-            config = parse_contents(yaml.safe_load(contents))
-            return collect_tests(config)  # type: ignore[arg-type]
+            config = _parse_contents(yaml.safe_load(contents))
+            return _collect_tests(config)  # type: ignore[arg-type]
         except ImportError as exception:
             msg = (
                 "It looks like you're trying to import a yaml configured "
@@ -53,11 +53,11 @@ def read_config(path: str, storage_options: dict | None = None) -> list[tuple]:
                 "install of pyyaml (`pip install pyyaml`)"
             )
             raise ImportError(msg) from exception
-    config = parse_contents(json.loads(contents))
-    return collect_tests(config)
+    config = _parse_contents(json.loads(contents))
+    return _collect_tests(config)
 
 
-def parse_contents(contents: Any) -> list[dict] | dict:
+def _parse_contents(contents: Any) -> list[dict] | dict:
     """Parse contents of loaded json/yaml into list of tests."""
     if isinstance(contents, list):
         return contents

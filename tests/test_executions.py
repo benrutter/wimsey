@@ -11,7 +11,7 @@ def test_run_all_tests_produces_expected_result_object() -> None:
         tests.type_should(column="b", be_one_of=["string", "int64"]),
     ]
     df = pl.DataFrame({"a": [1, 2, 3], "b": ["hat", "bat", "cat"]})
-    actual = execution.run_all_tests(df, tests_to_carry_out)
+    actual = execution._run_all_tests(df, tests_to_carry_out)
     assert actual.success is True
     for result in actual.results:
         assert result.success is True
@@ -50,7 +50,7 @@ def test_row_count_expectations_pass_when_expected() -> None:
         ),
     ]
     df = pl.DataFrame({"a": [1, 2, 3], "b": ["hat", "bat", "cat"]})
-    actual = execution.run_all_tests(df, tests_to_carry_out)
+    actual = execution._run_all_tests(df, tests_to_carry_out)
     assert actual.success is True
     for result in actual.results:
         assert result.success is True
@@ -65,7 +65,7 @@ def test_columns_should_have_expectations_fail_when_expected() -> None:
         ),
     ]
     df = pl.DataFrame({"a": [1, 2, 3], "b": ["hat", "bat", "cat"]})
-    actual = execution.run_all_tests(df, tests_to_carry_out)
+    actual = execution._run_all_tests(df, tests_to_carry_out)
     assert actual.success is False
 
 
@@ -77,7 +77,7 @@ def test_column_type_tests_pass_when_expected() -> None:
         tests.type_should(column="b", be="string"),
     ]
     df = pl.DataFrame({"a": [1, 2, 3], "b": ["hat", "bat", "cat"]})
-    actual = execution.run_all_tests(df, tests_to_carry_out)
+    actual = execution._run_all_tests(df, tests_to_carry_out)
     assert actual.success is True
     for result in actual.results:
         assert result.success is True
@@ -96,7 +96,7 @@ def test_average_column_difference_tests_pass_when_expected() -> None:
         ),
     ]
     df = pl.DataFrame({"a": [1, 2, 3], "b": [1, 2, 3]})
-    actual = execution.run_all_tests(df, tests_to_carry_out)
+    actual = execution._run_all_tests(df, tests_to_carry_out)
     assert actual.success is True
     for result in actual.results:
         assert result.success is True
@@ -115,7 +115,7 @@ def test_average_column_ratio_tests_pass_when_expected() -> None:
         ),
     ]
     df = pl.DataFrame({"a": [1, 2, 3], "b": [2, 4, 6]})
-    actual = execution.run_all_tests(df, tests_to_carry_out)
+    actual = execution._run_all_tests(df, tests_to_carry_out)
     assert actual.success is True
     for result in actual.results:
         assert result.success is True
@@ -133,7 +133,7 @@ def test_max_string_length_tests_fail_when_expected() -> None:
         ),
     ]
     df = pl.DataFrame({"a": ["cat", "bat", "ssssssssssssssnake"]})
-    actual = execution.run_all_tests(df, tests_to_carry_out)
+    actual = execution._run_all_tests(df, tests_to_carry_out)
     assert actual.success is False
 
 
@@ -147,7 +147,7 @@ def test_all_values_tests_succeed_when_expected() -> None:
         ),
     ]
     df = pl.DataFrame({"a": ["cat", "bat"]})
-    actual = execution.run_all_tests(df, tests_to_carry_out)
+    actual = execution._run_all_tests(df, tests_to_carry_out)
     assert actual.success is True
     for result in actual.results:
         assert result.success is True

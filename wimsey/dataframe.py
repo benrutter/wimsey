@@ -42,7 +42,7 @@ def _validate_df_has_columns(df: NwDataFrame) -> NwDataFrame:
     return df
 
 
-def evaluate(
+def _evaluate(
     df: IntoFrame,
     metrics: list[nw.Expr],
 ) -> dict[str, Any]:
@@ -56,7 +56,7 @@ def evaluate(
     return evaluation_dict | {"schema": schema_dict}
 
 
-def describe(
+def _describe(
     df: IntoFrame,
 ) -> dict[str, Any]:
     """Retrieve dictionary discribing dataframe.
@@ -112,7 +112,7 @@ def describe(
     return _narwhals_to_dict(df_metrics)
 
 
-def profile_from_sampling(
+def _profile_from_sampling(
     df: IntoFrame,
     samples: int = 100,
     n: int | None = None,
@@ -121,13 +121,13 @@ def profile_from_sampling(
     """Return profiles from sampling a single dataframe."""
     nw_df = nw.from_native(df)
     return [
-        describe(nw_df.sample(n=n, fraction=fraction, with_replacement=True))  # type: ignore[union-attr]
+        _describe(nw_df.sample(n=n, fraction=fraction, with_replacement=True))  # type: ignore[union-attr]
         for _ in range(samples)
     ]  # type: ignore[union-attr]
 
 
-def profile_from_samples(
+def _profile_from_samples(
     samples: Iterable[IntoFrame],
 ) -> list[dict[str, Any]]:
     """Return profiles from individual samples."""
-    return [describe(i) for i in samples]
+    return [_describe(i) for i in samples]

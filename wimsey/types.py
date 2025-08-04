@@ -7,7 +7,7 @@ import narwhals.stable.v1 as nw
 
 
 @dataclass
-class MagicExpr:
+class _MagicExpr:
     """Type for use in place of nw.Expr.
 
     Special Wimsey object for special data such as column names that aren't
@@ -17,7 +17,7 @@ class MagicExpr:
     expr_name: str
 
 
-schema = MagicExpr("schema")
+_schema = _MagicExpr("schema")
 
 
 class DataValidationError(Exception):
@@ -41,4 +41,4 @@ class FinalResult:
     results: list[Result]
 
 
-GeneratedTest: TypeAlias = tuple[nw.Expr | MagicExpr, Callable[[Any], Result]]
+GeneratedTest: TypeAlias = tuple[nw.Expr | _MagicExpr, Callable[[Any], Result]]

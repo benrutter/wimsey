@@ -3,7 +3,7 @@ import textwrap
 
 import yaml
 
-from wimsey.tests import possible_tests
+from wimsey.tests import _possible_tests
 
 arg_examples = {
     "column": "column_a",
@@ -81,7 +81,7 @@ if __name__ == "__main__":
         "required, and you can give as many or as few keywords as you like "
         "with the exception of where `column` is required."
     )
-    for test_name, test_generator in possible_tests.items():
+    for test_name, test_generator in _possible_tests.items():
         test_doc_string = test_generator.__doc__
         assert isinstance(test_doc_string, str), (
             f"{test_generator.__name__} has no docstring, this is required for doc generation"

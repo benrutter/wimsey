@@ -1,9 +1,8 @@
-<div style="display: flex;">
-  <img src="./docs/assets/wimsey-text.png" alt="Wimsey" width="300" />
-  <img src="./docs/assets/wimsey-icon.png" alt="Pixel art of a detective with a microscope" width="50" style="image-rendering: crisp-edges" />
-</div>
+# 🔍 Wimsey
 
-[![PyPI version](https://badge.fury.io/py/wimsey.svg)](https://pypi.org/project/wimsey/)
+[![Codeberg](https://img.shields.io/badge/Codeberg-2185D0?style=for-the-badge&logo=Codeberg&logoColor=white)](https://codeberg.org/benrutter/wimsey)
+[![PyPi](https://img.shields.io/badge/pypi-%23ececec.svg?style=for-the-badge&logo=pypi&logoColor=1f73b7)](https://pypi.org/project/wimsey/)
+
 [![Docs](https://img.shields.io/badge/Docs-mkdocs-blue)](https://benrutter.github.io/wimsey)
 ![License](https://img.shields.io/badge/license-MIT-blue)
 ![coverage](https://img.shields.io/badge/coverage-100-green)
@@ -70,6 +69,6 @@ else:
 
 # Roadmap, Contributing & Feedback
 
-Wimsey is very new! There's a lot more to come soon in the form of additional available data tests, better test coverage, performance improvements and friendly error messages. Once the fundamentals are polished, next up is developing a handy API for "data profiling" (generate minimal tests from a sample of data).
+Wimsey is still pre v1. There's a lot more to come soon in the form of additional available data tests and friendly error messages. Data profiling in particular is still being developed, and liable to change behaviour at fairly short notice.
 
-Wimsey is ready to mingle! If you have ideas or feedback, including additional tests you'd want to see, please feel free to [raise an issue](https://github.com/benrutter/wimsey/issues) or submit [a pull request](https://github.com/benrutter/wimsey/pulls).
+Wimsey's mirrored on github, but hosted and developed on [codeberg](https://codeberg.org/benrutter/wimsey). Issues and pull requests are accepted on both.

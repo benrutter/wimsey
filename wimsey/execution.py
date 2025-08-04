@@ -6,25 +6,25 @@ from typing import TYPE_CHECKING, Any
 
 import narwhals.stable.v1 as nw
 
-from wimsey.config import collect_tests, read_config
-from wimsey.dataframe import evaluate
+from wimsey.config import _collect_tests, _read_config
+from wimsey.dataframe import _evaluate
 from wimsey.types import DataValidationError, FinalResult
 
 if TYPE_CHECKING:
     from narwhals.stable.v1.typing import FrameT
 
     from wimsey.tests import Result
-    from wimsey.types import GeneratedTest, MagicExpr
+    from wimsey.types import GeneratedTest, _MagicExpr
 
 
-def run_all_tests(df: FrameT, tests: list[GeneratedTest]) -> FinalResult:
+def _run_all_tests(df: FrameT, tests: list[GeneratedTest]) -> FinalResult:
     """Run all given tests on a dataframe. Will return a `FinalResult` object."""
-    metrics: list[nw.Expr | MagicExpr] = []
+    metrics: list[nw.Expr | _MagicExpr] = []
     for i, expr_tuple in enumerate(tests):
         expr, _ = expr_tuple
         if isinstance(expr, nw.Expr):
             metrics.append(expr.alias(str(i)))
-    evaluation: dict[str, Any] = evaluate(
+    evaluation: dict[str, Any] = _evaluate(
         df,
         metrics=metrics,
     )
@@ -58,11 +58,11 @@ def test(
     see `validate` function.
     """
     tests = (
-        read_config(path=contract, storage_options=storage_options)
+        _read_config(path=contract, storage_options=storage_options)
         if isinstance(contract, str)
-        else collect_tests(contract)
+        else _collect_tests(contract)
     )
-    return run_all_tests(df, tests)
+    return _run_all_tests(df, tests)
 
 
 def validate(
