@@ -6,8 +6,8 @@ steps:
   - name: tests
     image: python
     commands:
-      - python -m pip install --upgrade pip
-      - python -m pip install -r requirements-dev.lock
-      - python -m coverage run -m pytest
-      - python -m coverage report --fail-under=100
-      - python -m ty check wimsey
+      - python -m pip install pipx
+      - pipx install uv
+      - uv run coverage run -m pytest
+      - uv run coverage report --fail-under=100
+      - uv run ty check wimsey
