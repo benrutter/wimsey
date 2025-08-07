@@ -1,0 +1,21 @@
+when:
+  - event: push
+    branch: main
+  - path:
+      include: ["wimsey/_version.py"]
+
+steps:
+  - name: release
+    image: python
+    commands:
+      - python -m pip install --upgrade pip
+      - python -m pip install -r requirements-dev.lock
+      - python -m pip install twine
+      - python -m pip install flit
+      - python -m flit build
+      - python -m twine upload dist/*
+    environment:
+      TWINE_USERNAME:
+        from_secret: twine_username
+      TWINE_PASSWORD:
+        from_secret: twine_password
