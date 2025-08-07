@@ -13,5 +13,5 @@ steps:
       - uv build
       - uv publish
     environment:
-      UV_PUBLISH_TOKEN
+      UV_PUBLISH_TOKEN:
         from_secret: pypi_token
