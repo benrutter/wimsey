@@ -7,8 +7,8 @@ steps:
     image: python
     commands:
       - python -m pip install pipx
-      - pipx ensurepath
       - pipx install uv
+      - pipx ensurepath
       - uv run coverage run -m pytest
       - uv run coverage report --fail-under=100
       - uv run ty check wimsey
