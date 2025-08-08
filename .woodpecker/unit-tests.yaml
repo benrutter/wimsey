@@ -7,6 +7,7 @@ steps:
     image: python
     commands:
       - python -m pip install pipx
+      - pipx ensurepath
       - pipx install uv
       - uv run coverage run -m pytest
       - uv run coverage report --fail-under=100
