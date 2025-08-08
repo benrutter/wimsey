@@ -4,6 +4,7 @@ import polars as pl
 import pytest
 
 from wimsey import execution, profiling
+from wimsey.types import FinalResult
 
 
 def raise_exception_patch(exception_type: type[Exception]) -> Callable:
@@ -107,3 +108,17 @@ def test_validate_or_build_falls_back_to_save_starter_tests_from_sampling_if_val
     )
     actual = profiling.validate_or_build(3, "cool.json")
     assert actual == 3
+
+
+def test_test_or_build_falls_back_to_save_starter_tests_from_sampling_if_validate_crashes(
+    monkeypatch,
+) -> None:
+    monkeypatch.setattr(profiling, "test", raise_exception_patch(FileNotFoundError))
+    monkeypatch.setattr(
+        profiling,
+        "save_starter_tests_from_sampling",
+        do_nothing,
+    )
+    actual = profiling.test_or_build(3, "cool.json")
+    assert isinstance(actual, FinalResult)
+    assert actual.success

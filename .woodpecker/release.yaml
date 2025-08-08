@@ -9,9 +9,8 @@ steps:
     image: python
     commands:
       - python -m pip install pipx
-      - pipx install uv
-      - uv build
-      - uv publish
+      - pipx run uv build
+      - pipx run uv publish
     environment:
       UV_PUBLISH_TOKEN:
         from_secret: pypi_token
