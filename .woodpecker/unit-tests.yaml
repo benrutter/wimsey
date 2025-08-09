@@ -1,0 +1,12 @@
+when:
+  - event: pull_request
+    branch: main
+
+steps:
+  - name: tests
+    image: python
+    commands:
+      - python -m pip install pipx
+      - pipx run uv run coverage run -m pytest
+      - pipx run uv run coverage report --fail-under=100
+      - pipx run uv run ty check wimsey

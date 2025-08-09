@@ -1,0 +1,16 @@
+when:
+  - event: push
+    branch: main
+  - path:
+      include: ["wimsey/_version.py"]
+
+steps:
+  - name: release
+    image: python
+    commands:
+      - python -m pip install pipx
+      - pipx run uv build
+      - pipx run uv publish
+    environment:
+      UV_PUBLISH_TOKEN:
+        from_secret: pypi_token
