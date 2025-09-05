@@ -1,0 +1,19 @@
+- test: mean_should
+  column: rating
+  be_less_than: 3
+  be_less_than_or_equal_to: 4
+  be_greater_than: 10
+  be_greater_than_or_equal_to: 11
+
+- test: min_should
+  column: rating
+  be_less_than: 4
+  be_less_than_or_equal_to: 5
+  be_greater_than: 10
+  be_greater_than_or_equal_to: 10
+
+- test: row_count_should
+  be_less_than: 2
+  be_less_than_or_equal_to: 3
+  be_greater_than: 9
+  be_greater_than_or_equal_to: 5
