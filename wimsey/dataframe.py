@@ -47,9 +47,10 @@ def _evaluate(
     metrics: list[nw.Expr],
 ) -> dict[str, Any]:
     """Execute a list of scalar expressions and return dictionary of results."""
-    metrics += [nw.lit(str(df.schema[c])).alias(f"type_{c}") for c in df.columns]
+    nw_df: NwDataFrame = nw.from_native(df)
+    metrics += [nw.lit(str(nw_df.schema[c])).alias(f"type_{c}") for c in nw_df.columns]
 
-    evaluation_df = nw.from_native(df).pipe(_validate_df_has_columns).select(*metrics)
+    evaluation_df = nw_df.pipe(_validate_df_has_columns).select(*metrics)
     evaluation_dict = _narwhals_to_dict(evaluation_df)
     type_evals: list = [i for i in evaluation_dict if i.startswith("type")]
     schema_dict: dict = {i.replace("type_", ""): evaluation_dict.pop(i) for i in type_evals}

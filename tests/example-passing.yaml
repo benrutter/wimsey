@@ -1,0 +1,100 @@
+- test: mean_should
+  column: rating
+  be_less_than: 10
+  be_less_than_or_equal_to: 9
+  be_greater_than: 7
+  be_greater_than_or_equal_to: 8
+
+- test: min_should
+  column: rating
+  be_less_than: 8
+  be_less_than_or_equal_to: 7
+  be_greater_than: 4
+  be_greater_than_or_equal_to: 6
+
+- test: std_should
+  column: rating
+  be_less_than: 2
+  be_less_than_or_equal_to: 1.15
+  be_greater_than: 1
+  be_greater_than_or_equal_to: 1.14
+
+- test: count_should
+  column: first_name
+  be_less_than: 6
+  be_less_than_or_equal_to: 5
+  be_greater_than: 3
+  be_greater_than_or_equal_to: 4
+
+- test: row_count_should
+  be_less_than: 6
+  be_less_than_or_equal_to: 5
+  be_greater_than: 3
+  be_greater_than_or_equal_to: 4
+
+- test: average_difference_from_other_column_should
+  column: cases_solved
+  other_column: rating
+  be_less_than: 30
+  be_less_than_or_equal_to: 27
+  be_greater_than: 25
+  be_greater_than_or_equal_to: 20
+
+- test: average_ratio_to_other_column_should
+  column: cases_solved
+  other_column: rating
+  be_less_than: 5
+  be_less_than_or_equal_to: 4.4
+  be_greater_than: 4
+  be_greater_than_or_equal_to: 4.3
+
+- test: max_string_length_should
+  column: last_name
+  be_less_than: 10
+  be_less_than_or_equal_to: 9
+  be_greater_than: 6
+  be_greater_than_or_equal_to: 7
+
+- test: all_values_should
+  column: first_name
+  be_one_of:
+    - Peter
+    - Jane
+    - Father
+    - Hercule
+    - Beatrice
+  not_be_one_of:
+    - George
+    - Sandah
+  match_regex: \b[A-Z][a-zA-Z]*\b
+
+- test: type_should
+  column: first_name
+  be: String
+  not_be: Int64
+  be_one_of:
+    - String
+    - Float64
+
+- test: columns_should
+  have:
+    - first_name
+  not_have:
+    - middle_name
+    - secret_spy_name
+  be:
+    - first_name
+    - last_name
+    - rating
+    - cases_solved
+
+- test: null_count_should
+  column: rating
+  be_less_than: 1
+  be_greater_than_or_equal_to: 0
+
+- test: null_percentage_should
+  column: rating
+  be_less_than: 0.1
+  be_greater_than_or_equal_to: 0
+
