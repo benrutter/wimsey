@@ -368,6 +368,8 @@ _possible_tests: dict[str, Callable] = {
     "max_should": (max_should := _range_check(nw.max, "max")),
     "std_should": (std_should := _range_check(lambda col: nw.col(col).std(), "stdev")),
     "count_should": (count_should := _range_check(lambda col: nw.col(col).count(), "count")),
+    "median_should": (median_should := _range_check(nw.median, "median")),
+    "sum_should": (sum_should := _range_check(nw.sum, "sum")),
     "row_count_should": row_count_should,
     "average_difference_from_other_column_should": average_difference_from_other_column_should,
     "average_ratio_to_other_column_should": average_ratio_to_other_column_should,

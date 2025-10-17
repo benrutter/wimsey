@@ -110,3 +110,8 @@ exclude_also = [
     '^\s*\.\.\.\s*$',  # <- line of "..." (no code)
     '^\s*pass\s*$',  # <- line of "pass"
 ]
+
+[tool.coverage.run]
+omit = [
+  "*/tests/**",
+]

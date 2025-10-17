@@ -17,3 +17,17 @@
   be_less_than_or_equal_to: 3
   be_greater_than: 9
   be_greater_than_or_equal_to: 5
+
+- test: median_should
+  column: rating
+  be_less_than: 7
+  be_less_than_or_equal_to: 9
+  be_greater_than: 10
+  be_greater_than_or_equal_to: 8
+
+- test: sum_should
+  column: rating
+  be_less_than: 40
+  be_less_than_or_equal_to: 43
+  be_greater_than: 50
+  be_greater_than_or_equal_to: 43
