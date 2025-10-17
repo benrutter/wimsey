@@ -3,7 +3,7 @@
 [![Codeberg](https://img.shields.io/badge/Codeberg-2185D0?style=for-the-badge&logo=Codeberg&logoColor=white)](https://codeberg.org/benrutter/wimsey)
 [![PyPi](https://img.shields.io/badge/pypi-%23ececec.svg?style=for-the-badge&logo=pypi&logoColor=1f73b7)](https://pypi.org/project/wimsey/)
 
-[![Docs](https://img.shields.io/badge/Docs-mkdocs-blue)](https://benrutter.github.io/wimsey)
+[![Docs](https://img.shields.io/badge/Docs-hugo-blue)](https://benrutter.codeberg.page/wimsey-site/site/)
 ![License](https://img.shields.io/badge/license-MIT-blue)
 ![coverage](https://img.shields.io/badge/coverage-100-green)
 
@@ -69,6 +69,6 @@ else:
 
 # Roadmap, Contributing & Feedback
 
-Wimsey is still pre v1. There's a lot more to come soon in the form of additional available data tests and friendly error messages. Data profiling in particular is still being developed, and liable to change behaviour at fairly short notice.
-
 Wimsey's mirrored on github, but hosted and developed on [codeberg](https://codeberg.org/benrutter/wimsey). Issues and pull requests are accepted on both.
+
+Focus at the moment is on refining profiling and test generation, if you have tests or feature that would be helpful to you, feel free to reach out!
