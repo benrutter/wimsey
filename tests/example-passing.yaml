@@ -4,6 +4,7 @@
   be_less_than_or_equal_to: 9
   be_greater_than: 7
   be_greater_than_or_equal_to: 8
+  description: These that a column's mean falls within specified range.
 
 - test: min_should
   column: rating
@@ -11,6 +12,7 @@
   be_less_than_or_equal_to: 7
   be_greater_than: 4
   be_greater_than_or_equal_to: 6
+  description: These that a column's min falls within specified range.
 
 - test: std_should
   column: rating
@@ -18,6 +20,7 @@
   be_less_than_or_equal_to: 1.15
   be_greater_than: 1
   be_greater_than_or_equal_to: 1.14
+  description: These that a column's standard deviation falls within specified range.
 
 - test: count_should
   column: first_name
@@ -25,12 +28,14 @@
   be_less_than_or_equal_to: 5
   be_greater_than: 3
   be_greater_than_or_equal_to: 4
+  description: These that a column's count falls within specified range.
 
 - test: row_count_should
   be_less_than: 6
   be_less_than_or_equal_to: 5
   be_greater_than: 3
   be_greater_than_or_equal_to: 4
+  description: These that the tables row count falls within specified range.
 
 - test: average_difference_from_other_column_should
   column: cases_solved
@@ -39,6 +44,9 @@
   be_less_than_or_equal_to: 27
   be_greater_than: 25
   be_greater_than_or_equal_to: 20
+  description: |
+    Compare the values between two columns, and test that they are,
+    on average, within x distance of each other.
 
 - test: average_ratio_to_other_column_should
   column: cases_solved
@@ -47,6 +55,10 @@
   be_less_than_or_equal_to: 4.4
   be_greater_than: 4
   be_greater_than_or_equal_to: 4.3
+  description: |
+    Compare the values between two columns, and test that they are,
+    on average, within a given ratio of each other. Where 2 would mean
+    a column is twice as large as an other column.
 
 - test: max_string_length_should
   column: last_name
@@ -54,6 +66,7 @@
   be_less_than_or_equal_to: 9
   be_greater_than: 6
   be_greater_than_or_equal_to: 7
+  description: Test the maximum string length falls within a given range.
 
 - test: all_values_should
   column: first_name
@@ -67,6 +80,10 @@
     - George
     - Sandah
   match_regex: \b[A-Z][a-zA-Z]*\b
+  description: |
+    Test individual values, either for appearing/not appearing in a list, or for
+    matching against a regex expression. Note that regex matching may not be suported
+    for all dataframe libraries.
 
 - test: type_should
   column: first_name
@@ -75,6 +92,12 @@
   be_one_of:
     - String
     - Float64
+  description: |
+    Test column type. Note that regardless of dataframe library, you should give the
+    Narwhals (Polars-esque) datatype. For instance, Pandas may store dates internally as
+    `np.datetime64`  but Wimsey will determine this type as `Datetime` when running tests.
+    This has the benefit of meaning tests should be consistent on the same dataset, when
+    ran with different dataframe engines.
 
 - test: columns_should
   have:
@@ -87,16 +110,22 @@
     - last_name
     - rating
     - cases_solved
+  description: |
+    Test for column appearance within a dataframe. `be` will specify the exact columns
+    and fail for additional records, whilst `have` and `not_have` will not cause failure
+    unless explicitly violated.
 
 - test: null_count_should
   column: rating
   be_less_than: 1
   be_greater_than_or_equal_to: 0
+  description: Test the null count of a column falls within a given range.
 
 - test: null_percentage_should
   column: rating
   be_less_than: 0.1
   be_greater_than_or_equal_to: 0
+  description: Test the null percentage of a column falls within a given range.
 
 - test: median_should
   column: rating
@@ -104,6 +133,7 @@
   be_less_than_or_equal_to: 9
   be_greater_than: 7
   be_greater_than_or_equal_to: 8
+  description: Test the median value of a column falls within a given range.
 
 - test: sum_should
   column: rating
@@ -111,3 +141,4 @@
   be_less_than_or_equal_to: 43
   be_greater_than: 40
   be_greater_than_or_equal_to: 43
+  description: Test the total sum of a column falls within a given range.
