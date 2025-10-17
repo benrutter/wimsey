@@ -98,3 +98,16 @@
   be_less_than: 0.1
   be_greater_than_or_equal_to: 0
 
+- test: median_should
+  column: rating
+  be_less_than: 10
+  be_less_than_or_equal_to: 9
+  be_greater_than: 7
+  be_greater_than_or_equal_to: 8
+
+- test: sum_should
+  column: rating
+  be_less_than: 45
+  be_less_than_or_equal_to: 43
+  be_greater_than: 40
+  be_greater_than_or_equal_to: 43
