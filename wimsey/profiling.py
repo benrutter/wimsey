@@ -104,7 +104,7 @@ def _save_starter_tests(
             raise ImportError(msg) from exception
         contents = yaml.dump(tests)
     else:
-        contents = json.dumps(tests)
+        contents = json.dumps(tests, indent=4)
     with fsspec.open(path, mode="wt", **storage_options) as file:
         file.write(contents)
 
@@ -196,12 +196,24 @@ def _stat_starter_tests(
         values = [i[f"{stat}_{column}"] for i in samples if i[f"{stat}_{column}"] is not None]
         if len(values) == 0:
             continue
-        absolute_margin = stdev(values) * margin
+        min_margin: float = 0.01 if stat != "null_percentage" else 0
+        absolute_margin: float = max(min_margin, stdev(values) * margin)
         if absolute_margin == 0:
             test = {
                 "column": column,
                 "test": f"{stat}_should",
                 "be_exactly": max(values),
+            }
+        elif stat == "null_percentage":
+            less_than: float = min(1, max(values) + absolute_margin)
+            greater_than: float = max(0, min(values) - absolute_margin)
+            if less_than == 1 and greater_than == 0:
+                continue  # this isn't a meaningful test, let's skip!
+            test = {
+                "column": column,
+                "test": f"{stat}_should",
+                "be_less_than_or_equaL_to": less_than,
+                "be_greater_than_or_equal_to": greater_than,
             }
         else:
             test = {
