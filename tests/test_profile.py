@@ -58,8 +58,10 @@ def test_margin_works_as_anticipated() -> None:
     starter_test = profiling.starter_tests_from_sampling(df, n=5, margin=50)
     result = execution.test(df, starter_test)
     assert result.success
-    impossible_test = profiling.starter_tests_from_sampling(df, n=5, margin=-500)
-    result = execution.test(df, impossible_test)
+    failing_test = profiling.starter_tests_from_sampling(df, n=5, margin=0)
+    result = execution.test(
+        pl.concat([df, pl.DataFrame({"a": [500], "b": ["gnat"], "c": [-9999.9]})]), failing_test
+    )
     assert not result.success
 
 
