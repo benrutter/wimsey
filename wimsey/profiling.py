@@ -207,7 +207,7 @@ def _stat_starter_tests(
         elif stat == "null_percentage":
             less_than: float = min(1, max(values) + absolute_margin)
             greater_than: float = max(0, min(values) - absolute_margin)
-            if less_than == 1 and greater_than == 0:
+            if less_than == 1 and greater_than == 0:  # pragma: no cover
                 continue  # this isn't a meaningful test, let's skip!
             test = {
                 "column": column,

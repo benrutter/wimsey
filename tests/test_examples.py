@@ -57,6 +57,6 @@ def test_test_of_passing_example(backend: str, should_pass: bool) -> None:
     df = dataframe(backend)
     suite = f"tests/example-{'passing' if should_pass else 'failing'}.yaml"
     results = wimsey.test(df, suite)
-    assert results.success is should_pass, str(results.results)
+    assert results.success is should_pass, str([i for i in results.results if not i.success])
     for result in results.results:
         assert result.success is should_pass, result.name

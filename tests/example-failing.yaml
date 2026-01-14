@@ -31,3 +31,44 @@
   be_less_than_or_equal_to: 43
   be_greater_than: 50
   be_greater_than_or_equal_to: 43
+
+- test: max_ratio_to_other_column_should
+  column: cases_solved
+  other_column: rating
+  be_less_than: 5
+  be_less_than_or_equal_to: 4.4
+  be_greater_than: 4
+  be_greater_than_or_equal_to: 4.3
+
+- test: min_ratio_to_other_column_should
+  column: cases_solved
+  other_column: rating
+  be_exactly: 3
+  be_less_than: 5
+  be_less_than_or_equal_to: 4.4
+  be_greater_than: 4
+  be_greater_than_or_equal_to: 4.3
+
+- test: max_difference_from_other_column_should
+  column: cases_solved
+  other_column: rating
+  be_less_than: 30
+  be_less_than_or_equal_to: 27
+  be_greater_than: 25
+  be_greater_than_or_equal_to: 20
+  be_exactly: 16
+  description: |
+    Compare the values between two columns, and test that the minimum
+    difference is within x of the other column.
+
+- test: min_difference_from_other_column_should
+  column: cases_solved
+  other_column: rating
+  be_less_than: 30
+  be_less_than_or_equal_to: 27
+  be_greater_than: 25
+  be_greater_than_or_equal_to: 20
+  be_exactly: 16
+  description: |
+    Compare the values between two columns, and test that the maximum
+    difference is within x of the other column.
