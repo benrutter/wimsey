@@ -48,6 +48,28 @@
     Compare the values between two columns, and test that they are,
     on average, within x distance of each other.
 
+- test: max_difference_from_other_column_should
+  column: cases_solved
+  other_column: rating
+  be_less_than: 60
+  be_less_than_or_equal_to: 58
+  be_greater_than: 50
+  be_greater_than_or_equal_to: 57
+  description: |
+    Compare the values between two columns, and test that the minimum
+    difference is within x of the other column.
+
+- test: min_difference_from_other_column_should
+  column: cases_solved
+  other_column: rating
+  be_less_than: 5
+  be_less_than_or_equal_to: 2
+  be_greater_than: 1
+  be_greater_than_or_equal_to: 2
+  description: |
+    Compare the values between two columns, and test that the maximum
+    difference is within x of the other column.
+
 - test: average_ratio_to_other_column_should
   column: cases_solved
   other_column: rating

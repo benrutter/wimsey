@@ -128,6 +128,82 @@ def average_difference_from_other_column_should(
     return (nw.col(column) - nw.col(other_column)).mean(), _check
 
 
+def max_difference_from_other_column_should(
+    column: str,
+    other_column: str,
+    be_exactly: float | None = None,
+    be_less_than: float | None = None,
+    be_less_than_or_equal_to: float | None = None,
+    be_greater_than: float | None = None,
+    be_greater_than_or_equal_to: float | None = None,
+    **kwargs: Any,
+) -> GeneratedTest:
+    """Compare difference between two columns.
+
+    Test that the average difference between column and other column are
+    within designated bounds.
+    """
+    del kwargs
+
+    def _check(difference: float) -> Result:
+        checks: list[bool] = []
+        if be_exactly is not None:
+            checks.append(difference == be_exactly)
+        if be_less_than is not None:
+            checks.append(difference < be_less_than)
+        if be_less_than_or_equal_to is not None:
+            checks.append(difference <= be_less_than_or_equal_to)
+        if be_greater_than is not None:
+            checks.append(difference > be_greater_than)
+        if be_greater_than_or_equal_to is not None:
+            checks.append(difference >= be_greater_than_or_equal_to)
+        return Result(
+            name=f"max-difference-from-{column}-to-{other_column}",
+            success=all(checks),
+            unexpected=difference if not all(checks) else None,
+        )
+
+    return (nw.col(column) - nw.col(other_column)).max(), _check
+
+
+def min_difference_from_other_column_should(
+    column: str,
+    other_column: str,
+    be_exactly: float | None = None,
+    be_less_than: float | None = None,
+    be_less_than_or_equal_to: float | None = None,
+    be_greater_than: float | None = None,
+    be_greater_than_or_equal_to: float | None = None,
+    **kwargs: Any,
+) -> GeneratedTest:
+    """Compare difference between two columns.
+
+    Test that the average difference between column and other column are
+    within designated bounds.
+    """
+    del kwargs
+
+    def _check(difference: float) -> Result:
+        checks: list[bool] = []
+        if be_exactly is not None:
+            checks.append(difference == be_exactly)
+        if be_less_than is not None:
+            checks.append(difference < be_less_than)
+        if be_less_than_or_equal_to is not None:
+            checks.append(difference <= be_less_than_or_equal_to)
+        if be_greater_than is not None:
+            checks.append(difference > be_greater_than)
+        if be_greater_than_or_equal_to is not None:
+            checks.append(difference >= be_greater_than_or_equal_to)
+        return Result(
+            name=f"min-difference-from-{column}-to-{other_column}",
+            success=all(checks),
+            unexpected=difference if not all(checks) else None,
+        )
+
+    return (nw.col(column) - nw.col(other_column)).min(), _check
+
+
 def average_ratio_to_other_column_should(
     column: str,
     other_column: str,
@@ -450,6 +526,8 @@ _possible_tests: dict[str, Callable] = {
     "sum_should": (sum_should := _range_check(nw.sum, "sum")),
     "row_count_should": row_count_should,
     "average_difference_from_other_column_should": average_difference_from_other_column_should,
+    "min_difference_from_other_column_should": min_difference_from_other_column_should,
+    "max_difference_from_other_column_should": max_difference_from_other_column_should,
     "average_ratio_to_other_column_should": average_ratio_to_other_column_should,
     "max_ratio_to_other_column_should": max_ratio_to_other_column_should,
     "min_ratio_to_other_column_should": min_ratio_to_other_column_should,
