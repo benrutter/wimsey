@@ -37,7 +37,7 @@ def test_starter_tests_from_samples_returns_passing_test() -> None:
         {
             "a": [1, 2, 3, 4, 5],
             "b": ["hat", "bat", "cat", "mat", "sat"],
-            "c": [0.2, 0.4, 0.2, 0.56, 0.1],
+            "c": [0.2, 0.4, None, 0.56, 0.1],
         },
     )
     starter_test = profiling.starter_tests_from_samples(

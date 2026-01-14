@@ -60,6 +60,31 @@
     on average, within a given ratio of each other. Where 2 would mean
     a column is twice as large as an other column.
 
+- test: max_ratio_to_other_column_should
+  column: cases_solved
+  other_column: rating
+  be_less_than: 9
+  be_less_than_or_equal_to: 8.25
+  be_greater_than: 8
+  be_greater_than_or_equal_to: 8.25
+  be_exactly: 8.25
+  description: |
+    Compare the values between two columns, and test that the maximum
+    difference is within a given ratio. Where 2 would mean
+    a column is twice as large as an other column.
+
+- test: min_ratio_to_other_column_should
+  column: cases_solved
+  other_column: rating
+  be_less_than: 1.5
+  be_less_than_or_equal_to: 1.23
+  be_greater_than: 1
+  be_greater_than_or_equal_to: 1.22
+  description: |
+    Compare the values between two columns, and test that the minimum
+    difference is within a given ratio. Where 2 would mean
+    a column is twice as large as an other column.
+
 - test: max_string_length_should
   column: last_name
   be_less_than: 10

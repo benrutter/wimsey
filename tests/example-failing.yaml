@@ -31,3 +31,20 @@
   be_less_than_or_equal_to: 43
   be_greater_than: 50
   be_greater_than_or_equal_to: 43
+
+- test: max_ratio_to_other_column_should
+  column: cases_solved
+  other_column: rating
+  be_less_than: 5
+  be_less_than_or_equal_to: 4.4
+  be_greater_than: 4
+  be_greater_than_or_equal_to: 4.3
+
+- test: min_ratio_to_other_column_should
+  column: cases_solved
+  other_column: rating
+  be_exactly: 3
+  be_less_than: 5
+  be_less_than_or_equal_to: 4.4
+  be_greater_than: 4
+  be_greater_than_or_equal_to: 4.3
