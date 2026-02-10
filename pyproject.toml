@@ -2,15 +2,35 @@
 name = "wimsey"
 dynamic = ["version"]
 description = "A lightweight data contracts library"
+requires-python = ">= 3.10"
 authors = [
-    { name = "Ben", email = "benrutter@posteo.net" }
+    { name = "Ben Rutter", email = "benrutter@posteo.net" }
 ]
 dependencies = [
     "narwhals>=1.10.0",
     "fsspec>=2024.10.0",
 ]
 readme = "README.md"
-requires-python = ">= 3.10"
+keywords = ["dataframes", "testing", "data", "science", "pipeline", "data-quality", "validation", "data-validation"]
+classifiers = [
+  "Development Status :: 5 - Production/Stable",
+  "License :: OSI Approved :: MIT License",
+  "Operating System :: OS Independent",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+  "Programming Language :: Python :: 3.14",
+  "Programming Language :: Python :: Free Threading :: 2 - Beta",
+  "Typing :: Typed",
+]
+
+[project.urls]
+Homepage = "https://codeberg.org/benrutter/wimsey"
+Documentation = "https://benrutter.codeberg.page/wimsey-site/site/"
+Repository = "https://codeberg.org/benrutter/wimsey"
+Github = "https://github.com/benrutter/wimsey"
 
 [build-system]
 requires = ["hatchling"]

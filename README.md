@@ -3,9 +3,11 @@
 [![Codeberg](https://img.shields.io/badge/Codeberg-2185D0?style=for-the-badge&logo=Codeberg&logoColor=white)](https://codeberg.org/benrutter/wimsey)
 [![PyPi](https://img.shields.io/badge/pypi-%23ececec.svg?style=for-the-badge&logo=pypi&logoColor=1f73b7)](https://pypi.org/project/wimsey/)
 
-[![Docs](https://img.shields.io/badge/Docs-hugo-blue)](https://benrutter.codeberg.page/wimsey-site/site/)
-![License](https://img.shields.io/badge/license-MIT-blue)
+[![Docs](https://img.shields.io/badge/Docs-Hugo-blue)](https://benrutter.codeberg.page/wimsey-site/site/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-pink.svg)](https://opensource.org/licenses/MIT)
 ![coverage](https://img.shields.io/badge/coverage-100-green)
+[![Awesome](https://awesome.re/badge.svg)](https://github.com/ddotta/awesome-polars)
+[![Downloads](https://static.pepy.tech/badge/wimsey?color=green)](https://pepy.tech/project/wimsey)
 
 
 Wimsey is lightweight, flexible and fully open-source data contract library.
