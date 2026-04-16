@@ -27,7 +27,11 @@ def _collect_tests(config: list[dict] | dict | list[tuple]) -> list[tuple]:
             msg = (
                 "Issue reading configuration, for at least one test, either no "
                 "test is named, or a mispelt/unimplemented test is given.\n"
+            )
+            msg += (
                 f"Specifically, could not find: {test_name!s}"
+                if test_name
+                else f"Specifically, could not interpret: {item}"
             )
             raise ValueError(msg)
         tests.append(test(**item))
@@ -66,7 +70,7 @@ def _parse_contents(contents: Any) -> list[dict] | dict:
             return cast("dict | list[dict]", contents.get("tests"))
         return contents
     msg = (
-        "It looks like the json/yaml file parsed in is either invalid "
+        "It looks like the json/yaml file parsed is either invalid "
         "or doesn't match what's required for Wimsey to interpret tests. \n"
         "Hint: json/yaml file should either be a list of tests, a single test "
         "or a key/value pair with a 'tests' key relating to a list of tests"

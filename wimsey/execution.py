@@ -8,7 +8,7 @@ import narwhals.stable.v1 as nw
 
 from wimsey.config import _collect_tests, _read_config
 from wimsey.dataframe import _evaluate
-from wimsey.types import DataValidationError, FinalResult
+from wimsey.types import DataValidationError, FinalResult, GeneratedTest
 
 if TYPE_CHECKING:
     from narwhals.stable.v1.typing import FrameT
@@ -44,7 +44,7 @@ def _run_all_tests(df: FrameT, tests: list[GeneratedTest]) -> FinalResult:
 
 def test(
     df: FrameT,
-    contract: str | list[dict] | dict,
+    contract: str | list[dict] | dict | list[GeneratedTest],
     storage_options: dict | None = None,
 ) -> FinalResult:
     """Test a dataframe against a data contract.
@@ -67,7 +67,7 @@ def test(
 
 def validate(
     df: FrameT,
-    contract: str | list[dict] | dict,
+    contract: str | list[dict] | dict | list[GeneratedTest],
     storage_options: dict | None = None,
 ) -> FrameT:
     """Validate a dataframe against a data contract.
