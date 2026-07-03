@@ -1,0 +1,882 @@
+---
+icon: lucide/book-marked
+---
+
+# Test Catalogue
+
+Below is a full list of all available tests within Wimsey.
+
+# mean_should
+
+These that a column's mean falls within specified range.
+
+=== "yaml"
+
+    ```yaml
+    be_greater_than: 7
+    be_greater_than_or_equal_to: 8
+    be_less_than: 10
+    be_less_than_or_equal_to: 9
+    column: rating
+    test: mean_should
+    ```
+
+=== "json"
+
+    ```yaml
+    {
+      "test": "mean_should",
+      "column": "rating",
+      "be_less_than": 10,
+      "be_less_than_or_equal_to": 9,
+      "be_greater_than": 7,
+      "be_greater_than_or_equal_to": 8
+    }
+    ```
+
+=== "python"
+
+    ```python
+    from wimsey.tests import mean_should
+
+    my_test = mean_should(
+        column="rating",
+        be_less_than=10,
+        be_less_than_or_equal_to=9,
+        be_greater_than=7,
+        be_greater_than_or_equal_to=8,
+    )
+    ```
+
+
+# min_should
+
+These that a column's min falls within specified range.
+
+=== "yaml"
+
+    ```yaml
+    be_greater_than: 4
+    be_greater_than_or_equal_to: 6
+    be_less_than: 8
+    be_less_than_or_equal_to: 7
+    column: rating
+    test: min_should
+    ```
+
+=== "json"
+
+    ```yaml
+    {
+      "test": "min_should",
+      "column": "rating",
+      "be_less_than": 8,
+      "be_less_than_or_equal_to": 7,
+      "be_greater_than": 4,
+      "be_greater_than_or_equal_to": 6
+    }
+    ```
+
+=== "python"
+
+    ```python
+    from wimsey.tests import min_should
+
+    my_test = min_should(
+        column="rating",
+        be_less_than=8,
+        be_less_than_or_equal_to=7,
+        be_greater_than=4,
+        be_greater_than_or_equal_to=6,
+    )
+    ```
+
+
+# std_should
+
+These that a column's standard deviation falls within specified range.
+
+=== "yaml"
+
+    ```yaml
+    be_greater_than: 1
+    be_greater_than_or_equal_to: 1.14
+    be_less_than: 2
+    be_less_than_or_equal_to: 1.15
+    column: rating
+    test: std_should
+    ```
+
+=== "json"
+
+    ```yaml
+    {
+      "test": "std_should",
+      "column": "rating",
+      "be_less_than": 2,
+      "be_less_than_or_equal_to": 1.15,
+      "be_greater_than": 1,
+      "be_greater_than_or_equal_to": 1.14
+    }
+    ```
+
+=== "python"
+
+    ```python
+    from wimsey.tests import std_should
+
+    my_test = std_should(
+        column="rating",
+        be_less_than=2,
+        be_less_than_or_equal_to=1.15,
+        be_greater_than=1,
+        be_greater_than_or_equal_to=1.14,
+    )
+    ```
+
+
+# count_should
+
+These that a column's count falls within specified range.
+
+=== "yaml"
+
+    ```yaml
+    be_greater_than: 3
+    be_greater_than_or_equal_to: 4
+    be_less_than: 6
+    be_less_than_or_equal_to: 5
+    column: first_name
+    test: count_should
+    ```
+
+=== "json"
+
+    ```yaml
+    {
+      "test": "count_should",
+      "column": "first_name",
+      "be_less_than": 6,
+      "be_less_than_or_equal_to": 5,
+      "be_greater_than": 3,
+      "be_greater_than_or_equal_to": 4
+    }
+    ```
+
+=== "python"
+
+    ```python
+    from wimsey.tests import count_should
+
+    my_test = count_should(
+        column="first_name",
+        be_less_than=6,
+        be_less_than_or_equal_to=5,
+        be_greater_than=3,
+        be_greater_than_or_equal_to=4,
+    )
+    ```
+
+
+# row_count_should
+
+These that the tables row count falls within specified range.
+
+=== "yaml"
+
+    ```yaml
+    be_greater_than: 3
+    be_greater_than_or_equal_to: 4
+    be_less_than: 6
+    be_less_than_or_equal_to: 5
+    test: row_count_should
+    ```
+
+=== "json"
+
+    ```yaml
+    {
+      "test": "row_count_should",
+      "be_less_than": 6,
+      "be_less_than_or_equal_to": 5,
+      "be_greater_than": 3,
+      "be_greater_than_or_equal_to": 4
+    }
+    ```
+
+=== "python"
+
+    ```python
+    from wimsey.tests import row_count_should
+
+    my_test = row_count_should(
+        be_less_than=6,
+        be_less_than_or_equal_to=5,
+        be_greater_than=3,
+        be_greater_than_or_equal_to=4,
+    )
+    ```
+
+
+# average_difference_from_other_column_should
+
+Compare the values between two columns, and test that they are,
+on average, within x distance of each other.
+
+
+=== "yaml"
+
+    ```yaml
+    be_greater_than: 25
+    be_greater_than_or_equal_to: 20
+    be_less_than: 30
+    be_less_than_or_equal_to: 27
+    column: cases_solved
+    other_column: rating
+    test: average_difference_from_other_column_should
+    ```
+
+=== "json"
+
+    ```yaml
+    {
+      "test": "average_difference_from_other_column_should",
+      "column": "cases_solved",
+      "other_column": "rating",
+      "be_less_than": 30,
+      "be_less_than_or_equal_to": 27,
+      "be_greater_than": 25,
+      "be_greater_than_or_equal_to": 20
+    }
+    ```
+
+=== "python"
+
+    ```python
+    from wimsey.tests import average_difference_from_other_column_should
+
+    my_test = average_difference_from_other_column_should(
+        column="cases_solved",
+        other_column="rating",
+        be_less_than=30,
+        be_less_than_or_equal_to=27,
+        be_greater_than=25,
+        be_greater_than_or_equal_to=20,
+    )
+    ```
+
+
+# max_difference_from_other_column_should
+
+Compare the values between two columns, and test that the minimum
+difference is within x of the other column.
+
+
+=== "yaml"
+
+    ```yaml
+    be_greater_than: 50
+    be_greater_than_or_equal_to: 57
+    be_less_than: 60
+    be_less_than_or_equal_to: 58
+    column: cases_solved
+    other_column: rating
+    test: max_difference_from_other_column_should
+    ```
+
+=== "json"
+
+    ```yaml
+    {
+      "test": "max_difference_from_other_column_should",
+      "column": "cases_solved",
+      "other_column": "rating",
+      "be_less_than": 60,
+      "be_less_than_or_equal_to": 58,
+      "be_greater_than": 50,
+      "be_greater_than_or_equal_to": 57
+    }
+    ```
+
+=== "python"
+
+    ```python
+    from wimsey.tests import max_difference_from_other_column_should
+
+    my_test = max_difference_from_other_column_should(
+        column="cases_solved",
+        other_column="rating",
+        be_less_than=60,
+        be_less_than_or_equal_to=58,
+        be_greater_than=50,
+        be_greater_than_or_equal_to=57,
+    )
+    ```
+
+
+# min_difference_from_other_column_should
+
+Compare the values between two columns, and test that the maximum
+difference is within x of the other column.
+
+
+=== "yaml"
+
+    ```yaml
+    be_greater_than: 1
+    be_greater_than_or_equal_to: 2
+    be_less_than: 5
+    be_less_than_or_equal_to: 2
+    column: cases_solved
+    other_column: rating
+    test: min_difference_from_other_column_should
+    ```
+
+=== "json"
+
+    ```yaml
+    {
+      "test": "min_difference_from_other_column_should",
+      "column": "cases_solved",
+      "other_column": "rating",
+      "be_less_than": 5,
+      "be_less_than_or_equal_to": 2,
+      "be_greater_than": 1,
+      "be_greater_than_or_equal_to": 2
+    }
+    ```
+
+=== "python"
+
+    ```python
+    from wimsey.tests import min_difference_from_other_column_should
+
+    my_test = min_difference_from_other_column_should(
+        column="cases_solved",
+        other_column="rating",
+        be_less_than=5,
+        be_less_than_or_equal_to=2,
+        be_greater_than=1,
+        be_greater_than_or_equal_to=2,
+    )
+    ```
+
+
+# average_ratio_to_other_column_should
+
+Compare the values between two columns, and test that they are,
+on average, within a given ratio of each other. Where 2 would mean
+a column is twice as large as an other column.
+
+
+=== "yaml"
+
+    ```yaml
+    be_greater_than: 4
+    be_greater_than_or_equal_to: 4.3
+    be_less_than: 5
+    be_less_than_or_equal_to: 4.4
+    column: cases_solved
+    other_column: rating
+    test: average_ratio_to_other_column_should
+    ```
+
+=== "json"
+
+    ```yaml
+    {
+      "test": "average_ratio_to_other_column_should",
+      "column": "cases_solved",
+      "other_column": "rating",
+      "be_less_than": 5,
+      "be_less_than_or_equal_to": 4.4,
+      "be_greater_than": 4,
+      "be_greater_than_or_equal_to": 4.3
+    }
+    ```
+
+=== "python"
+
+    ```python
+    from wimsey.tests import average_ratio_to_other_column_should
+
+    my_test = average_ratio_to_other_column_should(
+        column="cases_solved",
+        other_column="rating",
+        be_less_than=5,
+        be_less_than_or_equal_to=4.4,
+        be_greater_than=4,
+        be_greater_than_or_equal_to=4.3,
+    )
+    ```
+
+
+# max_ratio_to_other_column_should
+
+Compare the values between two columns, and test that the maximum
+difference is within a given ratio. Where 2 would mean
+a column is twice as large as an other column.
+
+
+=== "yaml"
+
+    ```yaml
+    be_exactly: 8.25
+    be_greater_than: 8
+    be_greater_than_or_equal_to: 8.25
+    be_less_than: 9
+    be_less_than_or_equal_to: 8.25
+    column: cases_solved
+    other_column: rating
+    test: max_ratio_to_other_column_should
+    ```
+
+=== "json"
+
+    ```yaml
+    {
+      "test": "max_ratio_to_other_column_should",
+      "column": "cases_solved",
+      "other_column": "rating",
+      "be_less_than": 9,
+      "be_less_than_or_equal_to": 8.25,
+      "be_greater_than": 8,
+      "be_greater_than_or_equal_to": 8.25,
+      "be_exactly": 8.25
+    }
+    ```
+
+=== "python"
+
+    ```python
+    from wimsey.tests import max_ratio_to_other_column_should
+
+    my_test = max_ratio_to_other_column_should(
+        column="cases_solved",
+        other_column="rating",
+        be_less_than=9,
+        be_less_than_or_equal_to=8.25,
+        be_greater_than=8,
+        be_greater_than_or_equal_to=8.25,
+        be_exactly=8.25,
+    )
+    ```
+
+
+# min_ratio_to_other_column_should
+
+Compare the values between two columns, and test that the minimum
+difference is within a given ratio. Where 2 would mean
+a column is twice as large as an other column.
+
+
+=== "yaml"
+
+    ```yaml
+    be_greater_than: 1
+    be_greater_than_or_equal_to: 1.22
+    be_less_than: 1.5
+    be_less_than_or_equal_to: 1.23
+    column: cases_solved
+    other_column: rating
+    test: min_ratio_to_other_column_should
+    ```
+
+=== "json"
+
+    ```yaml
+    {
+      "test": "min_ratio_to_other_column_should",
+      "column": "cases_solved",
+      "other_column": "rating",
+      "be_less_than": 1.5,
+      "be_less_than_or_equal_to": 1.23,
+      "be_greater_than": 1,
+      "be_greater_than_or_equal_to": 1.22
+    }
+    ```
+
+=== "python"
+
+    ```python
+    from wimsey.tests import min_ratio_to_other_column_should
+
+    my_test = min_ratio_to_other_column_should(
+        column="cases_solved",
+        other_column="rating",
+        be_less_than=1.5,
+        be_less_than_or_equal_to=1.23,
+        be_greater_than=1,
+        be_greater_than_or_equal_to=1.22,
+    )
+    ```
+
+
+# max_string_length_should
+
+Test the maximum string length falls within a given range.
+
+=== "yaml"
+
+    ```yaml
+    be_greater_than: 6
+    be_greater_than_or_equal_to: 7
+    be_less_than: 10
+    be_less_than_or_equal_to: 9
+    column: last_name
+    test: max_string_length_should
+    ```
+
+=== "json"
+
+    ```yaml
+    {
+      "test": "max_string_length_should",
+      "column": "last_name",
+      "be_less_than": 10,
+      "be_less_than_or_equal_to": 9,
+      "be_greater_than": 6,
+      "be_greater_than_or_equal_to": 7
+    }
+    ```
+
+=== "python"
+
+    ```python
+    from wimsey.tests import max_string_length_should
+
+    my_test = max_string_length_should(
+        column="last_name",
+        be_less_than=10,
+        be_less_than_or_equal_to=9,
+        be_greater_than=6,
+        be_greater_than_or_equal_to=7,
+    )
+    ```
+
+
+# all_values_should
+
+Test individual values, either for appearing/not appearing in a list, or for
+matching against a regex expression. Note that regex matching may not be suported
+for all dataframe libraries.
+
+
+=== "yaml"
+
+    ```yaml
+    be_one_of:
+    - Peter
+    - Jane
+    - Father
+    - Hercule
+    - Beatrice
+    column: first_name
+    match_regex: \b[A-Z][a-zA-Z]*\b
+    not_be_one_of:
+    - George
+    - Sandah
+    test: all_values_should
+    ```
+
+=== "json"
+
+    ```yaml
+    {
+      "test": "all_values_should",
+      "column": "first_name",
+      "be_one_of": [
+        "Peter",
+        "Jane",
+        "Father",
+        "Hercule",
+        "Beatrice"
+      ],
+      "not_be_one_of": [
+        "George",
+        "Sandah"
+      ],
+      "match_regex": "\\b[A-Z][a-zA-Z]*\\b"
+    }
+    ```
+
+=== "python"
+
+    ```python
+    from wimsey.tests import all_values_should
+
+    my_test = all_values_should(
+        column="first_name",
+        be_one_of=['Peter', 'Jane', 'Father', 'Hercule', 'Beatrice'],
+        not_be_one_of=['George', 'Sandah'],
+        match_regex="\b[A-Z][a-zA-Z]*\b",
+    )
+    ```
+
+
+# type_should
+
+Test column type. Note that regardless of dataframe library, you should give the
+Narwhals (Polars-esque) datatype. For instance, Pandas may store dates internally as
+`np.datetime64`  but Wimsey will determine this type as `Datetime` when running tests.
+This has the benefit of meaning tests should be consistent on the same dataset, when
+ran with different dataframe engines.
+
+
+=== "yaml"
+
+    ```yaml
+    be: String
+    be_one_of:
+    - String
+    - Float64
+    column: first_name
+    not_be: Int64
+    test: type_should
+    ```
+
+=== "json"
+
+    ```yaml
+    {
+      "test": "type_should",
+      "column": "first_name",
+      "be": "String",
+      "not_be": "Int64",
+      "be_one_of": [
+        "String",
+        "Float64"
+      ]
+    }
+    ```
+
+=== "python"
+
+    ```python
+    from wimsey.tests import type_should
+
+    my_test = type_should(
+        column="first_name",
+        be="String",
+        not_be="Int64",
+        be_one_of=['String', 'Float64'],
+    )
+    ```
+
+
+# columns_should
+
+Test for column appearance within a dataframe. `be` will specify the exact columns
+and fail for additional records, whilst `have` and `not_have` will not cause failure
+unless explicitly violated.
+
+
+=== "yaml"
+
+    ```yaml
+    be:
+    - first_name
+    - last_name
+    - rating
+    - cases_solved
+    have:
+    - first_name
+    not_have:
+    - middle_name
+    - secret_spy_name
+    test: columns_should
+    ```
+
+=== "json"
+
+    ```yaml
+    {
+      "test": "columns_should",
+      "have": [
+        "first_name"
+      ],
+      "not_have": [
+        "middle_name",
+        "secret_spy_name"
+      ],
+      "be": [
+        "first_name",
+        "last_name",
+        "rating",
+        "cases_solved"
+      ]
+    }
+    ```
+
+=== "python"
+
+    ```python
+    from wimsey.tests import columns_should
+
+    my_test = columns_should(
+        have=['first_name'],
+        not_have=['middle_name', 'secret_spy_name'],
+        be=['first_name', 'last_name', 'rating', 'cases_solved'],
+    )
+    ```
+
+
+# null_count_should
+
+Test the null count of a column falls within a given range.
+
+=== "yaml"
+
+    ```yaml
+    be_greater_than_or_equal_to: 0
+    be_less_than: 1
+    column: rating
+    test: null_count_should
+    ```
+
+=== "json"
+
+    ```yaml
+    {
+      "test": "null_count_should",
+      "column": "rating",
+      "be_less_than": 1,
+      "be_greater_than_or_equal_to": 0
+    }
+    ```
+
+=== "python"
+
+    ```python
+    from wimsey.tests import null_count_should
+
+    my_test = null_count_should(
+        column="rating",
+        be_less_than=1,
+        be_greater_than_or_equal_to=0,
+    )
+    ```
+
+
+# null_percentage_should
+
+Test the null percentage of a column falls within a given range.
+
+=== "yaml"
+
+    ```yaml
+    be_greater_than_or_equal_to: 0
+    be_less_than: 0.1
+    column: rating
+    test: null_percentage_should
+    ```
+
+=== "json"
+
+    ```yaml
+    {
+      "test": "null_percentage_should",
+      "column": "rating",
+      "be_less_than": 0.1,
+      "be_greater_than_or_equal_to": 0
+    }
+    ```
+
+=== "python"
+
+    ```python
+    from wimsey.tests import null_percentage_should
+
+    my_test = null_percentage_should(
+        column="rating",
+        be_less_than=0.1,
+        be_greater_than_or_equal_to=0,
+    )
+    ```
+
+
+# median_should
+
+Test the median value of a column falls within a given range.
+
+=== "yaml"
+
+    ```yaml
+    be_greater_than: 7
+    be_greater_than_or_equal_to: 8
+    be_less_than: 10
+    be_less_than_or_equal_to: 9
+    column: rating
+    test: median_should
+    ```
+
+=== "json"
+
+    ```yaml
+    {
+      "test": "median_should",
+      "column": "rating",
+      "be_less_than": 10,
+      "be_less_than_or_equal_to": 9,
+      "be_greater_than": 7,
+      "be_greater_than_or_equal_to": 8
+    }
+    ```
+
+=== "python"
+
+    ```python
+    from wimsey.tests import median_should
+
+    my_test = median_should(
+        column="rating",
+        be_less_than=10,
+        be_less_than_or_equal_to=9,
+        be_greater_than=7,
+        be_greater_than_or_equal_to=8,
+    )
+    ```
+
+
+# sum_should
+
+Test the total sum of a column falls within a given range.
+
+=== "yaml"
+
+    ```yaml
+    be_greater_than: 40
+    be_greater_than_or_equal_to: 43
+    be_less_than: 45
+    be_less_than_or_equal_to: 43
+    column: rating
+    test: sum_should
+    ```
+
+=== "json"
+
+    ```yaml
+    {
+      "test": "sum_should",
+      "column": "rating",
+      "be_less_than": 45,
+      "be_less_than_or_equal_to": 43,
+      "be_greater_than": 40,
+      "be_greater_than_or_equal_to": 43
+    }
+    ```
+
+=== "python"
+
+    ```python
+    from wimsey.tests import sum_should
+
+    my_test = sum_should(
+        column="rating",
+        be_less_than=45,
+        be_less_than_or_equal_to=43,
+        be_greater_than=40,
+        be_greater_than_or_equal_to=43,
+    )
+    ```
+
