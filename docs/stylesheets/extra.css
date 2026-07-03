@@ -1,0 +1,14 @@
+.dither-mask {
+  display: inline-block;
+  width: 100%;
+  background-color: var(--md-accent-fg-color);
+
+  mask-image: var(--dither-src);
+  mask-mode: luminance;
+  mask-size: cover;
+  mask-repeat: no-repeat;
+
+  -webkit-mask-image: var(--dither-src);
+  -webkit-mask-size: cover;
+  -webkit-mask-repeat: no-repeat;
+}

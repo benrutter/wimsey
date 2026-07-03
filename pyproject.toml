@@ -33,14 +33,8 @@ Repository = "https://codeberg.org/benrutter/wimsey"
 Github = "https://github.com/benrutter/wimsey"
 
 [build-system]
-requires = ["hatchling"]
-build-backend = "hatchling.build"
-
-[tool.hatch.metadata]
-allow-direct-references = true
-
-[tool.hatch.version]
-path = "wimsey/_version.py"
+requires = ["flit_core >=3.2,<4"]
+build-backend = "flit_core.buildapi"
 
 [dependency-groups]
 dev = [
