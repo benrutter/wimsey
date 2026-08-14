@@ -9,14 +9,15 @@ import fsspec
 import narwhals.stable.v1 as nw
 
 from wimsey.tests import _possible_tests
+from wimsey.types import GeneratedTest, _MagicExpr
 
 
-def _collect_tests(config: list[dict] | dict | list[tuple]) -> list[tuple]:
+def _collect_tests(config: list[dict] | dict | list[GeneratedTest] | GeneratedTest) -> list[tuple]:
     """Take a configuration, and build out tests."""
-    list_config: list[dict] | list[tuple] = config if isinstance(config, list) else [config]
-    if isinstance(list_config[0], tuple) and isinstance(list_config[0][0], nw.Expr):
+    list_config: list[dict] | list[tuple] = config if isinstance(config, list) else [config]  # type: ignore
+    if isinstance(list_config[0], tuple) and (isinstance(list_config[0][0], nw.Expr | _MagicExpr)):
         return cast("list[tuple]", list_config)
-    dict_list: list[dict] = list_config  # type: ignore[assignment]
+    dict_list: list[dict] = list_config  # type: ignore
     tests: list[tuple] = []
     for item in dict_list:
         test_name: str | None = item.get("test")

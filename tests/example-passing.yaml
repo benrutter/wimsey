@@ -189,3 +189,15 @@
   be_greater_than: 40
   be_greater_than_or_equal_to: 43
   description: Test the total sum of a column falls within a given range.
+
+- test: schema_should
+  be_exactly:
+    first_name: String
+    last_name: String
+    rating: Int64
+    cases_solved: Int64
+  be_superset_of:
+    first_name: String
+    last_name: String
+  not_be:
+    unwanted_column: Boolean

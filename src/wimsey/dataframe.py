@@ -27,11 +27,11 @@ def _narwhals_to_dict(df: NwDataFrame) -> dict:
     tests.
     """
     try:
-        return {k: v[0] for k, v in df.to_dict(as_series=False).items()}  # type: ignore[union-attr]
+        return {k: v[0] for k, v in df.to_dict(as_series=False).items()}
     except AttributeError:
         return {
             k: v[0]
-            for k, v in df.collect().to_dict(as_series=False).items()  # type: ignore[union-attr]
+            for k, v in df.collect().to_dict(as_series=False).items()  # type: ignore
         }
 
 
@@ -47,7 +47,7 @@ def _evaluate(
     metrics: list[nw.Expr],
 ) -> dict[str, Any]:
     """Execute a list of scalar expressions and return dictionary of results."""
-    nw_df: NwDataFrame = nw.from_native(df)
+    nw_df: NwDataFrame = nw.from_native(df)  # type: ignore
     metrics += [nw.lit(str(nw_df.schema[c])).alias(f"type_{c}") for c in nw_df.columns]
 
     evaluation_df = nw_df.pipe(_validate_df_has_columns).select(*metrics)
@@ -64,7 +64,7 @@ def _describe(
 
     Mimics polars 'describe' method, but returns dict.
     """
-    nw_df: NwDataFrame = nw.from_native(df)
+    nw_df: NwDataFrame = nw.from_native(df)  # type: ignore
     _validate_df_has_columns(nw_df)
     columns_to_check = nw_df.columns
 
@@ -122,9 +122,11 @@ def _profile_from_sampling(
     """Return profiles from sampling a single dataframe."""
     nw_df = nw.from_native(df)
     return [
-        _describe(nw_df.sample(n=n, fraction=fraction, with_replacement=True))  # type: ignore[union-attr]
+        _describe(
+            nw_df.sample(n=n, fraction=fraction, with_replacement=True),  # type: ignore
+        )
         for _ in range(samples)
-    ]  # type: ignore[union-attr]
+    ]
 
 
 def _profile_from_samples(

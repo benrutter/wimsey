@@ -72,3 +72,7 @@
   description: |
     Compare the values between two columns, and test that the maximum
     difference is within x of the other column.
+
+- test: schema_should
+  be_exactly:
+    unwanted_column: Boolean

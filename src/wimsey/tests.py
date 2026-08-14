@@ -516,6 +516,39 @@ def null_percentage_should(
     return (nw.col(column).null_count() / nw.col(column).len()), _check
 
 
+def schema_should(
+    be_exactly: dict[str, str] | None = None,
+    be_superset_of: dict[str, str] | None = None,
+    not_be: dict[str, str] | None = None,
+    **kwargs: Any,
+) -> GeneratedTest:
+    """Check column name and type pairs.
+
+    Note that because Wimsey is a dataframe agnostic tool, this should be of *Narwhals*
+    expected types such as Float64, Int64, String, etc.
+
+    See Narwhals' documentation for more details:
+    https://narwhals-dev.github.io/narwhals/api-reference/dtypes/
+    """
+    del kwargs
+
+    def _check(schema_dict: dict) -> Result:
+        checks: list[bool] = []
+        if be_exactly:
+            checks.append(schema_dict == be_exactly)
+        if be_superset_of:
+            checks.append(be_superset_of.items() <= schema_dict.items())
+        if not_be:
+            checks.append(schema_dict != not_be)
+        return Result(
+            name="schema-comparison",
+            success=all(checks),
+            unexpected=None if all(checks) else schema_dict,
+        )
+
+    return _schema, _check
+
+
 _possible_tests: dict[str, Callable] = {
     "mean_should": (mean_should := _range_check(nw.mean, "mean")),
     "min_should": (min_should := _range_check(nw.min, "min")),
@@ -537,4 +570,5 @@ _possible_tests: dict[str, Callable] = {
     "columns_should": columns_should,
     "null_count_should": null_count_should,
     "null_percentage_should": null_percentage_should,
+    "schema_should": schema_should,
 }

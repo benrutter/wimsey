@@ -14,12 +14,11 @@ if TYPE_CHECKING:
     from narwhals.stable.v1.typing import FrameT
 
     from wimsey.tests import Result
-    from wimsey.types import GeneratedTest, _MagicExpr
 
 
 def _run_all_tests(df: FrameT, tests: list[GeneratedTest]) -> FinalResult:
     """Run all given tests on a dataframe. Will return a `FinalResult` object."""
-    metrics: list[nw.Expr | _MagicExpr] = []
+    metrics: list[nw.Expr] = []
     for i, expr_tuple in enumerate(tests):
         expr, _ = expr_tuple
         if isinstance(expr, nw.Expr):
@@ -44,7 +43,7 @@ def _run_all_tests(df: FrameT, tests: list[GeneratedTest]) -> FinalResult:
 
 def test(
     df: FrameT,
-    contract: str | list[dict] | dict | list[GeneratedTest],
+    contract: str | list[dict] | dict | list[GeneratedTest] | GeneratedTest,
     storage_options: dict | None = None,
 ) -> FinalResult:
     """Test a dataframe against a data contract.
