@@ -69,4 +69,4 @@ for test in contents:
 """
 
 with open("docs/test-catalogue.md", "w") as file:
-    file.write(catalogue + "\n")
+    file.write(catalogue.strip() + "\n")
