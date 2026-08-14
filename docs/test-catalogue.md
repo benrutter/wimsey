@@ -880,3 +880,63 @@ Test the total sum of a column falls within a given range.
     )
     ```
 
+
+# schema_should
+
+Check column name and type pairs.
+
+Note that because Wimsey is a dataframe agnostic tool, this should be of *Narwhals*
+expected types such as Float64, Int64, String, etc.
+
+See Narwhals' documentation for more details:
+https://narwhals-dev.github.io/narwhals/api-reference/dtypes/
+
+
+=== "yaml"
+
+    ```yaml
+    be_exactly:
+      cases_solved: Int64
+      first_name: String
+      last_name: String
+      rating: Int64
+    be_superset_of:
+      first_name: String
+      last_name: String
+    not_be:
+      unwanted_column: Boolean
+    test: schema_should
+    ```
+
+=== "json"
+
+    ```yaml
+    {
+      "test": "schema_should",
+      "be_exactly": {
+        "first_name": "String",
+        "last_name": "String",
+        "rating": "Int64",
+        "cases_solved": "Int64"
+      },
+      "be_superset_of": {
+        "first_name": "String",
+        "last_name": "String"
+      },
+      "not_be": {
+        "unwanted_column": "Boolean"
+      }
+    }
+    ```
+
+=== "python"
+
+    ```python
+    from wimsey.tests import schema_should
+
+    my_test = schema_should(
+        be_exactly={'first_name': 'String', 'last_name': 'String', 'rating': 'Int64', 'cases_solved': 'Int64'},
+        be_superset_of={'first_name': 'String', 'last_name': 'String'},
+        not_be={'unwanted_column': 'Boolean'},
+    )
+    ```
