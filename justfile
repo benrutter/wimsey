@@ -4,6 +4,9 @@ test:
     uv run ruff check src/**/*.py
     uv run ruff format src/**/*.py
 
+update-catalogue:
+    uv run create_catalogue.py
+
 build-docs:
     #!/usr/bin/env bash
     set -euo pipefail

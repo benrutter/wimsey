@@ -1,0 +1,26 @@
+[[repos]]
+repo = "https://github.com/pre-commit/pre-commit-hooks"
+rev = "v6.0.0"
+hooks = [
+  { id = "check-yaml" },
+  { id = "end-of-file-fixer" },
+]
+
+[[repos]]
+repo = "local"
+hooks = [
+  {
+    id = "create-catalogue",
+    name = "create-catalogue",
+    language = "system",
+    entry = "just update-catalogue",
+    pass_filenames = false,
+  },
+  {
+    id = "run-tests",
+    name = "run-tests",
+    language = "system",
+    entry = "just test",
+    pass_filenames = false,
+  },
+]

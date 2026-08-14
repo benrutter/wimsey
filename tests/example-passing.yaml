@@ -201,3 +201,11 @@
     last_name: String
   not_be:
     unwanted_column: Boolean
+  description: |
+    Check column name and type pairs.
+
+    Note that because Wimsey is a dataframe agnostic tool, this should be of *Narwhals*
+    expected types such as Float64, Int64, String, etc.
+
+    See Narwhals' documentation for more details:
+    https://narwhals-dev.github.io/narwhals/api-reference/dtypes/
