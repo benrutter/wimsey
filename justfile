@@ -1,3 +1,9 @@
+test:
+    uv run pytest --cov=src --cov-fail-under=100 --cov-report=html
+    uv run ty check src
+    uv run ruff check src/**/*.py
+    uv run ruff format src/**/*.py
+
 build-docs:
     #!/usr/bin/env bash
     set -euo pipefail

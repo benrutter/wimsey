@@ -105,7 +105,7 @@ def _save_starter_tests(
         contents = yaml.dump(tests)
     else:
         contents = json.dumps(tests, indent=4)
-    with fsspec.open(path, mode="wt", **storage_options) as file:
+    with fsspec.open(path, mode="wt", **(storage_options or {})) as file:
         file.write(contents)
 
 

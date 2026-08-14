@@ -15,6 +15,7 @@ def test_that_all_possible_tests_are_functions_that_return_partials() -> None:
                 other_column="anythin_else",
                 be_less_than=3,
                 be_one_of=[1, 2, 3],
+                be_exactly={},
             ),
             tuple,
         )
@@ -75,6 +76,34 @@ def test_null_percentage_passes_and_fails_when_expected() -> None:
             be_less_than_or_equal_to=0,
             be_greater_than=1,
             be_greater_than_or_equal_to=1,
+        ),
+    )
+    assert should_pass.success
+    assert not should_fail.success
+
+def test_schema_should_passes_and_fails_when_expected() -> None:
+    df = pl.DataFrame({"a": [1, None, 2, None], "b": ["a", "b", "c", "d"]})
+    should_pass = _test(
+        df,
+        tests.schema_should(
+            be_exactly={
+                "a": "Int64",
+                "b": "String",
+            },
+            be_superset_of={
+                "a": "Int64",
+            },
+            not_be={
+                "cRaZyCoLuMn": "Int64",
+            },
+        ),
+    )
+    should_fail = _test(
+        df,
+        tests.schema_should(
+            be_superset_of={
+                "cRaZyCoLuMn": "Int64",
+            },
         ),
     )
     assert should_pass.success
