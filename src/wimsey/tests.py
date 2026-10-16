@@ -5,15 +5,18 @@ Definitions for test functions that can be ran against a dataframe.
 
 from __future__ import annotations
 
-from typing import Any, Callable
+from typing import TYPE_CHECKING, Any
 
-import narwhals.stable.v1 as nw
+import narwhals.stable.v2 as nw
 
-from wimsey.types import GeneratedTest, Result, _schema
+from wimsey.types import GeneratedTest, NwExpr, Result, _schema
+
+if TYPE_CHECKING:
+    from collections.abc import Callable
 
 
 def _range_check(
-    aggregation: Callable[[str], nw.Expr],
+    aggregation: Callable[[str], NwExpr],
     metric_name: str,
 ) -> Callable:
     """Generate tests of the form "x should be within range".
@@ -380,7 +383,7 @@ def all_values_should(
         expressions.append(~(nw.col(column).is_in(not_be_one_of)).max())
     if match_regex:
         expressions.append(nw.col(column).str.contains(match_regex))
-    return nw.all_horizontal(*expressions), _check
+    return nw.all_horizontal(*expressions, ignore_nulls=True), _check
 
 
 def type_should(

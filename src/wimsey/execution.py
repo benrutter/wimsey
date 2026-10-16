@@ -4,24 +4,22 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING, Any
 
-import narwhals.stable.v1 as nw
-
 from wimsey.config import _collect_tests, _read_config
 from wimsey.dataframe import _evaluate
-from wimsey.types import DataValidationError, FinalResult, GeneratedTest
+from wimsey.types import DataValidationError, FinalResult, GeneratedTest, NwExpr
 
 if TYPE_CHECKING:
-    from narwhals.stable.v1.typing import FrameT
+    from narwhals.stable.v2.typing import FrameT
 
     from wimsey.tests import Result
 
 
 def _run_all_tests(df: FrameT, tests: list[GeneratedTest]) -> FinalResult:
     """Run all given tests on a dataframe. Will return a `FinalResult` object."""
-    metrics: list[nw.Expr] = []
+    metrics: list[NwExpr] = []
     for i, expr_tuple in enumerate(tests):
         expr, _ = expr_tuple
-        if isinstance(expr, nw.Expr):
+        if isinstance(expr, NwExpr):
             metrics.append(expr.alias(str(i)))
     evaluation: dict[str, Any] = _evaluate(
         df,
@@ -32,7 +30,7 @@ def _run_all_tests(df: FrameT, tests: list[GeneratedTest]) -> FinalResult:
         expr, check = expr_tuple
         results.append(
             check(
-                evaluation[str(i)] if isinstance(expr, nw.Expr) else evaluation[expr.expr_name],
+                evaluation[str(i)] if isinstance(expr, NwExpr) else evaluation[expr.expr_name],
             ),
         )
     return FinalResult(

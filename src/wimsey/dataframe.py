@@ -4,13 +4,15 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING, Any
 
-import narwhals.stable.v1 as nw
+import narwhals.stable.v2 as nw
 
 if TYPE_CHECKING:
     from collections.abc import Iterable
 
-    from narwhals.stable.v1 import NwDataFrame
-    from narwhals.stable.v1.typing import IntoFrame
+    from narwhals.stable.v2 import NwDataFrame
+    from narwhals.stable.v2.typing import FrameT
+
+    from wimsey.types import NwExpr
 
 
 def _narwhals_to_dict(df: NwDataFrame) -> dict:
@@ -43,8 +45,8 @@ def _validate_df_has_columns(df: NwDataFrame) -> NwDataFrame:
 
 
 def _evaluate(
-    df: IntoFrame,
-    metrics: list[nw.Expr],
+    df: FrameT,
+    metrics: list[NwExpr],
 ) -> dict[str, Any]:
     """Execute a list of scalar expressions and return dictionary of results."""
     nw_df: NwDataFrame = nw.from_native(df)  # type: ignore
@@ -58,7 +60,7 @@ def _evaluate(
 
 
 def _describe(
-    df: IntoFrame,
+    df: FrameT,
 ) -> dict[str, Any]:
     """Retrieve dictionary discribing dataframe.
 
@@ -114,23 +116,23 @@ def _describe(
 
 
 def _profile_from_sampling(
-    df: IntoFrame,
+    df: FrameT,
     samples: int = 100,
     n: int | None = None,
     fraction: int | None = None,
 ) -> list[dict[str, float]]:
     """Return profiles from sampling a single dataframe."""
-    nw_df = nw.from_native(df)
+    nw_df = nw.from_native(df)  # type: ignore
     return [
         _describe(
-            nw_df.sample(n=n, fraction=fraction, with_replacement=True),  # type: ignore
+            nw_df.sample(n=n, fraction=fraction, with_replacement=True),
         )
         for _ in range(samples)
     ]
 
 
 def _profile_from_samples(
-    samples: Iterable[IntoFrame],
+    samples: Iterable[FrameT],
 ) -> list[dict[str, Any]]:
     """Return profiles from individual samples."""
     return [_describe(i) for i in samples]

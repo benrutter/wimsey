@@ -3,23 +3,40 @@
 from __future__ import annotations
 
 import json
-from typing import Any, Callable, cast
+from typing import TYPE_CHECKING, Any, cast
 
 import fsspec
-import narwhals.stable.v1 as nw
 
 from wimsey.tests import _possible_tests
-from wimsey.types import GeneratedTest, _MagicExpr
+from wimsey.types import NwExpr, _MagicExpr
+
+if TYPE_CHECKING:
+    from collections.abc import Callable
+
+    from wimsey.types import GeneratedTest
 
 
 def _collect_tests(config: list[dict] | dict | list[GeneratedTest] | GeneratedTest) -> list[tuple]:
     """Take a configuration, and build out tests."""
-    list_config: list[dict] | list[tuple] = config if isinstance(config, list) else [config]  # type: ignore
-    if isinstance(list_config[0], tuple) and (isinstance(list_config[0][0], nw.Expr | _MagicExpr)):
-        return cast("list[tuple]", list_config)
-    dict_list: list[dict] = list_config  # type: ignore
+    test_list: list[dict]
+    match config:
+        case (expr, _) if isinstance(expr, NwExpr | _MagicExpr):
+            return cast("list[tuple]", [config])
+        case [(expr, _), *_] if isinstance(expr, NwExpr | _MagicExpr):
+            return cast("list[tuple]", config)
+        case dict():
+            test_list = [config]
+        case [dict(), *_]:
+            test_list = cast("list[dict]", config)
+        case x:
+            msg: str = (
+                "Wimsey does not recognise the format of tests passed. Expected "
+                "either a dict or list of dicts, or a GeneratedTest or list of "
+                f"GeneratedTests. Instead recieved: {type(x)}"
+            )
+            raise TypeError(msg)
     tests: list[tuple] = []
-    for item in dict_list:
+    for item in test_list:
         test_name: str | None = item.get("test")
         test: Callable | None = None
         if test_name:

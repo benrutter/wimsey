@@ -7,7 +7,7 @@ authors = [
     { name = "Ben Rutter", email = "benrutter@posteo.net" }
 ]
 dependencies = [
-    "narwhals>=1.10.0",
+    "narwhals>=2.0.0",
     "fsspec>=2024.10.0",
 ]
 readme = "README.md"
@@ -64,7 +64,7 @@ dev = [
 line-length = 100
 fix = true
 include = ["wimsey/**.py"]
-target-version = "py39"
+target-version = "py310"
 
 [tool.ruff.lint]
 preview = true
