@@ -1,7 +1,10 @@
-"""Wimsey data testing.
+"""Wimsey data testing is a lightweight data contracts and testing framework.
 
-Wimsey is a lightweight data contracts and testing framework, supporting naitve
-execution of multiple dataframe libraries for execution.
+It supporting naitve execution of multiple dataframe libraries for execution.
+
+As well as being lightweight, Wimsey is intended to have a minimal API surface, with
+all public functions in the top level "wimsey.*" namespace, and all tests in the
+"wimsey.tests.*" namespace.
 """
 
 from wimsey._version import __version__

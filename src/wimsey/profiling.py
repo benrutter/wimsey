@@ -16,7 +16,7 @@ from wimsey.types import FinalResult, Result
 if TYPE_CHECKING:
     from collections.abc import Iterable
 
-    from narwhals.stable.v1.typing import FrameT
+    from narwhals.stable.v2.typing import FrameT
 
 
 class _StarterTestStatus(Enum):
